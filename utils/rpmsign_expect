@@ -1,0 +1,8 @@
+#!/usr/bin/expect
+
+set passphrase [exec cat /home/KEY_PASSPHRASE]
+spawn rpm --resign [lindex $argv 0]
+expect "phrase:"
+send "$passphrase\r"
+puts "\n"
+

@@ -1,5 +1,6 @@
 #!/bin/bash
 
+CUR_DIR=$(cd `dirname $0`; pwd)
 echo "Begin to build RPM Packages for aarch64 platform"
 
 if [ -d ~/rpmbuild/RPMS ] ; then
@@ -9,6 +10,10 @@ fi
 if [ "$(uname -m)" != "aarch64" ] ; then
     echo "Please build this package on arm64 platform"
     exit 1
+fi
+
+if [ -z "$(which rpmsign 2>/dev/null)" ] ; then
+    sudo yum install rpm-sign
 fi
 
 SRC_DIR=$1
@@ -21,6 +26,7 @@ fi
 
 sudo yum-builddep -y ${SRC_DIR}/${SPEC_FILE}
 rpmbuild -D"_sourcedir ${SRC_DIR}" -D"_specdir ${SRC_DIR}" -D"_srcrpmdir ${SRC_DIR}" -ba ${SRC_DIR}/${SPEC_FILE}
+${CUR_DIR}/rpm_sign.sh ~/rpmbuild/RPMS/aarch64/
 
 echo "Please check *.src.rpm under ${SRC_DIR} directory !"
 echo "Please check other rpm under ~/rpmbuild/RPMS/aarch64/ directory !"
