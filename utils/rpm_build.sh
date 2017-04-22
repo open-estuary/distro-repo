@@ -20,7 +20,7 @@ if [ ! -d ${SRC_DIR} ] ; then
 fi
 
 sudo yum-builddep -y ${SRC_DIR}/${SPEC_FILE}
-sudo rpmbuild -D"_sourcedir ${SRC_DIR}" -D"_specdir ${SRC_DIR}" -D"_srcrpmdir ${SRC_DIR}" -ba ${SRC_DIR}/${SPEC_FILE}
+rpmbuild -D"_sourcedir ${SRC_DIR}" -D"_specdir ${SRC_DIR}" -D"_srcrpmdir ${SRC_DIR}" -ba ${SRC_DIR}/${SPEC_FILE}
 
 echo "Please check *.src.rpm under ${SRC_DIR} directory !"
 echo "Please check other rpm under ~/rpmbuild/RPMS/aarch64/ directory !"
