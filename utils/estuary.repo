@@ -1,0 +1,5 @@
+[test]
+name=estuary-repo
+baseurl=ftp://repoftp:repopushez@117.78.41.188/releases/3.1/centos/os
+gpgcheck=0
+
