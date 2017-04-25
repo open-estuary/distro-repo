@@ -26,7 +26,7 @@ fi
 
 sudo yum-builddep -y ${SRC_DIR}/${SPEC_FILE}
 rpmbuild -D"_sourcedir ${SRC_DIR}" -D"_specdir ${SRC_DIR}" -D"_srcrpmdir ${SRC_DIR}" -ba ${SRC_DIR}/${SPEC_FILE}
-${CUR_DIR}/rpm_sign.sh ~/rpmbuild/RPMS/aarch64/
+${CUR_DIR}/rpm_sign.sh ~/rpmbuild/RPMS/
 ${CUR_DIR}/rpm_sign.sh ${SRC_DIR}
 
 echo "Please check *.src.rpm under ${SRC_DIR} directory !"

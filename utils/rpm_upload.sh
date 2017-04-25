@@ -34,10 +34,15 @@ if [ -z "$(find ${SRC_DIR} -name "*.${file_type}")" ] ; then
 fi
 
 
-if [ -z "$(find ${SRC_DIR} -name "*.src.${file_type}")" ] ; then
+if [ ! -z "$(find ${SRC_DIR} -name "*.aarch64.${file_type}")" ] ; then
     DST_DIR="/est-repo/releases/${VERSION}/${TARGETOS}/aarch64"
-else   
+elif [ ! -z "$(find ${SRC_DIR} -name "*.noarch.${file_type}")" ] ; then
+    DST_DIR="/est-repo/releases/${VERSION}/${TARGETOS}/noarch"
+elif [ ! -z "$(find ${SRC_DIR} -name "*.src.${file_type}")" ] ; then
     DST_DIR="/est-repo/releases/${VERSION}/${TARGETOS}/SRPMS"
+else 
+    echo "It only support files which suffix is aarch64.rpm, noarch.rpm or src.rpm"
+    exit 1
 fi
 
 scp -r ${SRC_DIR}/*.${file_type} ${DST_USER}@${DST_IP}:${DST_DIR}
