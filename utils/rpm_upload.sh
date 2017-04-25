@@ -8,7 +8,7 @@ DST_IP="117.78.41.188"
 DST_USER="repo"
 
 if [ -z "${TARGETOS}" ] ; then 
-    echo "Usage: ./rpm_upload.sh <src_dir> <target os(such as CentOS/Ubuntu/Debian)"
+    echo "Usage: ./rpm_upload.sh <src_dir> <target os(such as CentOS/Ubuntu/Debian)>"
     exit 0
 fi
 
