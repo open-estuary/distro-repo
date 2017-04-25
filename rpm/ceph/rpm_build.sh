@@ -4,7 +4,7 @@
 # To build RPM packages for Ceph
 #####################################################################################
 CUR_DIR=$(cd `dirname $0`; pwd)
-BUILD_DIR="/tpm/builddir_ceph"
+BUILD_DIR="/tmp/builddir_ceph"
 VERSION="v12.0.1"
 
 ####################################################################################
