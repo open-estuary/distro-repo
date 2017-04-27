@@ -38,8 +38,8 @@
 %{?with_ssl: %global ssl_option -DWITH_SSL=%{with_ssl}}
 %{!?with_ssl: %global ssl_option -DWITH_SSL=system}
 
-# By default a build will be done including the TokuDB
-%{!?with_tokudb: %global tokudb 1}
+# By default a build will be done without the TokuDB
+%{!?with_tokudb: %global tokudb 0}
 
 # Pass path to mecab lib
 %{?with_mecab: %global mecab_option -DWITH_MECAB=%{with_mecab}}
@@ -88,12 +88,12 @@
 # multiarch
 %global multiarchs            ppc %{power64} %{ix86} x86_64 %{sparc}
 
-# Hack to support el5 where __isa_bits not defined. Note: supports i386 and aarch64 only, sorry.
+# Hack to support el5 where __isa_bits not defined. Note: supports i386 and x86_64 only, sorry.
 %if x%{?__isa_bits} == x
 %ifarch %{ix86}
 %global __isa_bits            32
 %endif
-%ifarch aarch64
+%ifarch x86_64 aarch64
 %global __isa_bits            64
 %endif
 %endif
@@ -801,7 +801,7 @@ fi
 %attr(755, root, root) %{_bindir}/mysqlshow
 %attr(755, root, root) %{_bindir}/mysqlslap
 %attr(755, root, root) %{_bindir}/mysql_config
-%attr(755, root, root) %{_bindir}/mysql_config-%{__isa_bits}
+#%attr(755, root, root) %{_bindir}/mysql_config-%{__isa_bits}
 %attr(755, root, root) %{_bindir}/mysql_config_editor
 
 %attr(644, root, root) %{_mandir}/man1/mysql.1*
@@ -821,7 +821,7 @@ fi
 %attr(644, root, root) %{_mandir}/man1/comp_err.1*
 %attr(644, root, root) %{_mandir}/man1/mysql_config.1*
 %attr(755, root, root) %{_bindir}/mysql_config
-%attr(755, root, root) %{_bindir}/mysql_config-%{__isa_bits}
+#%attr(755, root, root) %{_bindir}/mysql_config-%{__isa_bits}
 %{_includedir}/mysql
 %{_datadir}/aclocal/mysql.m4
 %{_libdir}/mysql/lib%{shared_lib_pri_name}.a
