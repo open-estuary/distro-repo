@@ -1,0 +1,12 @@
+diff -rup old/m4/ax_gcc_archflag.m4 new/m4/ax_gcc_archflag.m4
+--- old/m4/ax_gcc_archflag.m4	2017-04-27 09:32:12.640374954 +0800
++++ new/m4/ax_gcc_archflag.m4	2017-04-27 09:32:37.692369842 +0800
+@@ -207,7 +207,7 @@
+      cpuarch=`grep 'CPU architecture' /proc/cpuinfo 2> /dev/null | cut -d: -f2 | tr -d " " | head -n 1`
+      cpuvar=`grep 'CPU variant' /proc/cpuinfo 2> /dev/null | cut -d: -f2 | tr -d " " | head -n 1`
+      case $cpuimpl in
+-       0x43) case $cpuarch in
++       0x41 | 0x43) case $cpuarch in
+                8) case $cpuvar in
+                     0x0) ax_gcc_arch="thunderx armv8-a native" ;;
+                     0x1) ax_gcc_arch="thunderx+lse armv8.1-a armv8-a+lse armv8-a native" ;;
