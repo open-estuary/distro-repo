@@ -1,8 +1,4 @@
-#! /bin/sh
-
-IP=192.168.1.96
-loginuser=root
-loginpassword=root
+#! /bin/bash
 
 sshcmd()
 {
@@ -22,7 +18,7 @@ sshcmd()
                         sleep 60
                         ((sleeptime = sleeptime + 60))
                 done
-                sh sshcmd.sh -c "$myssh_cmd" -m "$IP" -u "$user" -p "$loginpassword"
+                sh sshcmd.sh -c "$myssh_cmd" -m "$IP" -u "$loginuser" -p "$loginpassword"
                 if [ $? -ne 0 ]; then
                 	echo " Failed in sshscp.sh, maybe there is no enough space on $IP"
                         exit 1
@@ -97,42 +93,3 @@ EOF; echo "override_dh_usrlocal:" >> debian/rules; dpkg-buildpackage -rfakeroot;
         fi
 }
 
-
-buildrpm()
-{
-        program="$1"
-        version="$2"
-        sshcmd "cd /root; rpmbuild -ba rpmbuild/SPECS/$1.spec"
-        if [ $? -ne 0 ]; then
-                echo "rpm build failed"
-        fi
-}
-
-usage()
-{
-        echo "Usage: build_rpmdeb.sh -p program -v version -f rpm/deb"
-}
-
-program=
-versiom=
-format=
-
-while getopts "p:v:f:h" OPTIONS
-do
-        case $OPTIONS in
-                p) program="$OPTARG";;
-                v) version="$OPTARG";;
-                f) format="$OPTARG";;
-                h) usage;;
-                \?) echo "ERROR - Invalid Parameter"; echo "ERROR - Invalid parameter" >&2; usage; exit 1;;
-                *) echo "ERROR - Invalid Parameter"; echo "ERROR - Invalid parameter" >&2; usage; exit 1;;
-        esac
-done
-
-if [ "$format" = "rpm" ]; then
-	buildrpm $program $version 
-elif [ "$format" = deb ]; then 
-	builddeb $program $version
-else
-	echo "wrong format parameter"
-fi
