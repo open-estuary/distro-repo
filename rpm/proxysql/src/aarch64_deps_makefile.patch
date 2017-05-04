@@ -1,0 +1,29 @@
+diff -rup old/deps/Makefile new/deps/Makefile
+--- old/deps/Makefile	2017-05-04 11:37:20.026444626 +0800
++++ new/deps/Makefile	2017-05-04 11:36:24.008447039 +0800
+@@ -7,7 +7,7 @@ default: libconfig libdaemon jemalloc ma
+ libdaemon/libdaemon/libdaemon/.libs/libdaemon.a: 
+ 	cd libdaemon && rm -rf libdaemon-0.14
+ 	cd libdaemon && tar -zxf libdaemon-0.14.tar.gz
+-	cd libdaemon/libdaemon && ./configure --disable-examples
++	cd libdaemon/libdaemon && ./configure --build=aarch64-unknown-linux-gnu --disable-examples
+ 	cd libdaemon/libdaemon && CC=${CC} CXX=${CXX} ${MAKE}
+ 
+ libdaemon: libdaemon/libdaemon/libdaemon/.libs/libdaemon.a
+@@ -15,7 +15,7 @@ libdaemon: libdaemon/libdaemon/libdaemon
+ jemalloc/jemalloc/lib/libjemalloc.a:
+ 	cd jemalloc && rm -rf jemalloc-4.3.1
+ 	cd jemalloc && tar -jxf jemalloc-4.3.1.tar.bz2
+-	cd jemalloc/jemalloc && ./configure --enable-xmalloc --enable-munmap --enable-prof
++	cd jemalloc/jemalloc && ./configure --build=aarch64-unknown-linux-gnu --enable-xmalloc --enable-munmap --enable-prof
+ 	cd jemalloc/jemalloc && CC=${CC} CXX=${CXX} ${MAKE}
+ 
+ jemalloc: jemalloc/jemalloc/lib/libjemalloc.a
+@@ -47,7 +47,7 @@ sqlite3: sqlite3/sqlite3/sqlite3.o
+ libconfig/libconfig/lib/.libs/libconfig++.a:
+ 	cd libconfig && rm -rf libconfig-1.4.9
+ 	cd libconfig && tar -zxf libconfig-1.4.9.tar.gz
+-	cd libconfig/libconfig && ./configure --disable-examples
++	cd libconfig/libconfig && ./configure --build=aarch64-unknown-linux-gnu --disable-examples
+ 	cd libconfig/libconfig && CC=${CC} CXX=${CXX} ${MAKE}
+
