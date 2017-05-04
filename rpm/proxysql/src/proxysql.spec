@@ -30,8 +30,8 @@ install %SOURCE5 %{name}-%{version}
 %patch0 -p1
 
 %build
-#sed -i -e 's/c++11/c++0x/' lib/Makefile
-#sed -i -e 's/c++11/c++0x/' src/Makefile
+sed -i -e 's/c++11/c++0x/' lib/Makefile
+sed -i -e 's/c++11/c++0x/' src/Makefile
 make clean
 make
 

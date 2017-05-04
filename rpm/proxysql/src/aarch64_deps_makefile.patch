@@ -27,3 +27,4 @@ diff -rup old/deps/Makefile new/deps/Makefile
 +	cd libconfig/libconfig && ./configure --build=aarch64-unknown-linux-gnu --disable-examples
  	cd libconfig/libconfig && CC=${CC} CXX=${CXX} ${MAKE}
 
+ libconfig: libconfig/libconfig/lib/.libs/libconfig++.a
