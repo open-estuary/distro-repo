@@ -5,8 +5,8 @@ loginuser=estuaryrepo
 loginpassword=OpenEstuary@123
 
 CUR_DIR=$(cd `dirname $0`; pwd)
-echo ${CUR_DIR}
-. common_function.sh
+
+. ${CUR_DIR}/common_function.sh
 
 SRC_DIR=$1
 SPEC_FILE=$2
