@@ -18,7 +18,7 @@
 %else
 %global build_ada 0
 %endif
-%ifarch %{ix86} x86_64 ppc ppc64 ppc64le ppc64p7 s390 s390x %{arm} aarch64 %{mips}
+%ifarch %{ix86} x86_64 ppc ppc64 ppc64le ppc64p7 s390 s390x %{arm} %{mips}
 %global build_go 1
 %else
 %global build_go 0
@@ -28,22 +28,22 @@
 %else
 %global build_libquadmath 0
 %endif
-%ifarch %{ix86} x86_64 ppc ppc64 ppc64le ppc64p7 s390 s390x %{arm} aarch64
+%ifarch %{ix86} x86_64 ppc ppc64 ppc64le ppc64p7 s390 s390x %{arm}
 %global build_libasan 1
 %else
 %global build_libasan 0
 %endif
-%ifarch x86_64 ppc64 ppc64le aarch64
+%ifarch x86_64 ppc64 ppc64le
 %global build_libtsan 1
 %else
 %global build_libtsan 0
 %endif
-%ifarch x86_64 ppc64 ppc64le aarch64
+%ifarch x86_64 ppc64 ppc64le
 %global build_liblsan 1
 %else
 %global build_liblsan 0
 %endif
-%ifarch %{ix86} x86_64 ppc ppc64 ppc64le ppc64p7 s390 s390x %{arm} aarch64
+%ifarch %{ix86} x86_64 ppc ppc64 ppc64le ppc64p7 s390 s390x %{arm}
 %global build_libubsan 1
 %else
 %global build_libubsan 0
@@ -534,13 +534,13 @@ Requires(preun): /sbin/install-info
 This package contains the Thread Sanitizer library
 which is used for -fsanitize=thread instrumented programs.
 
-%package -n libtsan-static
-Summary: The Thread Sanitizer static library
-Group: Development/Libraries
-Requires: libtsan = %{version}-%{release}
+#%package -n libtsan-static
+#Summary: The Thread Sanitizer static library
+#Group: Development/Libraries
+#Requires: libtsan = %{version}-%{release}
 
-%description -n libtsan-static
-This package contains Thread Sanitizer static runtime library.
+#%description -n libtsan-static
+#This package contains Thread Sanitizer static runtime library.
 
 %package -n libubsan
 Summary: The Undefined Behavior Sanitizer runtime library
@@ -848,10 +848,10 @@ if [ -f "${BUILDDIR}"/debugfiles.list \
   done
   cp -a "${BUILDDIR}"/debugfiles-base.list "${BUILDDIR}"/debugfiles-remove.list
 %if %{build_go}
-  libgoso=`basename .%{_prefix}/%{_lib}/libgo.so.11.*`
+  libgoso=`basename .%{_prefix}/%{_lib}/libgo.so.7.*`
   for f in %{_prefix}/bin/go.gcc \
 	   %{_prefix}/bin/gofmt.gcc \
-	   %{_prefix}/libexec/gcc/%{gcc_target_platform}/%{gcc_major}/cgo \
+	   %{_prefix}/libexec/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/cgo \
 	   %{_prefix}/%{_lib}/$libgoso ; do
     eu-unstrip .$f usr/lib/debug$f.debug -o .$f.new
     chmod --reference=.$f .$f.new
@@ -859,8 +859,8 @@ if [ -f "${BUILDDIR}"/debugfiles.list \
     rm -f usr/lib/debug$f.debug
     echo "/usr/lib/debug$f.debug" >> "${BUILDDIR}"/debugfiles-remove.list
   done
-  rm -f usr/lib/debug%{_prefix}/%{_lib}/libgo.so.11.debug
-  echo "/usr/lib/debug%{_prefix}/%{_lib}/libgo.so.11.debug" >> "${BUILDDIR}"/debugfiles-remove.list
+  rm -f usr/lib/debug%{_prefix}/%{_lib}/libgo.so.7.debug
+  echo "/usr/lib/debug%{_prefix}/%{_lib}/libgo.so.7.debug" >> "${BUILDDIR}"/debugfiles-remove.list
   for f in `find usr/lib/debug/.build-id -type l`; do
     if ls -l "$f" | egrep -q -- '->.*(/bin/go.gcc|/bin/gofmt.gcc|/cgo|lib[0-9]*/libgo\.so)'; then
       echo "/$f" >> "${BUILDDIR}"/debugfiles-remove.list
@@ -1137,7 +1137,7 @@ CC="$CC" CXX="$CXX" CFLAGS="$OPT_FLAGS" \
 make %{?_smp_mflags} BOOT_CFLAGS="$OPT_FLAGS" all-gcc
 cp -a gcc/libgccjit.so* ../gcc/
 cd ../gcc/
-ln -sf xgcc %{gcc_target_platform}-gcc-%{gcc_major}
+ln -sf xgcc %{gcc_target_platform}-gcc-%{gcc_major}.%{gcc_release}
 cp -a Makefile{,.orig}
 sed -i -e '/^CHECK_TARGETS/s/$/ check-jit/' Makefile
 touch -r Makefile.orig Makefile
@@ -1217,16 +1217,16 @@ cd obj-offload-nvptx-none
 make prefix=%{buildroot}%{_prefix} mandir=%{buildroot}%{_mandir} \
   infodir=%{buildroot}%{_infodir} install
 rm -rf %{buildroot}%{_prefix}/libexec/gcc/nvptx-none/%{gcc_major}/install-tools
-rm -rf %{buildroot}%{_prefix}/libexec/gcc/%{gcc_target_platform}/%{gcc_major}/accel/nvptx-none/{install-tools,plugin,cc1,cc1plus,f951}
+rm -rf %{buildroot}%{_prefix}/libexec/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/accel/nvptx-none/{install-tools,plugin,cc1,cc1plus,f951}
 rm -rf %{buildroot}%{_infodir} %{buildroot}%{_mandir}/man7 %{buildroot}%{_prefix}/share/locale
 rm -rf %{buildroot}%{_prefix}/lib/gcc/nvptx-none/%{gcc_major}/{install-tools,plugin}
-rm -rf %{buildroot}%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/accel/nvptx-none/{install-tools,plugin,include-fixed}
+rm -rf %{buildroot}%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/accel/nvptx-none/{install-tools,plugin,include-fixed}
 rm -rf %{buildroot}%{_prefix}/%{_lib}/libc[cp]1*
-mv -f %{buildroot}%{_prefix}/nvptx-none/lib/*.{a,spec} %{buildroot}%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/accel/nvptx-none/
-mv -f %{buildroot}%{_prefix}/nvptx-none/lib/mgomp/*.{a,spec} %{buildroot}%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/accel/nvptx-none/mgomp/
-mv -f %{buildroot}%{_prefix}/lib/gcc/nvptx-none/%{gcc_major}/*.a %{buildroot}%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/accel/nvptx-none/
-mv -f %{buildroot}%{_prefix}/lib/gcc/nvptx-none/%{gcc_major}/mgomp/*.a %{buildroot}%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/accel/nvptx-none/mgomp/
-find %{buildroot}%{_prefix}/lib/gcc/nvptx-none %{buildroot}%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/accel/nvptx-none \
+mv -f %{buildroot}%{_prefix}/nvptx-none/lib/*.{a,spec} %{buildroot}%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/accel/nvptx-none/
+mv -f %{buildroot}%{_prefix}/nvptx-none/lib/mgomp/*.{a,spec} %{buildroot}%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/accel/nvptx-none/mgomp/
+mv -f %{buildroot}%{_prefix}/lib/gcc/nvptx-none/%{gcc_major}/*.a %{buildroot}%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/accel/nvptx-none/
+mv -f %{buildroot}%{_prefix}/lib/gcc/nvptx-none/%{gcc_major}/mgomp/*.a %{buildroot}%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/accel/nvptx-none/mgomp/
+find %{buildroot}%{_prefix}/lib/gcc/nvptx-none %{buildroot}%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/accel/nvptx-none \
      %{buildroot}%{_prefix}/nvptx-none/lib -name \*.la | xargs rm
 cd ..
 rm -f newlib
@@ -1436,10 +1436,10 @@ pushd $FULLPATH
 if [ "%{_lib}" = "lib" ]; then
 ln -sf ../../../libobjc.so.4 libobjc.so
 ln -sf ../../../libstdc++.so.6.*[0-9] libstdc++.so
-ln -sf ../../../libgfortran.so.4.* libgfortran.so
+ln -sf ../../../libgfortran.so.3.* libgfortran.so
 ln -sf ../../../libgomp.so.1.* libgomp.so
 %if %{build_go}
-ln -sf ../../../libgo.so.11.* libgo.so
+ln -sf ../../../libgo.so.7.* libgo.so
 %endif
 %if %{build_libquadmath}
 ln -sf ../../../libquadmath.so.0.* libquadmath.so
@@ -1451,7 +1451,7 @@ ln -sf ../../../libitm.so.1.* libitm.so
 ln -sf ../../../libatomic.so.1.* libatomic.so
 %endif
 %if %{build_libasan}
-ln -sf ../../../libasan.so.4.* libasan.so
+ln -sf ../../../libasan.so.2.* libasan.so
 mv ../../../libasan_preinit.o libasan_preinit.o
 %endif
 %if %{build_libubsan}
@@ -1467,10 +1467,10 @@ ln -sf ../../../libmpxwrappers.so.2.* libmpxwrappers.so
 else
 ln -sf ../../../../%{_lib}/libobjc.so.4 libobjc.so
 ln -sf ../../../../%{_lib}/libstdc++.so.6.*[0-9] libstdc++.so
-ln -sf ../../../../%{_lib}/libgfortran.so.4.* libgfortran.so
+ln -sf ../../../../%{_lib}/libgfortran.so.3.* libgfortran.so
 ln -sf ../../../../%{_lib}/libgomp.so.1.* libgomp.so
 %if %{build_go}
-ln -sf ../../../../%{_lib}/libgo.so.11.* libgo.so
+ln -sf ../../../../%{_lib}/libgo.so.7.* libgo.so
 %endif
 %if %{build_libquadmath}
 ln -sf ../../../../%{_lib}/libquadmath.so.0.* libquadmath.so
@@ -1482,7 +1482,7 @@ ln -sf ../../../../%{_lib}/libitm.so.1.* libitm.so
 ln -sf ../../../../%{_lib}/libatomic.so.1.* libatomic.so
 %endif
 %if %{build_libasan}
-ln -sf ../../../../%{_lib}/libasan.so.4.* libasan.so
+ln -sf ../../../../%{_lib}/libasan.so.2.* libasan.so
 mv ../../../../%{_lib}/libasan_preinit.o libasan_preinit.o
 %endif
 %if %{build_libubsan}
@@ -1497,7 +1497,7 @@ ln -sf ../../../../%{_lib}/libmpxwrappers.so.2.* libmpxwrappers.so
 %endif
 %if %{build_libtsan}
 rm -f libtsan.so
-echo 'INPUT ( %{_prefix}/%{_lib}/'`echo ../../../../%{_lib}/libtsan.so.0.* | sed 's,^.*libt,libt,'`' )' > libtsan.so
+echo 'INPUT ( %{_prefix}/%{_lib}/'`echo ../../../../%{_lib}/libtsan.so* | sed 's,^.*libt,libt,'`' )' > libtsan.so
 mv ../../../../%{_lib}/libtsan_preinit.o libtsan_preinit.o
 %endif
 %if %{build_liblsan}
@@ -1587,12 +1587,12 @@ fi
 %ifarch sparcv9 ppc
 ln -sf ../../../../../lib64/libobjc.so.4 64/libobjc.so
 ln -sf ../`echo ../../../../lib/libstdc++.so.6.*[0-9] | sed s~/lib/~/lib64/~` 64/libstdc++.so
-ln -sf ../`echo ../../../../lib/libgfortran.so.4.* | sed s~/lib/~/lib64/~` 64/libgfortran.so
+ln -sf ../`echo ../../../../lib/libgfortran.so.3.* | sed s~/lib/~/lib64/~` 64/libgfortran.so
 ln -sf ../`echo ../../../../lib/libgomp.so.1.* | sed s~/lib/~/lib64/~` 64/libgomp.so
 %if %{build_go}
 rm -f libgo.so
-echo 'INPUT ( %{_prefix}/lib/'`echo ../../../../lib/libgo.so.11.* | sed 's,^.*libg,libg,'`' )' > libgo.so
-echo 'INPUT ( %{_prefix}/lib64/'`echo ../../../../lib/libgo.so.11.* | sed 's,^.*libg,libg,'`' )' > 64/libgo.so
+echo 'INPUT ( %{_prefix}/lib/'`echo ../../../../lib/libgo.so.7.* | sed 's,^.*libg,libg,'`' )' > libgo.so
+echo 'INPUT ( %{_prefix}/lib64/'`echo ../../../../lib/libgo.so.7.* | sed 's,^.*libg,libg,'`' )' > 64/libgo.so
 %endif
 %if %{build_libquadmath}
 rm -f libquadmath.so
@@ -1611,8 +1611,8 @@ echo 'INPUT ( %{_prefix}/lib64/'`echo ../../../../lib/libatomic.so.1.* | sed 's,
 %endif
 %if %{build_libasan}
 rm -f libasan.so
-echo 'INPUT ( %{_prefix}/lib/'`echo ../../../../lib/libasan.so.4.* | sed 's,^.*liba,liba,'`' )' > libasan.so
-echo 'INPUT ( %{_prefix}/lib64/'`echo ../../../../lib/libasan.so.4.* | sed 's,^.*liba,liba,'`' )' > 64/libasan.so
+echo 'INPUT ( %{_prefix}/lib/'`echo ../../../../lib/libasan.so.2.* | sed 's,^.*liba,liba,'`' )' > libasan.so
+echo 'INPUT ( %{_prefix}/lib64/'`echo ../../../../lib/libasan.so.2.* | sed 's,^.*liba,liba,'`' )' > 64/libasan.so
 mv ../../../../lib64/libasan_preinit.o 64/libasan_preinit.o
 %endif
 %if %{build_libubsan}
@@ -1692,12 +1692,12 @@ ln -sf ../lib64/adalib 64/adalib
 mkdir -p 32
 ln -sf ../../../../libobjc.so.4 32/libobjc.so
 ln -sf ../`echo ../../../../lib64/libstdc++.so.6.*[0-9] | sed s~/../lib64/~/~` 32/libstdc++.so
-ln -sf ../`echo ../../../../lib64/libgfortran.so.4.* | sed s~/../lib64/~/~` 32/libgfortran.so
+ln -sf ../`echo ../../../../lib64/libgfortran.so.3.* | sed s~/../lib64/~/~` 32/libgfortran.so
 ln -sf ../`echo ../../../../lib64/libgomp.so.1.* | sed s~/../lib64/~/~` 32/libgomp.so
 %if %{build_go}
 rm -f libgo.so
-echo 'INPUT ( %{_prefix}/lib64/'`echo ../../../../lib64/libgo.so.11.* | sed 's,^.*libg,libg,'`' )' > libgo.so
-echo 'INPUT ( %{_prefix}/lib/'`echo ../../../../lib64/libgo.so.11.* | sed 's,^.*libg,libg,'`' )' > 32/libgo.so
+echo 'INPUT ( %{_prefix}/lib64/'`echo ../../../../lib64/libgo.so.7.* | sed 's,^.*libg,libg,'`' )' > libgo.so
+echo 'INPUT ( %{_prefix}/lib/'`echo ../../../../lib64/libgo.so.7.* | sed 's,^.*libg,libg,'`' )' > 32/libgo.so
 %endif
 %if %{build_libquadmath}
 rm -f libquadmath.so
@@ -1716,8 +1716,8 @@ echo 'INPUT ( %{_prefix}/lib/'`echo ../../../../lib64/libatomic.so.1.* | sed 's,
 %endif
 %if %{build_libasan}
 rm -f libasan.so
-echo 'INPUT ( %{_prefix}/lib64/'`echo ../../../../lib64/libasan.so.4.* | sed 's,^.*liba,liba,'`' )' > libasan.so
-echo 'INPUT ( %{_prefix}/lib/'`echo ../../../../lib64/libasan.so.4.* | sed 's,^.*liba,liba,'`' )' > 32/libasan.so
+echo 'INPUT ( %{_prefix}/lib64/'`echo ../../../../lib64/libasan.so.2.* | sed 's,^.*liba,liba,'`' )' > libasan.so
+echo 'INPUT ( %{_prefix}/lib/'`echo ../../../../lib64/libasan.so.2.* | sed 's,^.*liba,liba,'`' )' > 32/libasan.so
 mv ../../../../lib/libasan_preinit.o 32/libasan_preinit.o
 %endif
 %if %{build_libubsan}
@@ -1838,7 +1838,7 @@ ln -sf ../../../%{multilib_32_arch}-%{_vendor}-%{_target_os}/%{gcc_major}/adalib
 # into the debug directory to keep them as unstripped copies.
 %if 0%{?_enable_debug_packages}
 for d in . $FULLLSUBDIR; do
-  mkdir -p $RPM_BUILD_ROOT%{_prefix}/lib/debug%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/$d
+  mkdir -p $RPM_BUILD_ROOT%{_prefix}/lib/debug%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/$d
   for f in `find $d -maxdepth 1 -a \
 		\( -name libasan.a -o -name libatomic.a \
 		-o -name libcaf_single.a -o -name libcilkrts.a \
@@ -1851,8 +1851,8 @@ for d in . $FULLLSUBDIR; do
 		-o -name libobjc.a \
 		-o -name libquadmath.a -o -name libstdc++.a \
 		-o -name libstdc++fs.a -o -name libsupc++.a \
-		-o -name libtsan.a -o -name libubsan.a \) -a -type f`; do
-    cp -a $f $RPM_BUILD_ROOT%{_prefix}/lib/debug%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/$d/
+	        -o -name libubsan.a \) -a -type f`; do
+    cp -a $f $RPM_BUILD_ROOT%{_prefix}/lib/debug%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/$d/
   done
 done
 %endif
@@ -1861,12 +1861,12 @@ done
 strip -g `find . \( -name libgfortran.a -o -name libobjc.a -o -name libgomp.a \
 		    -o -name libgcc.a -o -name libgcov.a -o -name libquadmath.a \
 		    -o -name libitm.a -o -name libgo.a -o -name libcaf\*.a \
-		    -o -name libatomic.a -o -name libasan.a -o -name libtsan.a \
+		    -o -name libatomic.a -o -name libasan.a  \
 		    -o -name libubsan.a -o -name liblsan.a -o -name libcilkrts.a \
 		    -o -name libmpx.a -o -name libmpxwrappers.a -o -name libcc1.a \) \
 		 -a -type f`
 popd
-chmod 755 %{buildroot}%{_prefix}/%{_lib}/libgfortran.so.4.*
+#chmod 755 %{buildroot}%{_prefix}/%{_lib}/libgfortran.so.3.*
 chmod 755 %{buildroot}%{_prefix}/%{_lib}/libgomp.so.1.*
 chmod 755 %{buildroot}%{_prefix}/%{_lib}/libcc1.so.0.*
 %if %{build_libquadmath}
@@ -1879,7 +1879,7 @@ chmod 755 %{buildroot}%{_prefix}/%{_lib}/libitm.so.1.*
 chmod 755 %{buildroot}%{_prefix}/%{_lib}/libatomic.so.1.*
 %endif
 %if %{build_libasan}
-chmod 755 %{buildroot}%{_prefix}/%{_lib}/libasan.so.4.*
+chmod 755 %{buildroot}%{_prefix}/%{_lib}/libasan.so.2.*
 %endif
 %if %{build_libubsan}
 chmod 755 %{buildroot}%{_prefix}/%{_lib}/libubsan.so.0.*
@@ -1892,13 +1892,13 @@ chmod 755 %{buildroot}%{_prefix}/%{_lib}/libmpx.so.2.*
 chmod 755 %{buildroot}%{_prefix}/%{_lib}/libmpxwrappers.so.2.*
 %endif
 %if %{build_libtsan}
-chmod 755 %{buildroot}%{_prefix}/%{_lib}/libtsan.so.0.*
+chmod 755 %{buildroot}%{_prefix}/%{_lib}/libtsan.so*
 %endif
 %if %{build_liblsan}
 chmod 755 %{buildroot}%{_prefix}/%{_lib}/liblsan.so.0.*
 %endif
 %if %{build_go}
-chmod 755 %{buildroot}%{_prefix}/%{_lib}/libgo.so.11.*
+chmod 755 %{buildroot}%{_prefix}/%{_lib}/libgo.so.7.*
 %endif
 chmod 755 %{buildroot}%{_prefix}/%{_lib}/libobjc.so.4.*
 
@@ -1993,22 +1993,22 @@ echo gcc-%{version}-%{release}.%{_arch} > $FULLPATH/rpmver
 cd obj-%{gcc_target_platform}
 
 # run the tests.
-make %{?_smp_mflags} -k check ALT_CC_UNDER_TEST=gcc ALT_CXX_UNDER_TEST=g++ \
-%if 0%{?fedora} >= 20
-     RUNTESTFLAGS="--target_board=unix/'{,-fstack-protector-strong}'" || :
-%else
-     RUNTESTFLAGS="--target_board=unix/'{,-fstack-protector}'" || :
-%endif
-echo ====================TESTING=========================
-( LC_ALL=C ../contrib/test_summary || : ) 2>&1 | sed -n '/^cat.*EOF/,/^EOF/{/^cat.*EOF/d;/^EOF/d;/^LAST_UPDATED:/d;p;}'
-echo ====================TESTING END=====================
-mkdir testlogs-%{_target_platform}-%{version}-%{release}
-for i in `find . -name \*.log | grep -F testsuite/ | grep -v 'config.log\|acats.*/tests/'`; do
-  ln $i testlogs-%{_target_platform}-%{version}-%{release}/ || :
-done
-tar cf - testlogs-%{_target_platform}-%{version}-%{release} | bzip2 -9c \
-  | uuencode testlogs-%{_target_platform}.tar.bz2 || :
-rm -rf testlogs-%{_target_platform}-%{version}-%{release}
+#make %{?_smp_mflags} -k check ALT_CC_UNDER_TEST=gcc ALT_CXX_UNDER_TEST=g++ \
+#%if 0%{?fedora} >= 20
+#     RUNTESTFLAGS="--target_board=unix/'{,-fstack-protector-strong}'" || :
+#%else
+#     RUNTESTFLAGS="--target_board=unix/'{,-fstack-protector}'" || :
+#%endif
+#echo ====================TESTING=========================
+#( LC_ALL=C ../contrib/test_summary || : ) 2>&1 | sed -n '/^cat.*EOF/,/^EOF/{/^cat.*EOF/d;/^EOF/d;/^LAST_UPDATED:/d;p;}'
+#echo ====================TESTING END=====================
+#mkdir testlogs-%{_target_platform}-%{version}-%{release}
+#for i in `find . -name \*.log | grep -F testsuite/ | grep -v 'config.log\|acats.*/tests/'`; do
+#  ln $i testlogs-%{_target_platform}-%{version}-%{release}/ || :
+#done
+#tar cf - testlogs-%{_target_platform}-%{version}-%{release} | bzip2 -9c \
+#  | uuencode testlogs-%{_target_platform}.tar.bz2 || :
+#rm -rf testlogs-%{_target_platform}-%{version}-%{release}
 
 %clean
 rm -rf %{buildroot}
@@ -2235,303 +2235,303 @@ fi
 %{_prefix}/bin/ppc-%{_vendor}-%{_target_os}-gcc
 %endif
 %{_prefix}/bin/%{gcc_target_platform}-gcc
-%{_prefix}/bin/%{gcc_target_platform}-gcc-%{gcc_major}
+%{_prefix}/bin/%{gcc_target_platform}-gcc-%{gcc_major}.%{gcc_release}
 %{_mandir}/man1/gcc.1*
 %{_mandir}/man1/gcov.1*
 %{_infodir}/gcc*
 %dir %{_prefix}/lib/gcc
 %dir %{_prefix}/lib/gcc/%{gcc_target_platform}
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}
 %dir %{_prefix}/libexec/gcc
 %dir %{_prefix}/libexec/gcc/%{gcc_target_platform}
-%dir %{_prefix}/libexec/gcc/%{gcc_target_platform}/%{gcc_major}
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include
-%{_prefix}/libexec/gcc/%{gcc_target_platform}/%{gcc_major}/lto1
-%{_prefix}/libexec/gcc/%{gcc_target_platform}/%{gcc_major}/lto-wrapper
-%{_prefix}/libexec/gcc/%{gcc_target_platform}/%{gcc_major}/liblto_plugin.so*
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/rpmver
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/stddef.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/stdarg.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/stdfix.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/varargs.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/float.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/limits.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/stdbool.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/iso646.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/syslimits.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/unwind.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/omp.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/openacc.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/stdint.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/stdint-gcc.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/stdalign.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/stdnoreturn.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/stdatomic.h
+%dir %{_prefix}/libexec/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include
+%{_prefix}/libexec/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lto1
+%{_prefix}/libexec/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lto-wrapper
+%{_prefix}/libexec/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/liblto_plugin.so*
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/rpmver
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/stddef.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/stdarg.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/stdfix.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/varargs.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/float.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/limits.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/stdbool.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/iso646.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/syslimits.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/unwind.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/omp.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/openacc.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/stdint.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/stdint-gcc.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/stdalign.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/stdnoreturn.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/stdatomic.h
 %ifarch %{ix86} x86_64
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/mmintrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/xmmintrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/emmintrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/pmmintrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/tmmintrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/ammintrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/smmintrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/nmmintrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/bmmintrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/wmmintrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/immintrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/avxintrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/x86intrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/fma4intrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/xopintrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/lwpintrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/popcntintrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/bmiintrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/tbmintrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/ia32intrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/avx2intrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/bmi2intrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/f16cintrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/fmaintrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/lzcntintrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/rtmintrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/xtestintrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/adxintrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/prfchwintrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/rdseedintrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/fxsrintrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/xsaveintrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/xsaveoptintrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/avx512cdintrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/avx512erintrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/avx512fintrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/avx512pfintrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/shaintrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/mm_malloc.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/mm3dnow.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/cpuid.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/cross-stdarg.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/avx512bwintrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/avx512dqintrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/avx512ifmaintrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/avx512ifmavlintrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/avx512vbmiintrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/avx512vbmivlintrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/avx512vlbwintrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/avx512vldqintrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/avx512vlintrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/clflushoptintrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/clwbintrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/mwaitxintrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/xsavecintrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/xsavesintrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/clzerointrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/pkuintrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/avx5124fmapsintrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/avx5124vnniwintrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/avx512vpopcntdqintrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/sgxintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/mmintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/xmmintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/emmintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/pmmintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/tmmintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/ammintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/smmintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/nmmintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/bmmintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/wmmintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/immintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/avxintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/x86intrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/fma4intrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/xopintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/lwpintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/popcntintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/bmiintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/tbmintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/ia32intrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/avx2intrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/bmi2intrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/f16cintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/fmaintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/lzcntintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/rtmintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/xtestintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/adxintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/prfchwintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/rdseedintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/fxsrintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/xsaveintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/xsaveoptintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/avx512cdintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/avx512erintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/avx512fintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/avx512pfintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/shaintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/mm_malloc.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/mm3dnow.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/cpuid.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/cross-stdarg.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/avx512bwintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/avx512dqintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/avx512ifmaintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/avx512ifmavlintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/avx512vbmiintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/avx512vbmivlintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/avx512vlbwintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/avx512vldqintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/avx512vlintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/clflushoptintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/clwbintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/mwaitxintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/xsavecintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/xsavesintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/clzerointrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/pkuintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/avx5124fmapsintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/avx5124vnniwintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/avx512vpopcntdqintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/sgxintrin.h
 %endif
 %ifarch ia64
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/ia64intrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/ia64intrin.h
 %endif
 %ifarch ppc ppc64 ppc64le ppc64p7
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/ppc-asm.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/altivec.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/spe.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/paired.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/ppu_intrinsics.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/si2vmx.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/spu2vmx.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/vec_types.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/htmintrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/htmxlintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/ppc-asm.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/altivec.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/spe.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/paired.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/ppu_intrinsics.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/si2vmx.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/spu2vmx.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/vec_types.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/htmintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/htmxlintrin.h
 %endif
 %ifarch %{arm}
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/unwind-arm-common.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/mmintrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/arm_neon.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/arm_acle.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/arm_cmse.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/arm_fp16.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/unwind-arm-common.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/mmintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/arm_neon.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/arm_acle.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/arm_cmse.h
+#%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/arm_fp16.h
 %endif
 %ifarch aarch64
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/arm_neon.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/arm_acle.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/arm_fp16.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/arm_neon.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/arm_acle.h
+#%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/arm_fp16.h
 %endif
 %ifarch sparc sparcv9 sparc64
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/visintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/visintrin.h
 %endif
 %ifarch s390 s390x
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/s390intrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/htmintrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/htmxlintrin.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/vecintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/s390intrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/htmintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/htmxlintrin.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/vecintrin.h
 %endif
 %if %{build_libcilkrts}
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/cilk
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libcilkrts.spec
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/cilk
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libcilkrts.spec
 %endif
 %if %{build_libmpx}
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libmpx.spec
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libmpx.spec
 %endif
 %if %{build_libasan}
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/sanitizer
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/sanitizer
 %endif
-%{_prefix}/libexec/gcc/%{gcc_target_platform}/%{gcc_major}/collect2
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/crt*.o
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libgcc.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libgcov.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libgcc_eh.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libgcc_s.so
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libgomp.spec
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libgomp.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libgomp.so
+%{_prefix}/libexec/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/collect2
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/crt*.o
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libgcc.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libgcov.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libgcc_eh.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libgcc_s.so
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libgomp.spec
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libgomp.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libgomp.so
 %if %{build_libitm}
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libitm.spec
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libitm.spec
 %endif
 %if %{build_libasan}
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libsanitizer.spec
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libsanitizer.spec
 %endif
 %ifarch sparcv9 ppc
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/64
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/64/crt*.o
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/64/libgcc.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/64/libgcov.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/64/libgcc_eh.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/64/libgcc_s.so
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/64/libgomp.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/64/libgomp.so
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/64
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/64/crt*.o
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/64/libgcc.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/64/libgcov.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/64/libgcc_eh.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/64/libgcc_s.so
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/64/libgomp.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/64/libgomp.so
 %if %{build_libquadmath}
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/64/libquadmath.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/64/libquadmath.so
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/64/libquadmath.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/64/libquadmath.so
 %endif
 %if %{build_libitm}
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/64/libitm.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/64/libitm.so
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/64/libitm.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/64/libitm.so
 %endif
 %if %{build_libatomic}
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/64/libatomic.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/64/libatomic.so
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/64/libatomic.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/64/libatomic.so
 %endif
 %if %{build_libasan}
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/64/libasan.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/64/libasan.so
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/64/libasan_preinit.o
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/64/libasan.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/64/libasan.so
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/64/libasan_preinit.o
 %endif
 %if %{build_libubsan}
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/64/libubsan.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/64/libubsan.so
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/64/libubsan.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/64/libubsan.so
 %endif
 %if %{build_libcilkrts}
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/64/libcilkrts.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/64/libcilkrts.so
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/64/libcilkrts.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/64/libcilkrts.so
 %endif
 %if %{build_libmpx}
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/64/libmpx.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/64/libmpx.so
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/64/libmpxwrappers.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/64/libmpxwrappers.so
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/64/libmpx.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/64/libmpx.so
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/64/libmpxwrappers.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/64/libmpxwrappers.so
 %endif
 %endif
 %ifarch %{multilib_64_archs}
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/32
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/32/crt*.o
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/32/libgcc.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/32/libgcov.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/32/libgcc_eh.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/32/libgcc_s.so
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/32/libgomp.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/32/libgomp.so
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/32
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/32/crt*.o
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/32/libgcc.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/32/libgcov.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/32/libgcc_eh.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/32/libgcc_s.so
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/32/libgomp.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/32/libgomp.so
 %if %{build_libquadmath}
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/32/libquadmath.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/32/libquadmath.so
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/32/libquadmath.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/32/libquadmath.so
 %endif
 %if %{build_libitm}
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/32/libitm.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/32/libitm.so
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/32/libitm.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/32/libitm.so
 %endif
 %if %{build_libatomic}
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/32/libatomic.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/32/libatomic.so
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/32/libatomic.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/32/libatomic.so
 %endif
 %if %{build_libasan}
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/32/libasan.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/32/libasan.so
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/32/libasan_preinit.o
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/32/libasan.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/32/libasan.so
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/32/libasan_preinit.o
 %endif
 %if %{build_libubsan}
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/32/libubsan.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/32/libubsan.so
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/32/libubsan.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/32/libubsan.so
 %endif
 %if %{build_libcilkrts}
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/32/libcilkrts.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/32/libcilkrts.so
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/32/libcilkrts.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/32/libcilkrts.so
 %endif
 %if %{build_libmpx}
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/32/libmpx.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/32/libmpx.so
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/32/libmpxwrappers.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/32/libmpxwrappers.so
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/32/libmpx.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/32/libmpx.so
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/32/libmpxwrappers.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/32/libmpxwrappers.so
 %endif
 %endif
 %ifarch sparcv9 sparc64 ppc ppc64 ppc64p7
 %if %{build_libquadmath}
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libquadmath.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libquadmath.so
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libquadmath.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libquadmath.so
 %endif
 %if %{build_libitm}
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libitm.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libitm.so
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libitm.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libitm.so
 %endif
 %if %{build_libatomic}
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libatomic.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libatomic.so
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libatomic.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libatomic.so
 %endif
 %if %{build_libasan}
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libasan.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libasan.so
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libasan_preinit.o
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libasan.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libasan.so
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libasan_preinit.o
 %endif
 %if %{build_libubsan}
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libubsan.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libubsan.so
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libubsan.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libubsan.so
 %endif
 %if %{build_libcilkrts}
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libcilkrts.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libcilkrts.so
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libcilkrts.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libcilkrts.so
 %endif
 %if %{build_libmpx}
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libmpx.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libmpx.so
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libmpxwrappers.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libmpxwrappers.so
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libmpx.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libmpx.so
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libmpxwrappers.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libmpxwrappers.so
 %endif
 %else
 %if %{build_libatomic}
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libatomic.so
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libatomic.so
 %endif
 %if %{build_libasan}
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libasan.so
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libasan_preinit.o
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libasan.so
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libasan_preinit.o
 %endif
 %if %{build_libubsan}
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libubsan.so
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libubsan.so
 %endif
 %if %{build_libcilkrts}
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libcilkrts.so
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libcilkrts.so
 %endif
 %if %{build_libmpx}
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libmpx.so
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libmpxwrappers.so
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libmpx.so
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libmpxwrappers.so
 %endif
 %endif
 %if %{build_libtsan}
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libtsan.so
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libtsan_preinit.o
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libtsan.so
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libtsan_preinit.o
 %endif
 %if %{build_liblsan}
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/liblsan.so
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/liblsan.so
 %endif
 %{_prefix}/libexec/getconf/default
 %doc gcc/README* rpm.doc/changelogs/gcc/ChangeLog* 
@@ -2545,8 +2545,8 @@ fi
 %{_infodir}/cpp*
 %dir %{_prefix}/libexec/gcc
 %dir %{_prefix}/libexec/gcc/%{gcc_target_platform}
-%dir %{_prefix}/libexec/gcc/%{gcc_target_platform}/%{gcc_major}
-%{_prefix}/libexec/gcc/%{gcc_target_platform}/%{gcc_major}/cc1
+%dir %{_prefix}/libexec/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}
+%{_prefix}/libexec/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/cc1
 
 %files -n libgcc
 /%{_lib}/libgcc_s-%{gcc_major}-%{DATE}.so.1
@@ -2561,32 +2561,32 @@ fi
 %{_mandir}/man1/g++.1*
 %dir %{_prefix}/lib/gcc
 %dir %{_prefix}/lib/gcc/%{gcc_target_platform}
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}
 %dir %{_prefix}/libexec/gcc
 %dir %{_prefix}/libexec/gcc/%{gcc_target_platform}
-%dir %{_prefix}/libexec/gcc/%{gcc_target_platform}/%{gcc_major}
-%{_prefix}/libexec/gcc/%{gcc_target_platform}/%{gcc_major}/cc1plus
+%dir %{_prefix}/libexec/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}
+%{_prefix}/libexec/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/cc1plus
 %ifarch sparcv9 ppc
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/64
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/64/libstdc++.so
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/64/libstdc++.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/64/libstdc++fs.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/64/libsupc++.a
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/64
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/64/libstdc++.so
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/64/libstdc++.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/64/libstdc++fs.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/64/libsupc++.a
 %endif
 %ifarch %{multilib_64_archs}
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/32
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/32/libstdc++.so
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/32/libstdc++.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/32/libstdc++fs.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/32/libsupc++.a
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/32
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/32/libstdc++.so
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/32/libstdc++.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/32/libstdc++fs.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/32/libsupc++.a
 %endif
 %ifarch sparcv9 ppc %{multilib_64_archs}
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libstdc++.so
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libstdc++.so
 %endif
 %ifarch sparcv9 sparc64 ppc ppc64 ppc64p7
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libstdc++.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libstdc++fs.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libsupc++.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libstdc++.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libstdc++fs.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libsupc++.a
 %endif
 %doc rpm.doc/changelogs/gcc/cp/ChangeLog*
 
@@ -2598,49 +2598,49 @@ fi
 %dir %{_datadir}/gdb/auto-load/%{_prefix}/%{_lib}/
 %{_datadir}/gdb/auto-load/%{_prefix}/%{_lib}/libstdc*gdb.py*
 %{_datadir}/gdb/auto-load/%{_prefix}/%{_lib}/__pycache__
-%dir %{_prefix}/share/gcc-%{gcc_major}
-%dir %{_prefix}/share/gcc-%{gcc_major}/python
-%{_prefix}/share/gcc-%{gcc_major}/python/libstdcxx
+%dir %{_prefix}/share/gcc-%{gcc_major}.%{gcc_release}
+%dir %{_prefix}/share/gcc-%{gcc_major}.%{gcc_release}/python
+%{_prefix}/share/gcc-%{gcc_major}.%{gcc_release}/python/libstdcxx
 
 %files -n libstdc++-devel
 %dir %{_prefix}/include/c++
-%{_prefix}/include/c++/%{gcc_major}
+%{_prefix}/include/c++/%{gcc_major}.%{gcc_release}
 %dir %{_prefix}/lib/gcc
 %dir %{_prefix}/lib/gcc/%{gcc_target_platform}
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}
 %ifnarch sparcv9 ppc %{multilib_64_archs}
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libstdc++.so
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libstdc++.so
 %endif
 %ifarch sparcv9 ppc
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib32
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib32/libstdc++fs.a
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib32
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib32/libstdc++fs.a
 %endif
 %ifarch sparc64 ppc64 ppc64p7
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib64
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib64/libstdc++fs.a
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib64
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib64/libstdc++fs.a
 %endif
 %ifnarch sparcv9 sparc64 ppc ppc64 ppc64p7
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libstdc++fs.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libstdc++fs.a
 %endif
 %doc rpm.doc/changelogs/libstdc++-v3/ChangeLog* libstdc++-v3/README*
 
 %files -n libstdc++-static
 %dir %{_prefix}/lib/gcc
 %dir %{_prefix}/lib/gcc/%{gcc_target_platform}
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}
 %ifarch sparcv9 ppc
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib32
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib32/libstdc++.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib32/libsupc++.a
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib32
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib32/libstdc++.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib32/libsupc++.a
 %endif
 %ifarch sparc64 ppc64 ppc64p7
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib64
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib64/libstdc++.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib64/libsupc++.a
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib64
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib64/libstdc++.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib64/libsupc++.a
 %endif
 %ifnarch sparcv9 sparc64 ppc ppc64 ppc64p7
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libstdc++.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libsupc++.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libstdc++.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libsupc++.a
 %endif
 
 %if %{build_libstdcxx_docs}
@@ -2652,24 +2652,24 @@ fi
 %files objc
 %dir %{_prefix}/lib/gcc
 %dir %{_prefix}/lib/gcc/%{gcc_target_platform}
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}
 %dir %{_prefix}/libexec/gcc
 %dir %{_prefix}/libexec/gcc/%{gcc_target_platform}
-%dir %{_prefix}/libexec/gcc/%{gcc_target_platform}/%{gcc_major}
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/objc
-%{_prefix}/libexec/gcc/%{gcc_target_platform}/%{gcc_major}/cc1obj
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libobjc.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libobjc.so
+%dir %{_prefix}/libexec/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/objc
+%{_prefix}/libexec/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/cc1obj
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libobjc.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libobjc.so
 %ifarch sparcv9 ppc
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/64
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/64/libobjc.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/64/libobjc.so
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/64
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/64/libobjc.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/64/libobjc.so
 %endif
 %ifarch %{multilib_64_archs}
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/32
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/32/libobjc.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/32/libobjc.so
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/32
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/32/libobjc.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/32/libobjc.so
 %endif
 %doc rpm.doc/objc/*
 %doc libobjc/THREADS* rpm.doc/changelogs/libobjc/ChangeLog*
@@ -2677,8 +2677,8 @@ fi
 %files objc++
 %dir %{_prefix}/libexec/gcc
 %dir %{_prefix}/libexec/gcc/%{gcc_target_platform}
-%dir %{_prefix}/libexec/gcc/%{gcc_target_platform}/%{gcc_major}
-%{_prefix}/libexec/gcc/%{gcc_target_platform}/%{gcc_major}/cc1objplus
+%dir %{_prefix}/libexec/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}
+%{_prefix}/libexec/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/cc1objplus
 
 %files -n libobjc
 %{_prefix}/%{_lib}/libobjc.so.4*
@@ -2690,63 +2690,63 @@ fi
 %{_infodir}/gfortran*
 %dir %{_prefix}/lib/gcc
 %dir %{_prefix}/lib/gcc/%{gcc_target_platform}
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}
 %dir %{_prefix}/libexec/gcc
 %dir %{_prefix}/libexec/gcc/%{gcc_target_platform}
-%dir %{_prefix}/libexec/gcc/%{gcc_target_platform}/%{gcc_major}
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/finclude
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/finclude/omp_lib.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/finclude/omp_lib.f90
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/finclude/omp_lib.mod
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/finclude/omp_lib_kinds.mod
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/finclude/openacc.f90
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/finclude/openacc.mod
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/finclude/openacc_kinds.mod
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/finclude/openacc_lib.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/finclude/ieee_arithmetic.mod
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/finclude/ieee_exceptions.mod
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/finclude/ieee_features.mod
-%{_prefix}/libexec/gcc/%{gcc_target_platform}/%{gcc_major}/f951
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libgfortran.spec
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libcaf_single.a
+%dir %{_prefix}/libexec/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/finclude
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/finclude/omp_lib.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/finclude/omp_lib.f90
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/finclude/omp_lib.mod
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/finclude/omp_lib_kinds.mod
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/finclude/openacc.f90
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/finclude/openacc.mod
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/finclude/openacc_kinds.mod
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/finclude/openacc_lib.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/finclude/ieee_arithmetic.mod
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/finclude/ieee_exceptions.mod
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/finclude/ieee_features.mod
+%{_prefix}/libexec/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/f951
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libgfortran.spec
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libcaf_single.a
 %ifarch sparcv9 sparc64 ppc ppc64 ppc64p7
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libgfortran.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libgfortran.a
 %endif
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libgfortran.so
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libgfortran.so
 %ifarch sparcv9 ppc
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/64
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/64/libcaf_single.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/64/libgfortran.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/64/libgfortran.so
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/64/finclude
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/64
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/64/libcaf_single.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/64/libgfortran.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/64/libgfortran.so
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/64/finclude
 %endif
 %ifarch %{multilib_64_archs}
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/32
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/32/libcaf_single.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/32/libgfortran.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/32/libgfortran.so
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/32/finclude
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/32
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/32/libcaf_single.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/32/libgfortran.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/32/libgfortran.so
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/32/finclude
 %endif
 %dir %{_fmoddir}
 %doc rpm.doc/gfortran/*
 
 %files -n libgfortran
-%{_prefix}/%{_lib}/libgfortran.so.4*
+%{_prefix}/%{_lib}/libgfortran.so.3*
 
 %files -n libgfortran-static
 %dir %{_prefix}/lib/gcc
 %dir %{_prefix}/lib/gcc/%{gcc_target_platform}
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}
 %ifarch sparcv9 ppc
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib32
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib32/libgfortran.a
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib32
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib32/libgfortran.a
 %endif
 %ifarch sparc64 ppc64 ppc64p7
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib64
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib64/libgfortran.a
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib64
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib64/libgfortran.a
 %endif
 %ifnarch sparcv9 sparc64 ppc ppc64 ppc64p7
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libgfortran.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libgfortran.a
 %endif
 
 %if %{build_ada}
@@ -2756,25 +2756,25 @@ fi
 %{_infodir}/gnat*
 %dir %{_prefix}/lib/gcc
 %dir %{_prefix}/lib/gcc/%{gcc_target_platform}
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}
 %dir %{_prefix}/libexec/gcc
 %dir %{_prefix}/libexec/gcc/%{gcc_target_platform}
-%dir %{_prefix}/libexec/gcc/%{gcc_target_platform}/%{gcc_major}
+%dir %{_prefix}/libexec/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}
 %ifarch sparcv9 ppc
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/64
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/64/adainclude
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/64/adalib
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/64
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/64/adainclude
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/64/adalib
 %endif
 %ifarch %{multilib_64_archs}
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/32
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/32/adainclude
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/32/adalib
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/32
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/32/adainclude
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/32/adalib
 %endif
 %ifarch sparcv9 sparc64 ppc ppc64 ppc64p7
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/adainclude
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/adalib
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/adainclude
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/adalib
 %endif
-%{_prefix}/libexec/gcc/%{gcc_target_platform}/%{gcc_major}/gnat1
+%{_prefix}/libexec/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/gnat1
 %doc rpm.doc/changelogs/gcc/ada/ChangeLog*
 
 %files -n libgnat
@@ -2784,48 +2784,48 @@ fi
 %files -n libgnat-devel
 %dir %{_prefix}/lib/gcc
 %dir %{_prefix}/lib/gcc/%{gcc_target_platform}
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}
 %ifarch sparcv9 ppc
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib32
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib32/adainclude
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib32/adalib
-%exclude %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib32/adalib/libgnat.a
-%exclude %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib32/adalib/libgnarl.a
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib32
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib32/adainclude
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib32/adalib
+%exclude %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib32/adalib/libgnat.a
+%exclude %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib32/adalib/libgnarl.a
 %endif
 %ifarch sparc64 ppc64 ppc64p7
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib64
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib64/adainclude
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib64/adalib
-%exclude %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib64/adalib/libgnat.a
-%exclude %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib64/adalib/libgnarl.a
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib64
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib64/adainclude
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib64/adalib
+%exclude %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib64/adalib/libgnat.a
+%exclude %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib64/adalib/libgnarl.a
 %endif
 %ifnarch sparcv9 sparc64 ppc ppc64 ppc64p7
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/adainclude
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/adalib
-%exclude %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/adalib/libgnat.a
-%exclude %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/adalib/libgnarl.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/adainclude
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/adalib
+%exclude %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/adalib/libgnat.a
+%exclude %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/adalib/libgnarl.a
 %endif
 
 %files -n libgnat-static
 %dir %{_prefix}/lib/gcc
 %dir %{_prefix}/lib/gcc/%{gcc_target_platform}
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}
 %ifarch sparcv9 ppc
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib32
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib32/adalib
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib32/adalib/libgnat.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib32/adalib/libgnarl.a
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib32
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib32/adalib
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib32/adalib/libgnat.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib32/adalib/libgnarl.a
 %endif
 %ifarch sparc64 ppc64 ppc64p7
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib64
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib64/adalib
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib64/adalib/libgnat.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib64/adalib/libgnarl.a
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib64
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib64/adalib
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib64/adalib/libgnat.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib64/adalib/libgnarl.a
 %endif
 %ifnarch sparcv9 sparc64 ppc ppc64 ppc64p7
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/adalib
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/adalib/libgnat.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/adalib/libgnarl.a
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/adalib
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/adalib/libgnat.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/adalib/libgnarl.a
 %endif
 %endif
 
@@ -2844,29 +2844,29 @@ fi
 %files -n libquadmath-devel
 %dir %{_prefix}/lib/gcc
 %dir %{_prefix}/lib/gcc/%{gcc_target_platform}
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/quadmath.h
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/quadmath_weak.h
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/quadmath.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/quadmath_weak.h
 %ifnarch sparcv9 sparc64 ppc ppc64 ppc64p7
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libquadmath.so
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libquadmath.so
 %endif
 %doc rpm.doc/libquadmath/ChangeLog*
 
 %files -n libquadmath-static
 %dir %{_prefix}/lib/gcc
 %dir %{_prefix}/lib/gcc/%{gcc_target_platform}
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}
 %ifarch sparcv9 ppc
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib32
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib32/libquadmath.a
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib32
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib32/libquadmath.a
 %endif
 %ifarch sparc64 ppc64 ppc64p7
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib64
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib64/libquadmath.a
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib64
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib64/libquadmath.a
 %endif
 %ifnarch sparcv9 sparc64 ppc ppc64 ppc64p7
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libquadmath.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libquadmath.a
 %endif
 %endif
 
@@ -2878,29 +2878,29 @@ fi
 %files -n libitm-devel
 %dir %{_prefix}/lib/gcc
 %dir %{_prefix}/lib/gcc/%{gcc_target_platform}
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include
-#%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/itm.h
-#%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/include/itm_weak.h
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include
+#%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/itm.h
+#%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/include/itm_weak.h
 %ifnarch sparcv9 sparc64 ppc ppc64 ppc64p7
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libitm.so
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libitm.so
 %endif
 %doc rpm.doc/libitm/ChangeLog*
 
 %files -n libitm-static
 %dir %{_prefix}/lib/gcc
 %dir %{_prefix}/lib/gcc/%{gcc_target_platform}
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}
 %ifarch sparcv9 ppc
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib32
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib32/libitm.a
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib32
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib32/libitm.a
 %endif
 %ifarch sparc64 ppc64 ppc64p7
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib64
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib64/libitm.a
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib64
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib64/libitm.a
 %endif
 %ifnarch sparcv9 sparc64 ppc ppc64 ppc64p7
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libitm.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libitm.a
 %endif
 %endif
 
@@ -2911,39 +2911,39 @@ fi
 %files -n libatomic-static
 %dir %{_prefix}/lib/gcc
 %dir %{_prefix}/lib/gcc/%{gcc_target_platform}
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}
 %ifarch sparcv9 ppc
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib32
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib32/libatomic.a
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib32
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib32/libatomic.a
 %endif
 %ifarch sparc64 ppc64 ppc64p7
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib64
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib64/libatomic.a
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib64
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib64/libatomic.a
 %endif
 %ifnarch sparcv9 sparc64 ppc ppc64 ppc64p7
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libatomic.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libatomic.a
 %endif
 %doc rpm.doc/changelogs/libatomic/ChangeLog*
 %endif
 
 %if %{build_libasan}
 %files -n libasan
-%{_prefix}/%{_lib}/libasan.so.4*
+%{_prefix}/%{_lib}/libasan.so.2*
 
 %files -n libasan-static
 %dir %{_prefix}/lib/gcc
 %dir %{_prefix}/lib/gcc/%{gcc_target_platform}
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}
 %ifarch sparcv9 ppc
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib32
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib32/libasan.a
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib32
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib32/libasan.a
 %endif
 %ifarch sparc64 ppc64 ppc64p7
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib64
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib64/libasan.a
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib64
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib64/libasan.a
 %endif
 %ifnarch sparcv9 sparc64 ppc ppc64 ppc64p7
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libasan.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libasan.a
 %endif
 %doc rpm.doc/changelogs/libsanitizer/ChangeLog*
 %{!?_licensedir:%global license %%doc}
@@ -2957,17 +2957,17 @@ fi
 %files -n libubsan-static
 %dir %{_prefix}/lib/gcc
 %dir %{_prefix}/lib/gcc/%{gcc_target_platform}
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}
 %ifarch sparcv9 ppc
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib32
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib32/libubsan.a
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib32
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib32/libubsan.a
 %endif
 %ifarch sparc64 ppc64 ppc64p7
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib64
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib64/libubsan.a
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib64
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib64/libubsan.a
 %endif
 %ifnarch sparcv9 sparc64 ppc ppc64 ppc64p7
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libubsan.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libubsan.a
 %endif
 %doc rpm.doc/changelogs/libsanitizer/ChangeLog*
 %{!?_licensedir:%global license %%doc}
@@ -2976,16 +2976,16 @@ fi
 
 %if %{build_libtsan}
 %files -n libtsan
-%{_prefix}/%{_lib}/libtsan.so.0*
+%{_prefix}/%{_lib}/libtsan.so*
 
-%files -n libtsan-static
-%dir %{_prefix}/lib/gcc
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libtsan.a
-%doc rpm.doc/changelogs/libsanitizer/ChangeLog*
-%{!?_licensedir:%global license %%doc}
-%license libsanitizer/LICENSE.TXT
+#%files -n libtsan-static
+#%dir %{_prefix}/lib/gcc
+#%dir %{_prefix}/lib/gcc/%{gcc_target_platform}
+##%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}
+#%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libtsan.a
+#%doc rpm.doc/changelogs/libsanitizer/ChangeLog*
+#%{!?_licensedir:%global license %%doc}
+#%license libsanitizer/LICENSE.TXT
 %endif
 
 %if %{build_liblsan}
@@ -2995,8 +2995,8 @@ fi
 %files -n liblsan-static
 %dir %{_prefix}/lib/gcc
 %dir %{_prefix}/lib/gcc/%{gcc_target_platform}
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/liblsan.a
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/liblsan.a
 %doc rpm.doc/changelogs/libsanitizer/ChangeLog*
 %{!?_licensedir:%global license %%doc}
 %license libsanitizer/LICENSE.TXT
@@ -3009,17 +3009,17 @@ fi
 %files -n libcilkrts-static
 %dir %{_prefix}/lib/gcc
 %dir %{_prefix}/lib/gcc/%{gcc_target_platform}
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}
 %ifarch sparcv9 ppc
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib32
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib32/libcilkrts.a
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib32
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib32/libcilkrts.a
 %endif
 %ifarch sparc64 ppc64 ppc64p7
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib64
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib64/libcilkrts.a
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib64
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib64/libcilkrts.a
 %endif
 %ifnarch sparcv9 sparc64 ppc ppc64 ppc64p7
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libcilkrts.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libcilkrts.a
 %endif
 %doc rpm.doc/changelogs/libcilkrts/ChangeLog* libcilkrts/README
 %endif
@@ -3032,20 +3032,20 @@ fi
 %files -n libmpx-static
 %dir %{_prefix}/lib/gcc
 %dir %{_prefix}/lib/gcc/%{gcc_target_platform}
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}
 %ifarch sparcv9 ppc
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib32
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib32/libmpx.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib32/libmpxwrappers.a
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib32
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib32/libmpx.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib32/libmpxwrappers.a
 %endif
 %ifarch sparc64 ppc64 ppc64p7
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib64
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib64/libmpx.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib64/libmpxwrappers.a
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib64
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib64/libmpx.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib64/libmpxwrappers.a
 %endif
 %ifnarch sparcv9 sparc64 ppc ppc64 ppc64p7
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libmpx.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libmpxwrappers.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libmpx.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libmpxwrappers.a
 %endif
 %doc rpm.doc/changelogs/libmpx/ChangeLog*
 %endif
@@ -3062,44 +3062,44 @@ fi
 %{_mandir}/man1/gofmt.1*
 %dir %{_prefix}/lib/gcc
 %dir %{_prefix}/lib/gcc/%{gcc_target_platform}
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}
 %dir %{_prefix}/libexec/gcc
 %dir %{_prefix}/libexec/gcc/%{gcc_target_platform}
-%dir %{_prefix}/libexec/gcc/%{gcc_target_platform}/%{gcc_major}
-%{_prefix}/libexec/gcc/%{gcc_target_platform}/%{gcc_major}/go1
-%{_prefix}/libexec/gcc/%{gcc_target_platform}/%{gcc_major}/cgo
+%dir %{_prefix}/libexec/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}
+%{_prefix}/libexec/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/go1
+%{_prefix}/libexec/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/cgo
 %ifarch sparcv9 ppc
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/64
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/64/libgo.so
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/64/libgo.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/64/libgobegin.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/64/libgolibbegin.a
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/64
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/64/libgo.so
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/64/libgo.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/64/libgobegin.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/64/libgolibbegin.a
 %endif
 %ifarch %{multilib_64_archs}
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/32
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/32/libgo.so
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/32/libgo.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/32/libgobegin.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/32/libgolibbegin.a
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/32
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/32/libgo.so
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/32/libgo.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/32/libgobegin.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/32/libgolibbegin.a
 %endif
 %ifarch sparcv9 ppc %{multilib_64_archs}
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libgo.so
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libgo.so
 %endif
 %ifarch sparcv9 sparc64 ppc ppc64 ppc64p7
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libgo.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libgobegin.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libgolibbegin.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libgo.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libgobegin.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libgolibbegin.a
 %endif
 %doc rpm.doc/go/*
 
 %files -n libgo
-%{_prefix}/%{_lib}/libgo.so.11*
+%{_prefix}/%{_lib}/libgo.so.7*
 %doc rpm.doc/libgo/*
 
 %files -n libgo-devel
 %dir %{_prefix}/lib/gcc
 %dir %{_prefix}/lib/gcc/%{gcc_target_platform}
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}
 %dir %{_prefix}/%{_lib}/go
 %dir %{_prefix}/%{_lib}/go/%{gcc_major}
 %{_prefix}/%{_lib}/go/%{gcc_major}/%{gcc_target_platform}
@@ -3111,35 +3111,35 @@ fi
 %endif
 %endif
 %ifarch sparcv9 ppc
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib32
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib32/libgobegin.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib32/libgolibbegin.a
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib32
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib32/libgobegin.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib32/libgolibbegin.a
 %endif
 %ifarch sparc64 ppc64 ppc64p7
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib64
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib64/libgobegin.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib64/libgolibbegin.a
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib64
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib64/libgobegin.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib64/libgolibbegin.a
 %endif
 %ifnarch sparcv9 sparc64 ppc ppc64 ppc64p7
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libgobegin.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libgolibbegin.a
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libgo.so
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libgobegin.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libgolibbegin.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libgo.so
 %endif
 
 %files -n libgo-static
 %dir %{_prefix}/lib/gcc
 %dir %{_prefix}/lib/gcc/%{gcc_target_platform}
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}
 %ifarch sparcv9 ppc
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib32
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib32/libgo.a
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib32
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib32/libgo.a
 %endif
 %ifarch sparc64 ppc64 ppc64p7
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib64
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/lib64/libgo.a
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib64
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/lib64/libgo.a
 %endif
 %ifnarch sparcv9 sparc64 ppc ppc64 ppc64p7
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/libgo.a
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/libgo.a
 %endif
 %endif
 
@@ -3157,23 +3157,23 @@ fi
 %files plugin-devel
 %dir %{_prefix}/lib/gcc
 %dir %{_prefix}/lib/gcc/%{gcc_target_platform}
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/plugin
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/plugin/gtype.state
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/plugin/include
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/plugin
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/plugin/gtype.state
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/plugin/include
 %dir %{_prefix}/libexec/gcc
 %dir %{_prefix}/libexec/gcc/%{gcc_target_platform}
-%dir %{_prefix}/libexec/gcc/%{gcc_target_platform}/%{gcc_major}
-%{_prefix}/libexec/gcc/%{gcc_target_platform}/%{gcc_major}/plugin
+%dir %{_prefix}/libexec/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}
+%{_prefix}/libexec/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/plugin
 
 %files gdb-plugin
 %{_prefix}/%{_lib}/libcc1.so*
 %dir %{_prefix}/lib/gcc
 %dir %{_prefix}/lib/gcc/%{gcc_target_platform}
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/plugin
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/plugin/libcc1plugin.so*
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/plugin/libcp1plugin.so*
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/plugin
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/plugin/libcc1plugin.so*
+#%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/plugin/libcp1plugin.so*
 %doc rpm.doc/changelogs/libcc1/ChangeLog*
 
 %if %{build_offload_nvptx}
@@ -3182,15 +3182,15 @@ fi
 %{_prefix}/bin/%{gcc_target_platform}-accel-nvptx-none-gcc
 %dir %{_prefix}/lib/gcc
 %dir %{_prefix}/lib/gcc/%{gcc_target_platform}
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}
-%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/accel
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}
+%dir %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/accel
 %dir %{_prefix}/libexec/gcc
 %dir %{_prefix}/libexec/gcc/%{gcc_target_platform}
-%dir %{_prefix}/libexec/gcc/%{gcc_target_platform}/%{gcc_major}
-%dir %{_prefix}/libexec/gcc/%{gcc_target_platform}/%{gcc_major}/accel
+%dir %{_prefix}/libexec/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}
+%dir %{_prefix}/libexec/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/accel
 %{_prefix}/lib/gcc/nvptx-none
-%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}/accel/nvptx-none
-%{_prefix}/libexec/gcc/%{gcc_target_platform}/%{gcc_major}/accel/nvptx-none
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/accel/nvptx-none
+%{_prefix}/libexec/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}/accel/nvptx-none
 %dir %{_prefix}/nvptx-none
 %{_prefix}/nvptx-none/bin
 %{_prefix}/nvptx-none/include
