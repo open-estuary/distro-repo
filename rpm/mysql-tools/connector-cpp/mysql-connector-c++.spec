@@ -88,7 +88,7 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root,-)
 %doc ANNOUNCEMEN* COPYING README CHANGES Licenses_for_Third-Party_Components.txt
-%{_libdir}/libmysqlcppconn.so.6*
+%{_libdir}/libmysqlcppconn.so.7*
 %exclude %{_libdir}/libmysqlcppconn-static.a
 %exclude %{_prefix}/ANNOUNCEMENT
 %exclude %{_prefix}/COPYING
