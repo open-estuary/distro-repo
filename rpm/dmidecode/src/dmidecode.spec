@@ -16,7 +16,7 @@
 #
 
 Name:           dmidecode
-Version:        3.0
+Version:   3.0
 Release:        0
 Summary:        DMI table decoder
 License:        GPL-2.0+

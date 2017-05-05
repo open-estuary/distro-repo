@@ -4,7 +4,7 @@ sshcmd()
 {
 	myssh_cmd="$1"
 	sleeptime=0
-	sh sshcmd.sh -c "$myssh_cmd" -m "$IP" -u "$loginuser" -p "$loginpassword"
+	sh ${CUR_DIR}/sshcmd.sh -c "$myssh_cmd" -m "$IP" -u "$loginuser" -p "$loginpassword"
 	if [ $? -ne 0 ]; then
                 while true
                 do
@@ -18,7 +18,7 @@ sshcmd()
                         sleep 60
                         ((sleeptime = sleeptime + 60))
                 done
-                sh sshcmd.sh -c "$myssh_cmd" -m "$IP" -u "$loginuser" -p "$loginpassword"
+                sh ${CUR_DIR}/sshcmd.sh -c "$myssh_cmd" -m "$IP" -u "$loginuser" -p "$loginpassword"
                 if [ $? -ne 0 ]; then
                 	echo " Failed in sshscp.sh, maybe there is no enough space on $IP"
                         exit 1
@@ -37,18 +37,18 @@ sshscp()
 	scpcmd=
 	if [ "$isdir" = "is" ]; then
 		if [ $tofrom = "to" ]; then
-			scpcmd="sh sshscp.sh -s $MYSOURCE -d $loginuser@$IP:$MYDESTDIR -p $loginpassword -r "
+			scpcmd="sh ${CUR_DIR}/sshscp.sh -s $MYSOURCE -d $loginuser@$IP:$MYDESTDIR -p $loginpassword -r "
 		elif [ $tofrom = "from" ]; then
-			scpcmd="sh sshscp.sh -s $loginuser@$IP:$MYSOURCE -d $MYDESTDIR -p $loginpassword -r "
+			scpcmd="sh ${CUR_DIR}/sshscp.sh -s $loginuser@$IP:$MYSOURCE -d $MYDESTDIR -p $loginpassword -r "
 		else
 			echo "wrong tofrom parameter"
 			exit 1
 		fi
 	elif [ "$isdir" = "no" ]; then
 		if [ $tofrom = "to" ]; then
-                        scpcmd="sh sshscp.sh -s $MYSOURCE -d $loginuser@$IP:$MYDESTDIR -p $loginpassword  "
+                        scpcmd="sh ${CUR_DIR}/sshscp.sh -s $MYSOURCE -d $loginuser@$IP:$MYDESTDIR -p $loginpassword  "
                 elif [ $tofrom = "from" ]; then
-                        scpcmd="sh sshscp.sh -s $loginuser@$IP:$MYSOURCE -d $MYDESTDIR -p $loginpassword  "
+                        scpcmd="sh ${CUR_DIR}/sshscp.sh -s $loginuser@$IP:$MYSOURCE -d $MYDESTDIR -p $loginpassword  "
                 else
                         echo "wrong tofrom parameter"
                         exit 1
