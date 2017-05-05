@@ -1,0 +1,16 @@
+diff -rup old/libevent/epoll_sub.c new/libevent/epoll_sub.c
+--- old/libevent/epoll_sub.c	2017-03-23 21:21:17.000000000 +0800
++++ new/libevent/epoll_sub.c	2017-04-26 13:43:26.466423116 +0800
+@@ -32,6 +32,12 @@
+ #include <sys/epoll.h>
+ #include <unistd.h>
+ 
++
++//Define __NR_XXX macros for aarch64 platform
++#define __NR_epoll_create 250
++#define __NR_epoll_ctrl 251
++#define __NR_epoll_wait 252
++
+ int
+ epoll_create(int size)
+ {
