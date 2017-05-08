@@ -7,8 +7,6 @@ Group:          Development/System
 Source: 	http://brick.kernel.dk/snaps/blktrace-%{version}.tar.gz
 URL:            http://brick.kernel.dk/snaps
 
-# available in https://github.com/fusesource/leveldbjni/blob/leveldb.patch
-
 Requires: python
 BuildRequires: libaio-devel python
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
