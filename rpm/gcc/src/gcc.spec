@@ -1,6 +1,6 @@
 %global DATE 20160603
 %global SVNREV 246806
-%global gcc_version 5.4.0
+%global gcc_version 5.4.1
 %global gcc_major 5
 %global nvptx_tools_gitrev c28050f60193b3b95a18866a96f03334e874e78f
 %global nvptx_newlib_gitrev aadc8eb0ec43b7cd0dd2dfb484bae63c8b05ef24
@@ -94,7 +94,7 @@
 %endif
 Summary: Various compilers (C, C++, Objective-C, Java, ...)
 Name: gcc
-Version:   5.4.0
+Version:   5.4.1
 Release: %{gcc_release}%{?dist}
 # libgcc, libgfortran, libgomp, libstdc++ and crtstuff have
 # GCC Runtime Exception.
@@ -3200,5 +3200,5 @@ fi
 %endif
 
 %changelog
-* Sat Apr 22 2017 Jakub Jelinek <sjtuhjh@hotmail.com> 5.4.0
+* Sat Apr 22 2017 Jakub Jelinek <sjtuhjh@hotmail.com> 5.4.1
 - initial package for Open-Estuary

@@ -2227,6 +2227,9 @@ rm -f *.filelist*
 %endif
 
 %changelog
+* Fri May 5 2017 Huang Jinhua 2.25.90
+- Estuary ARM64 initial package
+
 * Mon May 01 2017 Carlos O'Donell <carlos@systemhalted.org> - 2.25.90-2
 - Auto-sync with upstream master,
   commit 25e39b4229fb365a605dc4c8f5d6426a77bc08a6.
