@@ -1,0 +1,54 @@
+From 9b4bcd1631cdd8dd4fd9421c3a2fd662fb9f3478 Mon Sep 17 00:00:00 2001
+From: Johannes Thumshirn <jthumshirn@suse.de>
+Date: Wed, 20 May 2015 15:16:36 +0200
+Subject: lldpad: Only set Tx adminStatus if interface is not managed
+
+Only set the adminStatus of an interface to Tx if its DCB status
+is not managed by the LLDD itself.
+
+Reference: bsc#929171
+
+Signed-off-by: Johannes Thumshirn <jthumshirn@suse.de>
+---
+ lldp_8021qaz.c | 4 ++++
+ lldp_dcbx.c    | 2 +-
+ 2 files changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/lldp_8021qaz.c b/lldp_8021qaz.c
+index 094676d..a26422e 100644
+--- a/lldp_8021qaz.c
++++ b/lldp_8021qaz.c
+@@ -1973,13 +1973,17 @@ int ieee8021qaz_rchange(struct port *port, struct lldp_agent *agent,
+ 			 * if current configuration is RXOnly and
+ 			 * not persistant (i.e. default)
+ 			 */
++			__u8 dcbx = 0;
+ 			int adminstatus;
++
++			(void) get_dcbx_hw(qaz_tlvs->ifname, &dcbx);
+ 			if (qaz_tlvs->ieee8021qazdu &&
+ 				get_config_setting(qaz_tlvs->ifname,
+ 						   agent->type,
+ 						   ARG_ADMINSTATUS,
+ 						   &adminstatus,
+ 						   CONFIG_TYPE_INT) &&
++				!(dcbx & DCB_CAP_DCBX_LLD_MANAGED) &&
+ 				get_lldp_agent_admin(qaz_tlvs->ifname,
+ 						     agent->type) ==
+ 						    enabledRxOnly) {
+diff --git a/lldp_dcbx.c b/lldp_dcbx.c
+index 9999e33..026ed83 100644
+--- a/lldp_dcbx.c
++++ b/lldp_dcbx.c
+@@ -354,7 +354,7 @@ struct packed_tlv* dcbx_gettlv(struct port *port, struct lldp_agent *agent)
+ 	if (agent->type != NEAREST_BRIDGE)
+ 		return NULL;
+ 
+-        if (!check_port_dcb_mode(port->ifname))
++	if (!check_port_dcb_mode(port->ifname))
+ 		return NULL;
+ 
+ 	tlvs = dcbx_data(port->ifname);
+-- 
+1.8.4.5
+

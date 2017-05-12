@@ -97,6 +97,7 @@ do
 done
 
 if [ "x$src" = "x" -o "x$des" = "x" ]; then
+	echo "$src  $des"
 	usage
 	exit 1
 fi
