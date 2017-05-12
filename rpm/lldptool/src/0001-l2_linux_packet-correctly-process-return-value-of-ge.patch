@@ -1,0 +1,35 @@
+From 795b363c15d145e8cad21e8ba11d817efc329bf7 Mon Sep 17 00:00:00 2001
+From: Johannes Thumshirn <jthumshirn@suse.de>
+Date: Tue, 19 May 2015 15:34:46 +0200
+Subject: l2_linux_packet: correctly process return value of get_perm_hwaddr
+
+On success get_perm_hwaddr() returns the number of bytes read from the
+netlink socket.
+
+However, l2_packet_init() only checks for 0 as a successful return value.
+
+Adopt get_perm_hwaddr() to return 0 on success.
+
+Reference: bsc#929171
+
+Signed-off-by: Johannes Thumshirn <jthumshirn@suse.de>
+---
+ lldp_rtnl.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/lldp_rtnl.c b/lldp_rtnl.c
+index 33b4d19..8d4f0cc 100644
+--- a/lldp_rtnl.c
++++ b/lldp_rtnl.c
+@@ -322,6 +322,8 @@ int get_perm_hwaddr(const char *ifname, u8 *buf_perm, u8 *buf_san)
+ 
+ 	memcpy(buf_perm, RTA_DATA(rta), ETH_ALEN);
+ 	memcpy(buf_san, RTA_DATA(rta) + ETH_ALEN, ETH_ALEN);
++
++	rc = 0;
+ out:
+ 	close(s);
+ out_nosock:
+-- 
+1.8.4.5
+

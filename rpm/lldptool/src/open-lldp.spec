@@ -21,7 +21,7 @@ Name:           open-lldp
 Summary:        Link Layer Discovery Protocol (LLDP) Agent
 License:        GPL-2.0
 Group:          System/Daemons
-Version:        0.9.46
+Version:   1.0.1
 Release:        0
 BuildRequires:  bison
 BuildRequires:  flex
@@ -33,10 +33,10 @@ BuildRequires:  readline-devel
 Url:            http://open-lldp.org/
 Source:         %{name}-%{version}.tar.gz
 #Source:        http://ftp-osl.osuosl.org/pub/%{name}/%{name}-%{version}.tar.gz
-#Patch0:         %{name}-git-update.patch.bz2
-#Patch1:         0001-l2_linux_packet-correctly-process-return-value-of-ge.patch
-#Patch2:         0002-lldpad-Only-set-Tx-adminStatus-if-interface-is-not-m.patch
-#Patch3:         open-lldp-gcc5.patch
+Patch0:         %{name}-git-update.patch.bz2
+Patch1:         0001-l2_linux_packet-correctly-process-return-value-of-ge.patch
+Patch2:         0002-lldpad-Only-set-Tx-adminStatus-if-interface-is-not-m.patch
+Patch3:         open-lldp-gcc5.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Provides:       dcbd = %{version}
 Obsoletes:      dcbd < %{version}
@@ -74,10 +74,10 @@ with Data Center Bridging (DCB) for Intel(R) Network Connections
 
 %prep
 %setup
-#%patch0 -p1
-#%patch1 -p1
-#%patch2 -p1
-#%patch3 -p1
+%patch0 -p1
+%patch1 -p1
+%patch2 -p1
+%patch3 -p1
 
 %build
 autoreconf -vi
@@ -133,4 +133,3 @@ ln -s service %{buildroot}%{_sbindir}/rclldpad
 %{_libdir}/*.so
 
 %changelog
-

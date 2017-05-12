@@ -1,10 +1,10 @@
 Summary: Utilities for performing block layer IO tracing in the linux kernel
 Name:           blktrace
 Version:   1.0.5
-Release:        1%{?dist}
+Release:        6%{?dist}
 License:        GPLv2+
 Group:          Development/System
-Source: 	http://brick.kernel.dk/snaps/blktrace-%{version}.tar.gz
+Source: 	http://brick.kernel.dk/snaps/blktrace-%{version}.tar.bz2
 URL:            http://brick.kernel.dk/snaps
 
 Requires: python
@@ -12,10 +12,13 @@ BuildRequires: libaio-devel python
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 %description
-blktrace is a block layer IO tracing mechanism which provides detailed information about request queue operations to user space. 
-This package includes both blktrace, a utility which gathers event traces from the kernel;and blkparse, a utility which formats trace data collected by blktrace.
+blktrace is a block layer IO tracing mechanism which provides detailed 
+information about request queue operations to user space. This package 
+includes both blktrace, a utility which gathers event traces from the kernel;
+and blkparse, a utility which formats trace data collected by blktrace.
 
-You should install the blktrace package if you need to gather detailed information about IO patterns.
+You should install the blktrace package if you need to gather detailed 
+information about IO patterns.
 
 %prep
 %setup -q

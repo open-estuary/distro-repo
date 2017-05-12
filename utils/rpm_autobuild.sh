@@ -20,7 +20,12 @@ fi
 
 sshscp $SRC_DIR/$SPEC_FILE /home/$loginuser/rpmbuild/SPECS  no to
 
-sshscp $SRC_DIR/*tar* /home/$loginuser/rpmbuild/SOURCES no to
+srcfiles=`ls $SRC_DIR | grep -v *spec`
+echo "$srcfile"
+for srcfile in $srcfiles
+do
+	sshscp "$SRC_DIR/$srcfile" "/home/$loginuser/rpmbuild/SOURCES" no to
+done
 
 sshscp $CUR_DIR/rpm_autosign.sh /home/$loginuser/ no to
 
