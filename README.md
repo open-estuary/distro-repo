@@ -44,8 +44,8 @@ We also provider a method to build all rpm&deb, all you need to do is running "s
 Finally, run "sh util/rpmdeb_uploadall" to upload rpms to repository and install with "yum install xxxx(package-name)" .  
 
 ## <a name="4">Packages Open-Estuary maintains</a>  
-Rpm packages which Open-Estuary support is listed in rpm.list.  
-Deb packages which Open-Estuary support is listed in deb.list.
+Rpm packages which Open-Estuary support is listed in https://github.com/y00369814/distro-repo/blob/master/rpm.list.  
+Deb packages which Open-Estuary support is listed in https://github.com/y00369814/distro-repo/blob/master/deb.list.
 
 
 
