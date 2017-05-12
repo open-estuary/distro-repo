@@ -22,30 +22,43 @@ You will find estuary-repo in standard output, if all is done.
 Now you can use "yum install xxxxx" to install packages Open-Estuary supports.  
 
 #### Ubuntu/Debian
-Need to add later.
+1, Defaultly, estuary repository is listed in /etc/apt/source.list. Please to make sure.  
+If not, just download source.list from distro/util/source.list, then move it to /etc/apt/.  
+Also, you can make a new source.list in /etc/apt/ as distro/util/source.list.  
+
+2, run command "apt-get update"  
+    
+Now you can use "apt-get install xxxxx" to install packages Open-Estuary supports. 
 
 ## <a name="3">How to build packages</a>  
 Please pay attention to this section, If you want to build  rpm/deb package yourself.  
 It is strongly suggested to build on Estuary buildserver.  
 
 #### RPM  
-All packages for building rpm is in distro-repo/rpm/, likely gcc, libtool, mysql and so on. And there is rpm_build.sh script in these package directory commonly.
+All packages for building rpm is in distro-repo/rpm/, as gcc, libtool, mysql and so on. And there is rpm_build.sh script in these packages directory commonly.
 Just run "sh rpm/xxxx(package_name)/rpm_build.sh" when you are in distro-repo directory, the corresponding rpm will be building in build-worker.
 
 Maybe you want to build all packages, Just run "sh util/rpm_buildall.sh".Then all packages in rpm directory will be building.  
 
-Last you need to upload all rpm to repository.   
+Last you need to upload all rpms which have been builded to repository.   
 run "sh util/rpm_upload.sh", then you can install your own-building packages with "yum install xxxx(package-name)"  
 
 #### DEB
-Need to add later.
+All packages for building deb is in distro-repo/deb/, as gcc, libtool, mysql and so on. And there is deb_build.sh script in these packages directory commonly.
+Just run "sh deb/xxxx(package_name)/deb_build.sh" when you are in distro-repo directory, the corresponding deb will be building in build-worker.
 
-We also provider a method to build all rpm&deb, all you need to do is running "sh util/rpmdeb_buildall.sh"(in distro-repo directory).  
-Finally, run "sh util/rpmdeb_uploadall" to upload rpms to repository and install with "yum install xxxx(package-name)" .  
+Maybe you want to build all packages, Just run "sh util/deb_buildall.sh".Then all packages in deb directory will be building.  
+
+Last you need to upload all debs which have been builded to repository.   
+run "sh util/deb_upload.sh", then you can install your own-building packages with "apt-get install xxxx(package-name)".
+
+We also provider a method to build all rpms&debs, all you need to do is running "sh util/rpmdeb_buildall.sh"(in distro-repo directory).   
+Finally, run "sh util/rpmdeb_uploadall" to upload rpms&debs to repository and install with "yum install xxxx(package-name)" or "apt-get install xxxx(package-name)" .  
 
 ## <a name="4">Packages Open-Estuary maintains</a>  
-Rpm packages which Open-Estuary support is listed in https://github.com/y00369814/distro-repo/blob/master/rpm.list.  
-Deb packages which Open-Estuary support is listed in https://github.com/y00369814/distro-repo/blob/master/deb.list.
+Rpm packages which Open-Estuary support is listed in https://github.com/open-estuary/distro-repo/blob/master/RPM.md.  
+
+Deb packages which Open-Estuary support is listed in https://github.com/open-estuary/distro-repo/blob/master/DEB.md.
 
 
 
