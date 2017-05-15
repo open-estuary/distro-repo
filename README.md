@@ -66,9 +66,7 @@ We also provider a method to build all rpms&debs.
 3. run `yum install xxxx(package-name)` or `apt-get install xxxx(package-name)` to install packages.  
 
 ## <a name="4">Packages Open-Estuary maintains</a>  
-Rpm packages which Open-Estuary support is listed in [RPM.md](https://github.com/open-estuary/distro-repo/blob/master/RPM.md).  
-
-Deb packages which Open-Estuary support is listed in [DEB.md](https://github.com/open-estuary/distro-repo/blob/master/DEB.md).
+Rpm&Deb packages which Open-Estuary support is listed in [packages_list.md](https://github.com/open-estuary/distro-repo/blob/master/packages_list.md).  
 
 
 
