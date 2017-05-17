@@ -52,7 +52,7 @@ Patch0:         system-libs.patch
 # Required for building with system icu (and that is required by
 # system mozjs45 on some architectures).
 # https://jira.mongodb.org/browse/SERVER-21353
-Patch1:         system-icu.patch
+#Patch1:         system-icu.patch
 
 # Update bundled https://github.com/chriskohlhoff/asio/ to latest master (to support openssl 1.1.0)
 # revision: 14db6371b338339383aacaed29b0fa352259645a
@@ -173,12 +173,12 @@ the MongoDB sources.
 %prep
 %setup -q -n mongodb-src-r%{version}
 %patch0 -p1
-%patch1 -p1
+#%patch1 -p1
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
 # Boost 1.62+ is in F26
-%if 0%{?fedora} >= 26
+%if 0%{?fedora} >= 26 || 0%{?rhel} >= 7
 %patch5 -p1
 %endif
 # Patch only Fedora specific architectures
@@ -256,7 +256,6 @@ cat > build-options << EOF
  --use-system-stemmer \
  --use-system-tcmalloc \
  --use-system-yaml \
- --use-system-icu \
 %ifarch s390x ppc64
  --mmapv1=off
 %else
