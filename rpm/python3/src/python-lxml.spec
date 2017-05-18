@@ -39,9 +39,9 @@ home page < or see our bug tracker at case you want to use the current ...
 Summary:        XML processing library combining libxml2/libxslt with the ElementTree API
 BuildRequires:  python34-setuptools
 BuildRequires:  python34-devel
-Requires:       python34-cssselect
-Requires:       python34-html5lib
-Requires:       python34-beautifulsoup4
+Requires:       python3-cssselect
+Requires:       python3-html5lib
+Requires:       python3-beautifulsoup4
 #%{?python_provide:%python_provide python3-%{pypi_name}}
 
 %description -n python3-%{pypi_name}
