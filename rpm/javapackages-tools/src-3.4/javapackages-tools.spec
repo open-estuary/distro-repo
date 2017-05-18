@@ -1,3 +1,7 @@
+# Don't generate requires on jpackage-utils and java-headless for
+# provided pseudo-artifacts: com.sun:tools and sun.jdk:jconsole.
+%global __requires_exclude_from %{?__requires_exclude_from:%__requires_exclude_from|}/maven-metadata/javapackages-metadata.xml$
+
 Name:           javapackages-tools
 Version:        3.4.1
 Release:        11%{?dist}
