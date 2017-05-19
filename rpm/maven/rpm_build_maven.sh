@@ -1,5 +1,8 @@
 #!/bin/bash
 
+echo "Usually we should use maven provided by system"
+exit 0
+
 TARGET_OS="centos"
 if [ ! -z "${1}" ] ; then
     TARGET_OS=${1}
@@ -7,10 +10,10 @@ fi
 
 CUR_DIR=$(cd `dirname $0`; pwd)
 
-VERSION="3.7.2"
-RPM_SRC_FILE="python-lxml-${VERSION}-2.fc26.src.rpm"
+VERSION="3.5.0"
+RPM_SRC_FILE="maven-${VERSION}-3.fc27.src.rpm"
 
-SUB_DIR="p"
+SUB_DIR="m"
 SRC_DIR=src
 
 if [ ! -f ${CUR_DIR}/${SRC_DIR}/${RPM_SRC_FILE} ] ; then
@@ -23,7 +26,6 @@ if [ ! -f ${CUR_DIR}/${SRC_DIR}/${RPM_SRC_FILE} ] ; then
     popd > /dev/null
 fi
 
-sudo yum erase -y python-lxml
-#sed -i 's/x86_64/aarch64/g' ${CUR_DIR}/${SRC_DIR}/python-lxml.spec
+#sed -i 's/x86_64/aarch64/g' ${CUR_DIR}/${SRC_DIR}/maven.spec
 
-${CUR_DIR}/../../utils/rpm_build.sh  ${CUR_DIR}/${SRC_DIR} python-lxml.spec
+${CUR_DIR}/../../utils/rpm_build.sh  ${CUR_DIR}/${SRC_DIR} maven.spec --without=gradle
