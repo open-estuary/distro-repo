@@ -40,8 +40,6 @@ The cifsiostat command reports I/O statistics for CIFS file systems.
 
 %prep
 %setup -q
-cp %_topdir/SOURCES/colorsysstat.csh %{SOURCE10}
-cp %_topdir/SOURCES/colorsysstat.sh %{SOURCE11}
 
 %build
 %configure \
