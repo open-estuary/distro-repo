@@ -8,6 +8,10 @@ You can use the following steps to compile the kernel related packages.
 
   The ```rpmversion``` means the kernel version and the ```pkgrelease``` means the Estuary release version.
 
+  You can  git clone the source code from ```https://github.com/open-estuary/kernel.git```, then use the release tag. 
+  
+  > Remember move the ```kernel``` directory to ```kernel-rpmversion-pkgrelease```, and the make the tarball.
+
 ### 2. Prepare files for the rpmbuild
   Put the kernel source code and the files in ```distro-repo/rpm/kernel/src``` into the ```rpmbuild/BUILD``` directory.
 
