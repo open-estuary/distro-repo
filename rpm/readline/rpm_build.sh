@@ -1,4 +1,6 @@
 #!/bin/bash
+echo "Not to update it because lots of other packages also need to be updated"
+exit 0
 
 TARGET_OS="centos"
 if [ ! -z "${1}" ] ; then

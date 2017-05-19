@@ -1,4 +1,6 @@
 #!/bin/bash
+echo "Not necessary to support so far"
+exit 0
 
 NEED_BUILD=0
 TARGET_OS="centos"
