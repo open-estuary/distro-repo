@@ -1,0 +1,45 @@
+diff -rup old/pom.xml new/pom.xml
+--- old/pom.xml	2017-05-19 14:33:44.217366170 +0800
++++ new/pom.xml	2017-05-19 15:49:50.656467464 +0800
+@@ -79,7 +79,7 @@
+     <dependency>
+       <groupId>com.github.spullara.cli-parser</groupId>
+       <artifactId>cli-parser</artifactId>
+-      <version>1.1</version>
++      <version>1.1.2</version>
+     </dependency>
+ 
+     <!-- Testing -->
+@@ -103,6 +103,15 @@
+           <encoding>UTF-8</encoding>
+         </configuration>
+       </plugin>
++      <plugin>
++         <groupId>org.codehaus.mojo</groupId>
++         <artifactId>rpm-maven-plugin</artifactId>
++         <version>2.1.5</version>
++         <configuration>
++           <group>Development Tools</group>
++         </configuration>
++       </plugin>
++
+     </plugins>
+   </build>
+ 
+@@ -134,6 +143,16 @@
+         </plugins>
+       </build>
+     </profile>
++
++   <profile>
++     <id>JDK 8 Build</id>
++     <activation>
++        <jdk>[1.8,)</jdk>
++     </activation>
++     <properties>
++       <additionalparam>-Xdoclint:none</additionalparam>
++     </properties>
++   </profile>
+   </profiles>
+ 
+ </project>
