@@ -4,24 +4,25 @@ import os
 import sys
 import subprocess
 import re
-import multiprocessing
+import threading
 
-MAX_PROCESS_NUM = 64
-global_lock = multiprocessing.Lock()
+MAX_THREAD_NUM = 64
+global_lock = threading.Lock()
+global_packages_list = []
 
 RPM_AARCH64_DIR=os.path.join(os.environ['HOME'], "rpmbuild/RPMS/aarch64/")
 RPM_NOARCH_DIR=os.path.join(os.environ['HOME'], "rpmbuild/RPMS/noarch/")
 
 def save_rpm_build_result(packagename, logdir, backdir):
-   is_sucessful = False 
+   is_successful = False 
    for filename in os.listdir(RPM_AARCH64_DIR):
-       if filename.endswith('.aarch64.rpm') and filename.startwith(packagename):
+       if filename.endswith('.aarch64.rpm') and filename.startswith(packagename):
            is_successful = True
            break
 
    if not is_successful:
        for filename in os.listdir(RPM_NOARCH_DIR):
-           if filename.endswith('.noarch.rpm') and filename.startwith(packagename):
+           if filename.endswith('.noarch.rpm') and filename.startswith(packagename):
                is_successful = True
                break
 
@@ -31,36 +32,38 @@ def save_rpm_build_result(packagename, logdir, backdir):
        logfile = "failure_list"
    
    global_lock.acquire()
-   filehandle = open(logfile, 'w+')
-   filehandlw.write(packagename + '\n')
+   filehandle = open(os.path.join(logdir, logfile), 'a')
+   filehandle.write(packagename + '\n')
    global_lock.release()   
 
-   os.system("mv " + RPM_AARCH64_DIR + "/" + packagename + '* ' + backdir + "/aarch64/")
-   os.system("mv " + RPM_NOARCH_DIR + "/" + packagename + '* ' + backdir + "/noarch/")
+   try : 
+       os.system("mv " + RPM_AARCH64_DIR + "/" + packagename + '* ' + backdir + "/aarch64/")
+       os.system("mv " + RPM_NOARCH_DIR + "/" + packagename + '* ' + backdir + "/noarch/")
+   except Exception as e:
+       pass
 
 def build_sub_package(buildfile, logdir, backdir, succ_dict):
-    if not os.path.exists(logdir):
-        os.makedirs(logdir)
-
     buildfile = os.path.abspath(buildfile)
     basename = os.path.basename(buildfile)
     dirname = os.path.dirname(buildfile)
-    logfile = os.path.join(logdir, dirname.split('/')[-1])  
     packagename = dirname.split('/')[-1]
-
+    logfile = os.path.join(os.path.join(logdir, packagename[0]), packagename)
+    
+    if not os.path.exists(os.path.dirname(logfile)):
+        os.makedirs(os.path.dirname(logfile))
+    
     if succ_dict.has_key(packagename):
-        print("%s has been built successfully before")
+        print("%s has been built successfully before"%packagename)
         return 0
 
-    proc = subprocess.Popen([buildfile], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-
-    log_stdout = open(logfile+"_stdout", 'w')
-    for line in proc.stdout:
-        log_stdout.write(line)
-
     log_stderr = open(logfile+"_stderr", "w")
-    for line in proc.stderr:
-        log_stderr.write(line)
+    try :
+
+        log_stdout = open(logfile+"_stdout", 'w')
+        proc = subprocess.check_call([buildfile], stdout=log_stdout, stderr=log_stderr, shell=True)
+
+    except Exception as e:
+        print("Catch exception:%s\n"%e)
 
     save_rpm_build_result(packagename, logdir, backdir)
     return 0
@@ -75,31 +78,58 @@ def get_all_build_files(dirname):
             file_list.extend(get_all_build_files(fullname))
     return file_list
 
-def build_packages(package_dir, logdir, rpm_backdir):
-    buildfiles_list = get_all_build_files(package_dir)
 
+
+def build_packages_thread(packages_list, logdir, rpm_backdir, succ_dict):
+    while True:
+        is_empty = False
+        package_name = ""
+        global_lock.acquire()
+        if len(packages_list) <= 0 :
+            print("Finish all packages")
+            is_empty = True
+        else :
+            package_name = packages_list.pop()
+        global_lock.release()
+    
+        if is_empty:
+            break
+
+        try :
+            print("Process %s"%package_name)
+            build_sub_package(package_name, logdir, rpm_backdir, succ_dict)
+        except Exception as e:
+            print("Package:%s catch exception:%s"%(package_name, e))
+            continue
+
+    print("Current thread has finished")
+    return
+          
+def build_packages(package_dir, logdir, rpm_backdir):
+    global_packages_list = get_all_build_files(package_dir)
+    global_packages_list.reverse()
+
+    print("Total packages=%d"%len(global_packages_list))
     succ_dict = {} 
     previous_success_log = os.path.join(logdir, "successful_list")
     if os.path.exists(previous_success_log):
         for line in open(previous_success_log):
             succ_dict[line.strip()] = 0
+   
+    thread_list = []
+    for index in range(0, MAX_THREAD_NUM):
+        thread = threading.Thread(target = build_packages_thread, args = (global_packages_list, logdir, rpm_backdir, succ_dict, ))
+        thread.start()
+        thread_list.append(thread)
 
-    process_list = []
-    for package in buildfiles_list:
-        if len(process_list) >= MAX_PROCESS_NUM:
-            for process in process_list:
-                process.join()
-            process_list = []
-
-        print("Begin to build:%s"%package)
-        process = multiprocessing.Process(target = build_sub_package, args=(package, logdir, rpm_backdir, succ_dict))
-        process.start()
-        process_list.append(process)
-
-    for process in process_list:
-        process.join()
-    process_list = []
-       
+    for thread in thread_list:
+        thread.join()
+      
+    try : 
+       os.system("mv " + RPM_AARCH64_DIR + "/* " + rpm_backdir + "/aarch64/")
+       os.system("mv " + RPM_NOARCH_DIR + "/* " + rpm_backdir + "/noarch/")
+    except Exception as e:
+       pass
 
 if __name__ == "__main__":
     packagedir = "./packages"
