@@ -10,7 +10,7 @@ CUR_DIR=$(cd `dirname $0`; pwd)
 VERSION="1.1.2"
 RPM_SRC_FILE="mongo-cxx-driver-${VERSION}-5.fc26.src.rpm"
 
-SRC_DIR=src-cxx
+SRC_DIR=src-legacy
 
 if [ ! -f ${CUR_DIR}/${SRC_DIR}/${RPM_SRC_FILE} ] ; then
     if [ ! -d ${CUR_DIR}/${SRC_DIR} ] ; then
@@ -22,6 +22,8 @@ if [ ! -f ${CUR_DIR}/${SRC_DIR}/${RPM_SRC_FILE} ] ; then
     popd > /dev/null
 fi
 
+#Openssh-devel conflicts with compat-openssl10-devel
+sudo yum erase -y openssl-devel
 
 #sed -i 's/x86_64/aarch64/g' ${CUR_DIR}/${SRC_DIR}/mongo-cxx-driver.spec
 
