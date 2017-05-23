@@ -170,8 +170,6 @@ if __name__ == "__main__":
         packages_dir = sys.argv[3]
 
     ignored_dict = init_ingore_packages(ignore_filename)
-    #get_candidate_packages_name(SRC_URL, dst_namelist)
-
+    get_candidate_packages_name(SRC_URL, dst_namelist)
     generate_package_rpm_build_scripts(dst_namelist, dst_builddir, ignored_dict)
-
 
