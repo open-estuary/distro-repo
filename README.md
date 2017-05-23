@@ -12,9 +12,9 @@ Make sure which distrobution you are using, ***CentOS*** or ***Ubuntu/Debian***.
 
 #### CentOS  
 1. Defaultly, estuary.repo is in */etc/yum.repos.d/* directory. Please to make sure.  
-If not, just download estuary.repo from *distro-repo/util/estuary.repo*, then move it to */etc/yum.repos.d/*.  
-Also, you can make a new estuary.repo in */etc/yum.repos.d/* as *distro-repo/util/estuary.repo*.  
 
+If not, just download estuary.repo from *distro-repo/util/estuaryftp.repo（or estuaryhttp.repo）*, then move it to */etc/yum.repos.d/*.(estuaryftp.repo is domestic yum using ftp, and estuaryhttp.repo is foreign yum using http.)  
+ 
 2. run `yum clean all`.
 
 3. run `yum repolist`.
@@ -24,8 +24,8 @@ Now you can use `yum install xxxxx` to install packages Open-Estuary supports.
 
 #### Ubuntu/Debian
 1. Defaultly, estuary repository is listed in */etc/apt/source.list*. Please to make sure.  
+
 If not, just download source.list from *distro-repo/util/source.list*, then move it to */etc/apt/*.  
-Also, you can make a new source.list in */etc/apt/* as *distro-repo/util/source.list*.  
 
 2. run `apt-get update`.  
     
