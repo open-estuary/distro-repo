@@ -1,0 +1,102 @@
+From ebae00f18f4a5b770eaf86df3005a51e7af5903e Mon Sep 17 00:00:00 2001
+From: Mao Wenan <maowenan@huawei.com>
+Date: Thu, 8 Dec 2016 13:46:43 +0800
+Subject: [PATCH] ethtool: add one ethtool option to set relax ordering mode
+
+This patch provides one way to set/unset IXGBE NIC TX and RX
+relax ordering mode, which can be set by ethtool.
+Relax ordering is one mode of 82599 NIC, to enable this mode
+can enhance the performance for some cpu architecure.
+example:
+ethtool -s enp1s0f0 relaxorder off
+ethtool -s enp1s0f0 relaxorder on
+
+Signed-off-by: Mao Wenan <maowenan@huawei.com>
+---
+ ethtool-copy.h |  6 ++++++
+ ethtool.c      | 24 +++++++++++++++++++++++-
+ 2 files changed, 29 insertions(+), 1 deletion(-)
+
+diff --git a/ethtool-copy.h b/ethtool-copy.h
+index 3d299e3..37d93be 100644
+--- a/ethtool-copy.h
++++ b/ethtool-copy.h
+@@ -1329,6 +1329,8 @@ struct ethtool_per_queue_op {
+ #define ETHTOOL_PHY_GTUNABLE	0x0000004e /* Get PHY tunable configuration */
+ #define ETHTOOL_PHY_STUNABLE	0x0000004f /* Set PHY tunable configuration */
+ 
++#define ETHTOOL_SRELAXORDER	0x00000050 /* Set relax ordering mode, on or off*/
++
+ /* compatibility with older code */
+ #define SPARC_ETH_GSET		ETHTOOL_GSET
+ #define SPARC_ETH_SSET		ETHTOOL_SSET
+@@ -1558,6 +1560,10 @@ static __inline__ int ethtool_validate_duplex(__u8 duplex)
+ #define WAKE_MAGIC		(1 << 5)
+ #define WAKE_MAGICSECURE	(1 << 6) /* only meaningful if WAKE_MAGIC */
+ 
++/* Relax Ordering mode, on or off. */
++#define RELAXORDER_OFF		0x00
++#define RELAXORDER_ON		0x01
++
+ /* L2-L4 network traffic flow types */
+ #define	TCP_V4_FLOW	0x01	/* hash or spec (tcp_ip4_spec) */
+ #define	UDP_V4_FLOW	0x02	/* hash or spec (udp_ip4_spec) */
+diff --git a/ethtool.c b/ethtool.c
+index 7af039e..acafd71 100644
+--- a/ethtool.c
++++ b/ethtool.c
+@@ -2738,6 +2738,8 @@ static int do_sset(struct cmd_context *ctx)
+ 	int msglvl_changed = 0;
+ 	u32 msglvl_wanted = 0;
+ 	u32 msglvl_mask = 0;
++	int relaxorder_wanted = -1;
++	int relaxorder_changed = 0;
+ 	struct cmdline_info cmdline_msglvl[ARRAY_SIZE(flags_msglvl)];
+ 	int argc = ctx->argc;
+ 	char **argp = ctx->argp;
+@@ -2873,6 +2875,16 @@ static int do_sset(struct cmd_context *ctx)
+ 					ARRAY_SIZE(cmdline_msglvl));
+ 				break;
+ 			}
++		} else if (!strcmp(argp[i], "relaxorder")) {
++			relaxorder_changed = 1;
++			i += 1;
++			if (i >= argc)
++				exit_bad_args();
++			if (!strcmp(argp[i], "on"))
++				relaxorder_wanted = RELAXORDER_ON;
++			else if (!strcmp(argp[i], "off"))
++				relaxorder_wanted = RELAXORDER_OFF;
++			else	exit_bad_args();
+ 		} else {
+ 			exit_bad_args();
+ 		}
+@@ -3093,6 +3105,15 @@ static int do_sset(struct cmd_context *ctx)
+ 		}
+ 	}
+ 
++	if (relaxorder_changed) {
++		struct ethtool_value edata;
++
++		edata.cmd = ETHTOOL_SRELAXORDER;
++		edata.data = relaxorder_wanted;
++		err = send_ioctl(ctx, &edata);
++		if (err < 0)
++			perror("Cannot set relax ordering mode");
++	}
+ 	return 0;
+ }
+ 
+@@ -4690,7 +4711,8 @@ static const struct option {
+ 	  "		[ xcvr internal|external ]\n"
+ 	  "		[ wol p|u|m|b|a|g|s|d... ]\n"
+ 	  "		[ sopass %x:%x:%x:%x:%x:%x ]\n"
+-	  "		[ msglvl %d | msglvl type on|off ... ]\n" },
++	  "		[ msglvl %d | msglvl type on|off ... ]\n"
++	  "		[ relaxorder on|off ]\n" },
+ 	{ "-a|--show-pause", 1, do_gpause, "Show pause options" },
+ 	{ "-A|--pause", 1, do_spause, "Set pause options",
+ 	  "		[ autoneg on|off ]\n"
+-- 
+2.7.0
+
