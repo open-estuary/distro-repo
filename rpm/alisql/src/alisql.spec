@@ -1,5 +1,5 @@
 Name:           AliSQL
-Version:        5.6.32
+Version:   5.6.32
 Release:        5%{?dist}
 Summary:        AliSQL
 
@@ -22,6 +22,7 @@ BuildRequires:  libaio-devel
 BuildRequires:  numactl-devel
 BuildRequires:  systemd
 BuildRequires:  zlib-devel
+BuildRequires:  openssl-devel
 Requires:       ncurses-devel 
 Requires:       bison 
 Requires:       perl
@@ -174,7 +175,7 @@ rm -rf $RPM_BUILD_ROOT
 # Ensure that needed directories exists
 install -d -m 0755 %{buildroot}/var/lib/mysql
 install -d -m 0755 %{buildroot}/var/run/mysqld
-install -d -m 0755 %{buildroot}/var/run/mysqld/tmp
+install -d -m 0755 %{buildroot}/var/tmp/mysql
 install -d -m 0750 %{buildroot}/var/log/mysql
 
 MBD=$RPM_BUILD_DIR/%{src_dir}
@@ -236,9 +237,8 @@ datadir=$(/usr/bin/my_print_defaults server mysqld | grep '^--datadir=' | sed -n
 /bin/touch /var/log/mysql/mysqld.log > /dev/null 2&1 || :
 /bin/chown mysql:mysql /var/log/mysql/mysqld.log >/dev/null 2>&1 || :
 %systemd_post mysqld.service
-/usr/bin/systemd-tmpfiles --create %{_tmpfilesdir}/mysql.conf >/dev/null 2>&1 || :
+#/usr/bin/systemd-tmpfiles --create %{_tmpfilesdir}/mysql.conf >/dev/null 2>&1 || :
 /bin/systemctl enable mysqld >/dev/null 2>&1 || :
-
 /sbin/ldconfig
 
 %preun server

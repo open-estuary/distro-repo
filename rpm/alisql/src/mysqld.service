@@ -15,7 +15,7 @@
 #
 
 [Unit]
-Description=MySQL Community Server
+Description=AliSQL Server
 After=network.target
 After=syslog.target
 

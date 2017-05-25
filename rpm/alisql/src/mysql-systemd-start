@@ -9,6 +9,7 @@
 # 
 
 install_db () {    
+    echo "Need to start db"
     # Note: something different than datadir=/var/lib/mysql requires SELinux policy changes (in enforcing mode)
     datadir=$(/usr/bin/my_print_defaults server mysqld | grep '^--datadir=' | sed -n 's/--datadir=//p' | tail -n 1)
     
@@ -23,8 +24,10 @@ install_db () {
         /usr/sbin/restorecon $log
     fi
 
+    echo "Begin to create db.."
     # If special mysql dir is in place, skip db install 
     [ -d "$datadir/mysql" ] && exit 0
+    echo "Now create ..."
 
     # Create initial db
     /usr/bin/mysql_install_db --rpm --datadir="$datadir" --user=mysql --keep-my-cnf

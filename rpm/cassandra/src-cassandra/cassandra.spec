@@ -1,4 +1,4 @@
-%define version  3.0.13
+%define version  3.10
 %define revision 1 
 %define __jar_repack %{nil}
 # Turn off the brp-python-bytecompile script
@@ -175,7 +175,7 @@ This package contains extra tools for working with Cassandra clusters.
 
 %changelog
 * Tue May 23 2017 Huang Jinhua <sjtuhjh@hotmail.com>
-- Initial Estuary RPM package 3.0.13
+- Initial Estuary RPM package 3.10
 
 * Mon Dec 05 2016 Michael Shuler <mshuler@apache.org>
 - 2.1.17, 2.2.9, 3.0.11, 3.10

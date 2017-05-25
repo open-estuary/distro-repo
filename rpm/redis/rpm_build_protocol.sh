@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "Not support yet !"
-exit 0
+#exit 0
 
 CUR_DIR="$(cd `dirname $0`; pwd)"
 TARGET_OS="centos"
