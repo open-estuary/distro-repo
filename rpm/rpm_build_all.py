@@ -13,7 +13,7 @@ global_packages_list = []
 RPM_AARCH64_DIR=os.path.join(os.environ['HOME'], "rpmbuild/RPMS/aarch64/")
 RPM_NOARCH_DIR=os.path.join(os.environ['HOME'], "rpmbuild/RPMS/noarch/")
 
-def save_rpm_build_result(packagename, logdir, backdir):
+def save_rpm_build_result(packagename, logdir):
    is_successful = False 
    for filename in os.listdir(RPM_AARCH64_DIR):
        if filename.endswith('.aarch64.rpm') and filename.startswith(packagename):
@@ -37,7 +37,7 @@ def save_rpm_build_result(packagename, logdir, backdir):
    global_lock.release()   
 
 
-def build_sub_package(buildfile, logdir, backdir, succ_dict):
+def build_sub_package(buildfile, logdir, succ_dict):
     buildfile = os.path.abspath(buildfile)
     basename = os.path.basename(buildfile)
     dirname = os.path.dirname(buildfile)
@@ -60,7 +60,7 @@ def build_sub_package(buildfile, logdir, backdir, succ_dict):
     except Exception as e:
         print("Catch exception:%s\n"%e)
 
-    save_rpm_build_result(packagename, logdir, backdir)
+    save_rpm_build_result(packagename, logdir)
     return 0
 
 def get_all_build_files(dirname):
@@ -77,7 +77,7 @@ def get_all_build_files(dirname):
             file_list.extend(get_all_build_files(fullname))
     return file_list
 
-def build_packages_thread(packages_list, logdir, rpm_backdir, succ_dict):
+def build_packages_thread(packages_list, logdir, succ_dict):
     while True:
         is_empty = False
         package_name = ""
@@ -94,7 +94,7 @@ def build_packages_thread(packages_list, logdir, rpm_backdir, succ_dict):
 
         try :
             print("Process %s"%package_name)
-            build_sub_package(package_name, logdir, rpm_backdir, succ_dict)
+            build_sub_package(package_name, logdir, succ_dict)
         except Exception as e:
             print("Package:%s catch exception:%s"%(package_name, e))
             continue
@@ -102,7 +102,7 @@ def build_packages_thread(packages_list, logdir, rpm_backdir, succ_dict):
     print("Current thread has finished")
     return
           
-def build_packages(package_dir, logdir, rpm_backdir):
+def build_packages(package_dir, logdir):
     global_packages_list = get_all_build_files(package_dir)
     global_packages_list.reverse()
 
@@ -119,7 +119,7 @@ def build_packages(package_dir, logdir, rpm_backdir):
   
     thread_list = []
     for index in range(0, MAX_THREAD_NUM):
-        thread = threading.Thread(target = build_packages_thread, args = (global_packages_list, logdir, rpm_backdir, succ_dict, ))
+        thread = threading.Thread(target = build_packages_thread, args = (global_packages_list, logdir, succ_dict, ))
         thread.start()
         thread_list.append(thread)
 

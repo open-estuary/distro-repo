@@ -30,7 +30,7 @@ Requires:       openssl-devel
 
 %define MYSQL_USER mysql
 %define MYSQL_GROUP mysql
-%define mysqldatadir /var/lib/
+%define mysqldatadir /var/lib/mysql
 
 %global ssl_option -DWITH_SSL=yes
 %global systemd     1
