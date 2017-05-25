@@ -229,17 +229,16 @@ rm -fr %{buildroot}/usr/bin/mysql_client_test
 /usr/sbin/useradd  -M %{!?el5:-N} -g mysql -o -r -d /var/lib/mysql -s /bin/bash \
     -c "AliSQL Server" -u 27 mysql >/dev/null 2>&1 || :
 
-#%clean server
-#rm -rf $RPM_BUILD_ROOT
+%clean server
+rm -rf $RPM_BUILD_ROOT
 
 %post server
 datadir=$(/usr/bin/my_print_defaults server mysqld | grep '^--datadir=' | sed -n 's/--datadir=//p' | tail -n 1)
-/bin/chmod 0755 "$datadir" > /dev/null 2&1 || :
-/bin/touch /var/log/mysql/mysqld.log > /dev/null 2&1 || :
+/bin/chmod 0755 "$datadir" >/dev/null 2>&1 || :
+/bin/touch /var/log/mysql/mysqld.log >/dev/null 2>&1 || :
 /bin/chown mysql:mysql /var/log/mysql/mysqld.log >/dev/null 2>&1 || :
 %systemd_post mysqld.service
-#/usr/bin/systemd-tmpfiles --create %{_tmpfilesdir}/mysql.conf >/dev/null 2>&1 || :
-/bin/systemctl enable mysqld >/dev/null 2>&1 || :
+/usr/bin/systemctl enable mysqld >/dev/null 2>&1 || :
 /sbin/ldconfig
 
 %preun server
