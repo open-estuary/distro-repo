@@ -104,6 +104,12 @@ def build_packages_thread(packages_list, logdir, succ_dict):
           
 def build_packages(package_dir, logdir):
     global_packages_list = get_all_build_files(package_dir)
+    all_packages_file = open(os.path.join(logdir, "all_packages_list"), 'w')
+    for package in global_packages_list:
+        packagename = package.split('/')[-2]
+        all_packages_file.write("%s\t%s\n"%(packagename, ""))
+    all_packages_file.close()
+
     global_packages_list.reverse()
 
     print("Total packages=%d"%len(global_packages_list))
