@@ -2,16 +2,10 @@
 
 CUR_DIR=$(cd `dirname $0`; pwd)
 
-if [ ! -z "${1}" ] ; then
-    echo "Build MySQL 5.6 community version ..."
-    VERSION="5.6"
-    RPM_SRC_FILE="mysql-community-5.6.36-2.el7.src.rpm"
-else
-    echo "Please make sure that it will use 5.x gcc version to compile, otherwise it might fail" 
-    echo "Build MySQL 5.7 community version ..."
-    VERSION="5.7"
-    RPM_SRC_FILE="mysql-community-5.7.18-1.el7.src.rpm"
-fi
+echo "Please make sure that it will use 5.x gcc version to compile, otherwise it might fail" 
+echo "Build MySQL 5.7 community version ..."
+VERSION="5.7"
+RPM_SRC_FILE="mysql-community-5.7.18-1.el7.src.rpm"
 
 SRC_DIR=src${VERSION}
 
