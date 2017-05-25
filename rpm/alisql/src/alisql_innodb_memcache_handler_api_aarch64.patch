@@ -1,0 +1,12 @@
+diff -rup old/plugin/innodb_memcached/innodb_memcache/src/handler_api.cc new/plugin/innodb_memcached/innodb_memcache/src/handler_api.cc
+--- old/plugin/innodb_memcached/innodb_memcache/src/handler_api.cc	2017-05-25 09:26:08.555271408 +0800
++++ new/plugin/innodb_memcached/innodb_memcache/src/handler_api.cc	2017-05-25 09:30:23.015997507 +0800
+@@ -52,7 +52,7 @@ Created 3/14/2011 Jimmy Yang
+ and being used here */
+ extern int write_bin_log(THD *thd, bool clear_error,
+ 			 char const *query, ulong query_length,
+-			 bool is_trans= false);
++			 bool is_trans);
+ 
+ /** function to close a connection and thd, defined in sql/handler.cc */
+ extern void ha_close_connection(THD* thd);
