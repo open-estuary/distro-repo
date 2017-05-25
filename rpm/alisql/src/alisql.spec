@@ -52,10 +52,11 @@ Requires:       perl
 Obsoletes:      MySQL-community-server
 Obsoletes:      mariadb-server
 Obsoletes:      mariadb-galera-server
-Provides:       AliSQL = %{version}-%{release}
-Provides:       AliSQL-tools = %{version}-%{release}
-Obsoletes:      AliSQL < %{version}-%{release}
-Obsoletes:      AliSQL < %{version}-%{release}
+Provides:       AliSQL-server = %{version}-%{release}
+Requires:       AliSQL-client = %{version}-%{release}
+Requires:       AliSQL-common = %{version}-%{release}
+Obsoletes:      AliSQL-server < %{version}-%{release}
+Obsoletes:      AliSQL-client < %{version}-%{release}
 Conflicts:      otherproviders(mysqld)
 Conflicts:      otherproviders(mysql)
 Conflicts:      otherproviders(mysql-debug)
@@ -69,6 +70,7 @@ Summary:        MySQL database client applications and tools
 Group:          Applications/Databases
 Provides:       AliSQL-client = %{version}-%{release}
 Obsoletes:      AliSQL-client < %{version}-%{release}
+Requires:       AliSQL-libs = %{version}-%{release}
 Obsoletes:      MySQL-client-advanced
 Obsoletes:      mysql-community-client
 Obsoletes:      mariadb
@@ -92,12 +94,11 @@ This packages contains common files needed by MySQL client library, and MySQL da
 Summary:        Development header files and libraries for MySQL database client applications
 Group:          Applications/Databases
 Provides:       AliSQL-devel = %{version}-%{release}
+Requires:       AliSQL-libs = %{version}-%{release}
 Obsoletes:      AliSQL-devel < %{version}-%{release}
-Obsoletes:      mysql-devel < %{version}-%{release}
+Obsoletes:      mysql-devel 
 Obsoletes:      mariadb-devel
 Obsoletes:      libmysqlclient-devel
-Provides:       mysql-devel = %{version}-%{release}
-Provides:       libmysqlclient-devel = %{version}-%{release}
 Conflicts:      mysql-connector-c-devel < 6.2
 
 %description    devel
@@ -123,12 +124,12 @@ server.
 Summary:        Shared libraries for MySQL database client applications
 Group:          Applications/Databases
 Provides:       AliSQL-libs = %{version}-%{release}
+Requires:       AliSQL-common = %{version}-%{release}
 Obsoletes:      AliSQL-libs < %{version}-%{release}
 Obsoletes:      mysql-community-libs 
 Obsoletes:      mariadb-libs
 Obsoletes:      libmysqlclient18 < %{version}-%{release}
 Obsoletes:      libmysqlclient_r18 < %{version}-%{release}
-Provides:       mysql-libs = %{version}-%{release}
 Provides:       libmysqlclient18 = %{version}-%{release}
 Provides:       libmysqlclient_r18 = %{version}-%{release}
 Conflicts:      mysql-connector-c-shared < 6.2
@@ -228,8 +229,8 @@ rm -fr %{buildroot}/usr/bin/mysql_client_test
 /usr/sbin/useradd  -M %{!?el5:-N} -g mysql -o -r -d /var/lib/mysql -s /bin/bash \
     -c "AliSQL Server" -u 27 mysql >/dev/null 2>&1 || :
 
-%clean server
-rm -rf $RPM_BUILD_ROOT
+#%clean server
+#rm -rf $RPM_BUILD_ROOT
 
 %post server
 datadir=$(/usr/bin/my_print_defaults server mysqld | grep '^--datadir=' | sed -n 's/--datadir=//p' | tail -n 1)
