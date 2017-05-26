@@ -16,9 +16,13 @@ if [ ! -f ${CUR_DIR}/${SRC_DIR}/${RPM_SRC_FILE} ] ; then
         mkdir -p ${CUR_DIR}/${SRC_DIR}
     fi 
     wget -O ${CUR_DIR}/${SRC_DIR}/${RPM_SRC_FILE}  https://github.com/datastax/cpp-driver/archive/${VERSION}.tar.gz
-    tar -zxvf ${CUR_DIR}/${SRC_DIR}/${RPM_SRC_FILE} -C ${CUR_DIR}/${SRC_DIR}
 fi
 
+if [ -d ${CUR_DIR}/${SRC_DIR}/"cpp-driver-${VERSION}" ] ; then
+    rm -fr ${CUR_DIR}/${SRC_DIR}/"cpp-driver-${VERSION}"
+fi
+
+tar -zxvf ${CUR_DIR}/${SRC_DIR}/${RPM_SRC_FILE} -C ${CUR_DIR}/${SRC_DIR}
 sudo yum install -y openssl-devel
 
 #sed -i "s/${OLD_VERSION}/${NEW_VERSION}/g" ${CUR_DIR}/${SRC_DIR}/cassandra.spec
