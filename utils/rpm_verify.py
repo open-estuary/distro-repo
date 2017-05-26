@@ -48,7 +48,6 @@ def get_all_packages_name():
 
     for repo_id in repos_list:
         num = 0
-        repo_id = "Estuaryhttp"
         packages_list = os.popen("repoquery -qa --repoid=" + repo_id).readlines()
         for packagename in packages_list:
             packagename = packagename.split(':')[0]
