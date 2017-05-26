@@ -6,7 +6,7 @@ loginpassword=OpenEstuary@123
 
 CUR_DIR=$(cd `dirname $0`; pwd)
 
-. ${CUR_DIR}/common_function.sh
+. ${CUR_DIR}/function_cmd_scp.sh
 
 SRC_DIR=$1
 SPEC_FILE=$2
