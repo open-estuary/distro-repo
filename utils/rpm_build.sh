@@ -24,18 +24,16 @@ if [ ! -d ${SRC_DIR} ] ; then
     exit 1
 fi
 
-sudo yum-builddep -y ${SRC_DIR}/${SPEC_FILE}
-expect <<-END1
-	set timeout -1
-	rpmbuild -D"_sourcedir ${SRC_DIR}" -D"_specdir ${SRC_DIR}" -D"_srcrpmdir ${SRC_DIR}" --target aarch64 --sign -ba ${SRC_DIR}/${SPEC_FILE} ${@:3}
+#sudo yum-builddep -y ${SRC_DIR}/${SPEC_FILE}
+passphrase=`cat /home/KEY_PASSPHRASE`
+expect <<-END
+	set timeout 10
+	spawn rpmbuild --sign  --target aarch64 -ba ${SRC_DIR}/${SPEC_FILE} "--define=_sourcedir ${SRC_DIR}" "--define=_specdir ${SRC_DIR}" ${@:3}
 	expect {
-                "Enter pass phrase:" {
-                        send "${passphrase}\r"
-                }
+                "Enter pass phrase:" {send "${passphrase}\r"}
+		timeout {send_user "Enter pass phrase timeout\n"}
         }
-END1
-#${CUR_DIR}/rpm_sign.sh ~/rpmbuild/RPMS/
-#${CUR_DIR}/rpm_sign.sh ${SRC_DIR}
-echo "Please check *.src.rpm under ${SRC_DIR} directory !"
-echo "Please check other rpm under ~/rpmbuild/RPMS/aarch64/ directory !"
+	expect eof
+END
+echo "Please check rpm under ~/rpmbuild/RPMS/ or ~/rpmbuild/SRPMS/ directory !"
 
