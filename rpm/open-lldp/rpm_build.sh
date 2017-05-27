@@ -10,5 +10,5 @@ if [ ! -f ${CUR_DIR}/src/${TAR_FILENAME} ] ; then
 fi
 sed -i "s/Version\:\ .*/Version\:\ \ \ ${VERSION}/g" ${CUR_DIR}/src/open-lldp.spec
 
-${CUR_DIR}/../../utils/rpm_autobuild.sh  ${CUR_DIR}/src open-lldp.spec
+${CUR_DIR}/../../utils/rpm_build.sh  ${CUR_DIR}/src open-lldp.spec
 
