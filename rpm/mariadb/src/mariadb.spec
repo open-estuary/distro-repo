@@ -1225,7 +1225,7 @@ fi
 %{?with_tokudb:%config(noreplace) %{_sysconfdir}/my.cnf.d/tokudb.cnf}
 
 #CRACKLIB
-#%{_sysconfdir}/my.cnf.d/cracklib_password_check.cnf
+%{_sysconfdir}/my.cnf.d/cracklib_password_check.cnf
 
 %{_libexecdir}/mysqld
 
