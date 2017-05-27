@@ -185,7 +185,7 @@ mkdir bin
 #done
 
 # Copy Apache license
-#cp %{SOURCE10} $(basename %{SOURCE10})
+cp %{SOURCE10} $(basename %{SOURCE10})
 
 %install
 # main package binary
