@@ -1,0 +1,39 @@
+From 5560b12276574c800325885255917ab5a36fe776 Mon Sep 17 00:00:00 2001
+From: Jan Chaloupka <jchaloup@redhat.com>
+Date: Tue, 16 Jun 2015 07:21:05 +0200
+Subject: [PATCH] change import path
+
+---
+ common/db/openssl/openssl.go      | 2 +-
+ common/db/openssl/openssl_fips.go | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/common/db/openssl/openssl.go b/common/db/openssl/openssl.go
+index 36a788d..144a490 100644
+--- a/common/db/openssl/openssl.go
++++ b/common/db/openssl/openssl.go
+@@ -10,7 +10,7 @@ import (
+ 
+ 	"github.com/mongodb/mongo-tools/common/options"
+ 	"github.com/mongodb/mongo-tools/common/util"
+-	"github.com/spacemonkeygo/openssl"
++	"github.com/10gen/openssl"
+ )
+ 
+ var (
+diff --git a/common/db/openssl/openssl_fips.go b/common/db/openssl/openssl_fips.go
+index 2c4705e..239d14a 100644
+--- a/common/db/openssl/openssl_fips.go
++++ b/common/db/openssl/openssl_fips.go
+@@ -3,7 +3,7 @@
+ 
+ package openssl
+ 
+-import "github.com/spacemonkeygo/openssl"
++import "github.com/10gen/openssl"
+ 
+ func init() { sslInitializationFunctions = append(sslInitializationFunctions, SetUpFIPSMode) }
+ 
+-- 
+1.9.3
+

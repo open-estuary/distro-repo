@@ -57,7 +57,6 @@ Requires:       AliSQL-client = %{version}-%{release}
 Requires:       AliSQL-common = %{version}-%{release}
 Obsoletes:      AliSQL-server < %{version}-%{release}
 Obsoletes:      AliSQL-client < %{version}-%{release}
-Conflicts:      otherproviders(mysqld)
 Conflicts:      otherproviders(mysql)
 Conflicts:      otherproviders(mysql-debug)
 
@@ -71,9 +70,8 @@ Group:          Applications/Databases
 Provides:       AliSQL-client = %{version}-%{release}
 Obsoletes:      AliSQL-client < %{version}-%{release}
 Requires:       AliSQL-libs = %{version}-%{release}
-Obsoletes:      MySQL-client-advanced
-Obsoletes:      mysql-community-client
-Obsoletes:      mariadb
+Obsoletes:      mysql-community-client < %{version}-%{release}
+Obsoletes:      mariadb < %{version}-%{release}
 Conflicts:      otherproviders(mysql-client)
 
 %description    client
@@ -85,7 +83,7 @@ Summary:        AliSQL database common files for server and client libs
 Group:          Applications/Databases
 Provides:       AliSQL-common = %{version}-%{release}
 Obsoletes:      AliSQL-common < %{version}-%{release}
-Obsoletes:      mysql-common
+Obsoletes:      mysql-common < %{version}-%{release}
 
 %description    common
 This packages contains common files needed by MySQL client library, and MySQL database server.
@@ -96,9 +94,9 @@ Group:          Applications/Databases
 Provides:       AliSQL-devel = %{version}-%{release}
 Requires:       AliSQL-libs = %{version}-%{release}
 Obsoletes:      AliSQL-devel < %{version}-%{release}
-Obsoletes:      mysql-devel 
-Obsoletes:      mariadb-devel
-Obsoletes:      libmysqlclient-devel
+Obsoletes:      mysql-devel < %{version}-%{release}
+Obsoletes:      mariadb-devel < %{version}-%{release}
+Obsoletes:      libmysqlclient-devel < %{version}-%{release}
 Conflicts:      mysql-connector-c-devel < 6.2
 
 %description    devel
@@ -114,7 +112,7 @@ Obsoletes:      community-mysql-bench
 Obsoletes:      mysql-bench 
 Provides:       AliSQL-bench = %{version}-%{release}
 Obsoletes:      AliSQL-bench < %{version}-%{release}
-Conflicts:      mysql-community-bench 
+Conflicts:      mysql-community-bench < %{version}-%{release}
 
 %description    bench
 AliSQL benchmakr suites which contains the MySQL Benchmark Suite for MySQL database
@@ -126,15 +124,15 @@ Group:          Applications/Databases
 Provides:       AliSQL-libs = %{version}-%{release}
 Requires:       AliSQL-common = %{version}-%{release}
 Obsoletes:      AliSQL-libs < %{version}-%{release}
-Obsoletes:      mysql-community-libs 
-Obsoletes:      mariadb-libs
+Obsoletes:      mysql-community-libs < %{version}-%{release}
+Obsoletes:      mariadb-libs < %{version}-%{release}
 Obsoletes:      libmysqlclient18 < %{version}-%{release}
 Obsoletes:      libmysqlclient_r18 < %{version}-%{release}
 Provides:       libmysqlclient18 = %{version}-%{release}
 Provides:       libmysqlclient_r18 = %{version}-%{release}
 Conflicts:      mysql-connector-c-shared < 6.2
-Conflicts:      mysql-community-libs
-Conflicts:      mariadb-libs
+Conflicts:      mysql-community-libs < %{version}-%{release}
+Conflicts:      mariadb-libs < %{version}-%{release}
 
 %description    libs
 AliSQL libs which contains the shared libraries for MySQL client applications.

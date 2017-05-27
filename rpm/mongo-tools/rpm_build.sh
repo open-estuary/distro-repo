@@ -8,7 +8,7 @@ fi
 CUR_DIR=$(cd `dirname $0`; pwd)
 
 VERSION="3.2.1"
-RPM_SRC_FILE="mongo-tools-${VERSION}-0.4.git17a5573.fc25.src.rpm"
+RPM_SRC_FILE="mongo-tools-${VERSION}-0.6.git17a5573.fc27.src.rpm"
 
 SRC_DIR=src
 export GOPATH=${CUR_DIR}/${SRC_DIR}

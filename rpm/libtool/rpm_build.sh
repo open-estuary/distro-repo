@@ -1,5 +1,8 @@
 #!/bin/bash
 
+exit 0
+echo "Not support so far"
+
 CUR_DIR=$(cd `dirname $0`; pwd)
 
 MAJOR_VERSION="2.4.6"
