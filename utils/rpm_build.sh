@@ -36,4 +36,3 @@ expect <<-END
 	expect eof
 END
 echo "Please check rpm under ~/rpmbuild/RPMS/ or ~/rpmbuild/SRPMS/ directory !"
-
