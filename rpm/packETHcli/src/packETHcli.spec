@@ -16,52 +16,35 @@
 #
 
 
-Name:           packETH
-Version:   1.8.1
+Name:           packETHcli
+Version:   1.8
 Release:        0
 Summary:        Packet generator tool for ethernet
 License:        GPL-3.0+
 Group:          Productivity/Networking/Diagnostic
 Url:            http://packeth.sourceforge.net/packeth/Home.html
-Source0:        https://sourceforge.net/projects/packeth/files/packETH-%{version}.tar.bz2
+Source0:        https://sourceforge.net/projects/packeth/files/packETHcli-%{version}.tar.gz
 BuildRequires:  pkgconfig
-#BuildRequires:  pkgconfig(glib-2.0)
-#BuildRequires:  pkgconfig(gtk+-2.0)
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
+
 %description
-packETH is tool for generating packets to send over ethernet.
-
-%package cli
-Summary:  the command line version of packETH called packETHcli
-Group:  Productivity/Networking/Diagnostic
-
-%description cli
 the command line version of packETH called packETHcli.
 Type ./packETHcli -h  for more options.
 
 %prep
 %setup -q
-# yay, lm is not in checked libs
-sed -i -e 's:$(DEPS_LIBS):$(DEPS_LIBS) -lm:' Makefile.in
 
 %build
-%configure
-make %{?_smp_mflags}
-cd cli/
-make 
+make
 
 %install
-make DESTDIR=%{buildroot} install %{?_smp_mflags}
-install -m 500 cli/packETHcli %{buildroot}%{_bindir}
+mkdir -p %{buildroot}%{_bindir}
+install -m 500 packETHcli %{buildroot}%{_bindir}
+
 
 %files
-%defattr(-,root,root)
-%doc COPYING CHANGELOG AUTHORS
-%{_bindir}/%{name}
-%{_datadir}/packeth
-
-%files cli
 %{_bindir}/packETHcli
 
 %changelog
+
