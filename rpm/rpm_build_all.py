@@ -6,7 +6,7 @@ import subprocess
 import re
 import threading
 
-MAX_THREAD_NUM = 1
+MAX_THREAD_NUM = 16
 global_lock = threading.Lock()
 global_packages_list = []
 
@@ -134,8 +134,14 @@ def build_packages(package_dir, logdir):
       
 if __name__ == "__main__":
     packagedir = "./"
-
     logdir = "/tmp/rpmbuildlog"
+
+    if len(sys.argv) >= 3:
+        logdir = sys.argv[2]
+
+    if len(sys.argv) >= 2:
+        packagedir = sys.argv[1]
+
     if not os.path.exists(logdir):
         os.makedirs(logdir)
 
