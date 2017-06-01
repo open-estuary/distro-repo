@@ -33,17 +33,41 @@ if [ -z "$(find ${SRC_DIR} -name "*.${file_type}")" ] ; then
     exit 0
 fi
 
+upload_files_repo() {
+    filelist=$1
+    dst_dir=$2
+  
+    if [ -z "${filelist}" ] ; then
+        return 
+    fi
 
-if [ ! -z "$(find ${SRC_DIR} -name "*.aarch64.${file_type}")" ] ; then
-    DST_DIR="/est-repo/releases/${VERSION}/${TARGETOS}/aarch64"
-elif [ ! -z "$(find ${SRC_DIR} -name "*.noarch.${file_type}")" ] ; then
-    DST_DIR="/est-repo/releases/${VERSION}/${TARGETOS}/noarch"
-elif [ ! -z "$(find ${SRC_DIR} -name "*.src.${file_type}")" ] ; then
-    DST_DIR="/est-repo/releases/${VERSION}/${TARGETOS}/SRPMS"
-else 
-    echo "It only support files which suffix is aarch64.rpm, noarch.rpm or src.rpm"
-    exit 1
-fi
+    tmpdir="/tmp/rpm_upload"$(date +%N)
+    if [ -d ${tmpdir} ] ; then
+        rm -fr ${tmpdir}/*
+    else 
+        mkdir -p ${tmpdir}
+    fi
 
-scp -r ${SRC_DIR}/*.${file_type} ${DST_USER}@${DST_IP}:${DST_DIR}
+    for filename in ${filelist[@]} ; 
+    do
+        cp ${filename} ${tmpdir}/
+    done
+ 
+    echo "Upload files to ${DST_IP}:${dst_dir}"
+    scp -r ${tmpdir}/* ${DST_USER}@${DST_IP}:${dst_dir}
+    rm -fr ${tmpdir}
+}
+
+
+filelist="$(find ${SRC_DIR} -name "*.aarch64.${file_type}")"
+DST_DIR="/est-repo/releases/${VERSION}/${TARGETOS}/aarch64"
+upload_files_repo "${filelist}" "${DST_DIR}"
+
+filelist="$(find ${SRC_DIR} -name "*.noarch.${file_type}")"
+DST_DIR="/est-repo/releases/${VERSION}/${TARGETOS}/noarch"
+upload_files_repo "${filelist}" "${DST_DIR}"
+
+filelist="$(find ${SRC_DIR} -name "*.${TARGETOS}.src.${file_type}")"
+DST_DIR="/est-repo/releases/${VERSION}/${TARGETOS}/SRPMS"
+upload_files_repo "${filelist}" "${DST_DIR}"
 

@@ -67,9 +67,12 @@ def get_all_build_files(dirname):
     file_list = []
     for filename in os.listdir(dirname):
         if re.search('fedora-rawhide', filename):
-            print("Ingore fedor-rawhide directory")
+            print("Ignore fedor-rawhide directory")
             continue
-
+        if re.search("obsolete", filename):
+            print("Ignore not used scripts")
+            continue
+       
         fullname = os.path.join(dirname, filename)
         if os.path.isfile(fullname) and filename == 'rpm_build.sh':
             file_list.append(fullname)
