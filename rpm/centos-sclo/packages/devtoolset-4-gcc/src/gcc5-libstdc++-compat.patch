@@ -5867,7 +5867,7 @@
 +#ifdef __i386__
 +asm (".hidden _ZN9__gnu_cxx15__concat_size_tEPcjj");
 +asm (".hidden _ZN9__gnu_cxx15__snprintf_liteEPcjPKcS0_");
-+#else
++#elif defined __x86_64__
 +asm (".hidden _ZN9__gnu_cxx15__concat_size_tEPcmm");
 +asm (".hidden _ZN9__gnu_cxx15__snprintf_liteEPcmPKcP13__va_list_tag");
 +#endif

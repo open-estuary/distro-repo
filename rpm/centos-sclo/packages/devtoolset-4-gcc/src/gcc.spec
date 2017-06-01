@@ -1,7 +1,8 @@
+%define scl devtoolset-4
+%global scl_prefix devtoolset-4
 %{?scl:%scl_package gcc}
 %{?scl:%global __strip strip}
 %{?scl:%global __objdump objdump}
-%global scl_prefix devtoolset-4-
 %global DATE 20160406
 %global SVNREV 234777
 %global gcc_version 5.3.1
@@ -118,7 +119,7 @@ BuildRequires: binutils >= 2.22.52.0.1
 BuildRequires: %{?scl_prefix}binutils >= 2.22.52.0.1
 %endif
 # For testing
-BuildRequires: %{?scl_prefix}gdb >= 7.4.50
+#BuildRequires: %{?scl_prefix}gdb >= 7.4.50
 %endif
 BuildRequires: zlib-devel, gettext, dejagnu, bison, flex, texinfo, sharutils
 BuildRequires: /usr/bin/pod2man
@@ -1705,7 +1706,7 @@ done
 cd ..
 
 %if 0%{!?scl:1}
-for i in %{buildroot}%{_prefix}/bin/{*gcc,*++,gcov,gcov-tool,gfortran,gcc-ar,gcc-nm,gcc-ranlib}; do
+for i in %{buildroot}%{_prefix}/bin/{*gcc,*++,gcov,gcov-tool,gfortran,*gcc-ar,*gcc-nm,*gcc-ranlib}; do
   mv -f $i ${i}5
 done
 %endif
@@ -1926,6 +1927,9 @@ fi
 %endif
 %{_prefix}/bin/%{gcc_target_platform}-gcc%{!?scl:5}
 %{_prefix}/bin/%{gcc_target_platform}-gcc-%{version}
+%{_prefix}/bin/%{gcc_target_platform}-gcc-ar%{!?scl:5}
+%{_prefix}/bin/%{gcc_target_platform}-gcc-nm%{!?scl:5}
+%{_prefix}/bin/%{gcc_target_platform}-gcc-ranlib%{!?scl:5}
 %ifnarch sparc64 ppc64
 %ifarch %{multilib_64_archs}
 %{_prefix}/bin/%{multilib_32_arch}-%{_vendor}-%{_target_os}%{?_gnu}-gcc-%{version}
@@ -1965,6 +1969,33 @@ fi
 %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_version}/include/stdalign.h
 %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_version}/include/stdnoreturn.h
 %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_version}/include/stdatomic.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_version}/include/arm_acle.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_version}/include/arm_neon.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_version}/include/ssp/ssp.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_version}/include/ssp/stdio.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_version}/include/ssp/string.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_version}/include/ssp/unistd.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_version}/include-fixed/README
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_version}/include-fixed/X11/Xw32defs.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_version}/include-fixed/cfitsio/fitsio.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_version}/include-fixed/hdf/hdfi.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_version}/include-fixed/irrlicht/irrTypes.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_version}/include-fixed/libv4l1-videodev.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_version}/include-fixed/libv4lconvert.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_version}/include-fixed/msgpack/predef/os/linux.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_version}/include-fixed/msgpack/predef/os/unix.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_version}/include-fixed/msgpack/sysdep.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_version}/include-fixed/nss3/secport.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_version}/include-fixed/ntfs-3g/device_io.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_version}/include-fixed/ntfs-3g/realpath.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_version}/include-fixed/openssl/bn.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_version}/include-fixed/platform.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_version}/include-fixed/slang.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_version}/include-fixed/slang/slang.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_version}/include-fixed/tidyp/platform.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_version}/include-fixed/tomcrypt_pk.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_version}/include-fixed/zzip/conf.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_version}/include-fixed/zzip/fetch.h
 %ifarch %{ix86} x86_64
 %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_version}/include/mmintrin.h
 %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_version}/include/xmmintrin.h
@@ -2216,6 +2247,14 @@ fi
 %{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_version}/libmpx.so
 %endif
 %endif
+
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_version}/install-tools/fixinc_list
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_version}/install-tools/gsyslimits.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_version}/install-tools/include/README
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_version}/install-tools/include/limits.h
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_version}/install-tools/macro_list
+%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_version}/install-tools/mkheaders.conf
+
 %doc gcc/README* rpm.doc/changelogs/gcc/ChangeLog* gcc/COPYING* COPYING.RUNTIME
 
 %files c++
@@ -2592,6 +2631,9 @@ fi
 %doc rpm.doc/changelogs/libcc1/ChangeLog*
 
 %changelog
+* Thu Apr 7 2016 Huang Jinhua <sjtuhjh@hotmail.com> 5.3.1-6.1
+- Estuary initial packages for ARM64
+
 * Thu Apr  7 2016 Jakub Jelinek <jakub@redhat.com> 5.3.1-6.1
 - fix up libstdc++_nonshared.a - don't use .hidden directive on
   *.part.* and *.isra.* symbols
