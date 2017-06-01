@@ -1252,7 +1252,7 @@ FULLPATH=%{buildroot}%{_prefix}/lib/gcc/%{gcc_target_platform}/%{gcc_major}.%{gc
 FULLEPATH=%{buildroot}%{_prefix}/libexec/gcc/%{gcc_target_platform}/%{gcc_major}.%{gcc_release}
 
 # fix some things
-ln -sf gcc${binsuffix} %{buildroot}%{_prefix}/bin/cc%{binsuffix}
+ln -sf gcc%{binsuffix} %{buildroot}%{_prefix}/bin/cc%{binsuffix}
 rm -f %{buildroot}%{_prefix}/lib/cpp%{binsuffix}
 ln -sf ../bin/cpp%{binsuffix} %{buildroot}/%{_prefix}/lib/cpp%{binsuffix}
 ln -sf gfortran%{binsuffix} %{buildroot}%{_prefix}/bin/f95%{binsuffix}
@@ -2756,7 +2756,7 @@ fi
 
 %if %{build_ada}
 %files gnat%{binsuffix}
-%{_prefix}/bin/gnat
+%{_prefix}/bin/gnat%{binsuffix}
 %{_prefix}/bin/gnat[^i]*
 %{_infodir}/gnat*
 %dir %{_prefix}/lib/gcc
