@@ -1,6 +1,7 @@
 %{?scl:%scl_package gcc}
 %{?scl:%global __strip strip}
 %{?scl:%global __objdump objdump}
+%global scl_prefix devtoolset-4-
 %global DATE 20160406
 %global SVNREV 234777
 %global gcc_version 5.3.1
