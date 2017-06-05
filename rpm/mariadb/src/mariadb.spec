@@ -905,6 +905,9 @@ mv Docs/README-wsrep Docs/README.wsrep
 # remove *.jar file from mysql-test
 rm -rf %{buildroot}%{_datadir}/mysql-test/plugin/connect/connect/std_data/JdbcMariaDB.jar
 
+# remove unused files
+rm -rf %{buildroot}/usr/DESTINATION/JdbcInterface.jar
+
 # RPMLINT E:
 # mariadb-bench.x86_64: E: script-without-shebang /usr/share/sql-bench/myisam.cnf
 chmod -x %{buildroot}%{_datadir}/sql-bench/myisam.cnf

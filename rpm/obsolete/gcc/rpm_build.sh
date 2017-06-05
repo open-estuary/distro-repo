@@ -1,4 +1,6 @@
 #!/bin/bash
+echo "Please use devtoolset-4-gcc"
+exit 0
 
 CUR_DIR=$(cd `dirname $0`; pwd)
 

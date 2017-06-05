@@ -1,7 +1,7 @@
 #!/bin/bash
 
+echo "Currently we should try to avoid maintain libtool directly"
 exit 0
-echo "Not support so far"
 
 CUR_DIR=$(cd `dirname $0`; pwd)
 
