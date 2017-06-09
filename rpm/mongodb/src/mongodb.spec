@@ -111,7 +111,7 @@ BuildRequires:  PyYAML
 %endif
 Requires:       devtoolset-4-runtime
 Requires:       devtoolset-4-boost-devel
-
+Requires:       devtoolset-4-yaml-cpp
 # Mongodb must run on a 64-bit CPU (see bug #630898)
 ExcludeArch:    ppc %{sparc} s390
 
@@ -139,6 +139,7 @@ Summary:        MongoDB server, sharding server and support scripts
 Group:          Applications/Databases
 Requires:       devtoolset-4-boost-devel
 Requires:       devtoolset-4-runtime
+Requires:       devtoolset-4-yaml-cpp
 Requires(pre):  shadow-utils
 %if 0%{?fedora} >= 15 || 0%{?rhel} >= 7
 Requires(post): systemd-units
