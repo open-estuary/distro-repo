@@ -1,7 +1,9 @@
 devtoolset-4
 devtoolset-4-gcc
 devtoolset-4-gdb
+devtoolset-4-binutils
 devtoolset-6
 devtoolset-6-gcc
+devtoolset-6-binutils
 devtoolset-6-gdb
 devtoolset-6-make

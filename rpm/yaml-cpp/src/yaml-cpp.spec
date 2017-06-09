@@ -1,13 +1,27 @@
-Name:           yaml-cpp
+%define scl devtoolset-4
+%global scl_prefix devtoolset-4
+%global MPI_HOME %{_libdir}
+
+%{?scl:%scl_package boost}
+%{!?scl:
+ %global pkg_name %{name}
+ %global _root_prefix %{_prefix}
+ %global _root_datadir %{_datadir}
+ %global _root_bindir %{_bindir}
+}
+
+Name:           %{?scl_prefix}yaml-cpp
 Version:        0.5.3
 Release:        4%{?dist}
 Summary:        A YAML parser and emitter for C++
 Group:          Development/Libraries
 License:        MIT 
 URL:            https://github.com/jbeder/yaml-cpp
-Source0:        https://github.com/jbeder/yaml-cpp/archive/%{name}-%{version}.tar.gz
-BuildRequires:  cmake gcc-c++
-BuildRequires:  boost-devel
+#Source0:        https://github.com/jbeder/yaml-cpp/archive/%{name}-%{version}.tar.gz
+Source0:        yaml-cpp-%{version}.tar.gz
+BuildRequires:  cmake 
+BuildRequires:  %{?scl_prefix}gcc-c++
+BuildRequires:  %{?scl_prefix}boost-devel
 
 %description
 yaml-cpp is a YAML parser and emitter in C++ written around the YAML 1.2 spec.
@@ -19,7 +33,7 @@ Group:          Development/Libraries
 License:        MIT
 Requires:       %{name}%{?_isa} = %{version}-%{release}
 Requires:       pkgconfig
-Requires:       boost-devel
+Requires:       %{?scl_prefix}boost-devel
 
 %description    devel
 The %{name}-devel package contains libraries and header files for
@@ -27,7 +41,7 @@ developing applications that use %{name}.
 
 
 %prep
-%setup -qn %{name}-release-%{version}
+%setup -qn yaml-cpp-release-%{version}
 
 
 %build

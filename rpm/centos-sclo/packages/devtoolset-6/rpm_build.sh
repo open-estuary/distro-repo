@@ -1,13 +1,8 @@
 #!/bin/bash
 
 CUR_DIR=$(cd `dirname $0`; pwd)
-sudo yum install -y devtoolset-6-gcc
-sudo yum install -y devtoolset-6-gcc-c++
-sudo yum install -y devtoolset-6-libstdc++-devel
 
-source /opt/rh/devtoolset-6/enable
-
-SRC_RPM_FILE=devtoolset-6-make-4.1-3.el7.src.rpm
+SRC_RPM_FILE=devtoolset-6-6.0-6.el7.src.rpm
 SRC_DIR=src
 if [ ! -f ${CUR_DIR}/${SRC_DIR}/${SRC_RPM_FILE} ] ; then
     if [ ! -d ${CUR_DIR}/${SRC_DIR} ] ; then
@@ -19,4 +14,4 @@ if [ ! -f ${CUR_DIR}/${SRC_DIR}/${SRC_RPM_FILE} ] ; then
     popd > /dev/null
 fi
 
-${CUR_DIR}/../../../../utils/rpm_build.sh  ${CUR_DIR}/${SRC_DIR}  make.spec
+${CUR_DIR}/../../../../utils/rpm_build.sh  ${CUR_DIR}/${SRC_DIR}  devtoolset-6.spec

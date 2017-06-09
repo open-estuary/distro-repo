@@ -2,6 +2,11 @@
 
 CUR_DIR=$(cd `dirname $0`; pwd)
 
+sudo yum install -y devtoolset-4-gcc
+sudo yum install -y devtoolset-4-gcc-c++
+sudo yum install -y devtoolset-4-libstdc++-devel
+source /opt/rh/devtoolset-4/enable
+
 MAJOR_VERSION="57"
 RPM_SRC_FILE="Percona-Server-57-5.7.17-13.1.generic.src.rpm"
 

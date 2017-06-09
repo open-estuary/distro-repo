@@ -2,6 +2,12 @@
 
 CUR_DIR=$(cd `dirname $0`; pwd)
 
+sudo yum install -y devtoolset-6-gcc
+sudo yum install -y devtoolset-6-gcc-c++
+sudo yum install -y devtoolset-6-libstdc++-devel
+
+source /opt/rh/devtoolset-6/enable
+
 SRC_RPM_FILE=devtoolset-6-gdb-7.12-24.el7.src.rpm
 SRC_DIR=src
 if [ ! -f ${CUR_DIR}/${SRC_DIR}/${SRC_RPM_FILE} ] ; then
