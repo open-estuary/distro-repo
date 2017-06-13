@@ -9,5 +9,5 @@ if [ ! -f ${CUR_DIR}/src/${TAR_FILENAME} ] ; then
     sudo wget -O ${CUR_DIR}/src/${TAR_FILENAME} http://tiptop.gforge.inria.fr/releases/tiptop-2.3.tar.gz
 fi
 
-#${CUR_DIR}/../../utils/deb_build.sh  ${CUR_DIR}/src ${TAR_FILENAME}
+#${CUR_DIR}/../../utils/deb_build.sh  ${CUR_DIR}/src ${TAR_FILENAME} debian
 
