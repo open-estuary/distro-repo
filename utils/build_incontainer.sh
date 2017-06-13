@@ -74,5 +74,5 @@ cp /root/debbuild/SOURCES/${FILENAME}/*.debian.tar.xz /root/debbuild/SDEBS/
 cp /root/debbuild/SOURCES/${FILENAME}/*.build /root/debbuild/BUILDS/
 cp /root/debbuild/SOURCES/${FILENAME}/*.changes /root/debbuild/CHANGES/
 
-echo "Please check deb under ~/debbuild/DEBS/ or ~/rpmbuild/SDEBS/ directory !"
+echo "Please check deb under ~/debbuild/DEBS/ or ~/debbuild/SDEBS/ directory !"
 
