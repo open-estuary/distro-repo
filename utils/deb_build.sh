@@ -1,14 +1,25 @@
-#! /bin/bash
+#/bin/bash
 
-builddeb()
-{
-        program="$1"
-        version="$2"
-        sshcmd "export DEBFULLNAME="test"; export DEBEMAIL="test@test.com"; cd dmidecode-3.0; dh_make -s -copyright gpl3 -f ../dmidecode-3.0.tar.gz <<EOF
-y
-EOF; echo "override_dh_usrlocal:" >> debian/rules; dpkg-buildpackage -rfakeroot; cd -"
-        if [ $? -ne 0]; then
-                echo "dpkg package build failed"
-        fi
-}
+CUR_DIR=$(cd `dirname $0`; pwd)
+
+docker_status=`service docker status | grep "inactive"`
+if [ -z ${docker_status} ]; then
+        sudo service docker start
+fi
+echo "Start container to build." 
+Image_ID=`docker images | grep "openestuary/debian"| grep "latest" | awk '{print $3}'`
+
+SRC_DIR_1=$1
+SRC_DIR_2=${SRC_DIR_1#*/}
+SRC_DIR_3=${SRC_DIR_2#*/}
+SRC_DIR_4=${SRC_DIR_3#*/}
+TAR_FILENAME=$2
+
+docker run -d -v ~/:/root/ ${Image_ID} sh /root/distro-repo/utils/build_incontainer.sh /root/${SRC_DIR_4} ${TAR_FILENAME}
+
+if [ $? -ne 0 ]; then
+        echo "Build failed, please check!"
+else
+        echo "Build succeed."
+fi
 
