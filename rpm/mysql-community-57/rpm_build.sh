@@ -2,6 +2,13 @@
 
 CUR_DIR=$(cd `dirname $0`; pwd)
 
+sudo yum install -y devtoolset-4-gcc
+sudo yum install -y devtoolset-4-gcc-c++
+sudo yum install -y devtoolset-4-libstdc++-devel
+
+source /opt/rh/devtoolset-4/enable
+
+
 echo "Please make sure that it will use 5.x gcc version to compile, otherwise it might fail" 
 echo "Build MySQL 5.7 community version ..."
 VERSION="5.7"

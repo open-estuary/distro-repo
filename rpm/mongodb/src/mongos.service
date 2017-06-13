@@ -1,0 +1,16 @@
+[Unit]
+Description=High-performance, schema-free document-oriented database
+After=syslog.target network.target
+
+[Service]
+Type=forking
+User=mongodb
+EnvironmentFile=/opt/rh/devtoolset-4/service-environment
+EnvironmentFile=/etc/sysconfig/mongos
+ExecStart=/usr/bin/scl enable devtoolset-4 -- /usr/bin/mongos $OPTIONS
+PrivateTmp=true
+LimitNOFILE=64000
+TimeoutStartSec=180
+
+[Install]
+WantedBy=multi-user.target

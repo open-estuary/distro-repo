@@ -192,6 +192,6 @@ if __name__ == "__main__":
         packages_dir = sys.argv[3]
 
     candidate_dict = init_candidate_packages(candidate_filename)
-    #get_candidate_packages_name(SRC_URL, dst_namelist)
+    get_candidate_packages_name(SRC_URL, dst_namelist)
     generate_package_rpm_build_scripts(dst_namelist, dst_builddir, candidate_dict)
 

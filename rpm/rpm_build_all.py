@@ -13,18 +13,13 @@ global_packages_list = []
 RPM_AARCH64_DIR=os.path.join(os.environ['HOME'], "rpmbuild/RPMS/aarch64/")
 RPM_NOARCH_DIR=os.path.join(os.environ['HOME'], "rpmbuild/RPMS/noarch/")
 
-def save_rpm_build_result(packagename, logdir):
+def save_rpm_build_result(packagename, logdir, logstdout_filename):
    is_successful = False 
-   for filename in os.listdir(RPM_AARCH64_DIR):
-       if filename.endswith('.aarch64.rpm') and filename.startswith(packagename):
-           is_successful = True
+   log_stdout = open(logstdout_filename)
+   for line in log_stdout:
+       if re.search('Wrote:\ .*aarch64\.rpm', line.strip()) or re.search('Pass phrase is good.', line.strip()):
+           is_successful = True 
            break
-
-   if not is_successful:
-       for filename in os.listdir(RPM_NOARCH_DIR):
-           if filename.endswith('.noarch.rpm') and filename.startswith(packagename):
-               is_successful = True
-               break
 
    if is_successful :
        logfile = "successful_list"
@@ -52,15 +47,16 @@ def build_sub_package(buildfile, logdir, succ_dict):
         return 0
 
     log_stderr = open(logfile+"_stderr", "w")
+    log_stdout_filename = logfile + "_stdout"
+    log_stdout = open(log_stdout_filename, 'w')
     try :
-
-        log_stdout = open(logfile+"_stdout", 'w')
         proc = subprocess.check_call([buildfile], stdout=log_stdout, stderr=log_stderr, shell=True)
 
     except Exception as e:
         print("Catch exception:%s\n"%e)
-
-    save_rpm_build_result(packagename, logdir)
+ 
+    log_stdout.close()
+    save_rpm_build_result(packagename, logdir, log_stdout_filename)
     return 0
 
 def get_all_build_files(dirname):

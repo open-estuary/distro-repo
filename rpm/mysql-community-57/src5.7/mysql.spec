@@ -98,13 +98,15 @@
 
 %global min                   5.7.9
 
-Name:           mysql%{?cluster:-cluster}-%{product_suffix}
+Name:           mysql57%{?cluster:-cluster}-%{product_suffix}
 Summary:        A very fast and reliable SQL database server
 Group:          Applications/Databases
 Version:        5.7.18
 Release:        1%{?commercial:.1}%{?dist}
 License:        Copyright (c) 2000, 2017, %{mysql_vendor}. All rights reserved. Under %{?license_type} license as shown in the Description field.
 Source0:        https://cdn.mysql.com/Downloads/MySQL-5.7/%{src_dir}.tar.gz
+Source1:        mysqld.service
+
 URL:            http://www.mysql.com/
 Packager:       MySQL Release Engineering <mysql-build@oss.oracle.com>
 Vendor:         %{mysql_vendor}
@@ -120,6 +122,9 @@ Source91:       filter-requires.sh
 %{?el5:BuildRequires:  gcc44}
 %{?el5:BuildRequires:  gcc44-c++}
 BuildRequires:  perl
+BuildRequires:  devtoolset-4-gcc
+BuildRequires:  devtoolset-4-gcc-c++
+Requires:       devtoolset-4-runtime
 %{?el7:BuildRequires: perl(Time::HiRes)}
 %{?el7:BuildRequires: perl(Env)}
 BuildRequires:  time
@@ -203,6 +208,7 @@ Provides:       mysql-server = %{version}-%{release}
 Provides:       mysql-server%{?_isa} = %{version}-%{release}
 Provides:       mysql-compat-server = %{version}-%{release}
 Provides:       mysql-compat-server%{?_isa} = %{version}-%{release}
+Requires:       devtoolset-4-runtime
 %if 0%{?systemd}
 Requires(post):   systemd
 Requires(preun):  systemd
@@ -261,6 +267,7 @@ Obsoletes:      mysql < %{version}-%{release}
 Provides:       mysql = %{version}-%{release}
 Provides:       mysql%{?_isa} = %{version}-%{release}
 %endif
+Requires:       devtoolset-4-runtime
 
 %description    client
 This package contains the standard MySQL clients and administration
@@ -776,6 +783,9 @@ install -d %{buildroot}%{_sysconfdir}/my.cnf.d
 %else
 install -D -m 0755 packaging/rpm-oel/mysql.init %{buildroot}%{_sysconfdir}/init.d/mysqld
 %endif
+
+rm -f %{buildroot}%{_unitdir}/mysqld.service
+install -D -m 0644 %{SOURCE1} %{buildroot}%{_unitdir}/mysqld.service
 
 # Add libdir to linker
 install -d -m 0755 %{buildroot}%{_sysconfdir}/ld.so.conf.d

@@ -79,10 +79,13 @@ Patch20:         ppc64.patch
 # Add support also for 32bit platforms
 Patch21:         32bit-support.patch
 
+#Use devtoolset gcc5 to build mongodb
+Patch22:         centos_gcc5_sconstruct.patch
 
-BuildRequires:  gcc >= 4.8.2
-BuildRequires:  boost-devel >= 1.56
-# Provides tcmalloc
+BuildRequires:  devtoolset-4-gcc >= 5.3
+BuildRequires:  devtoolset-4-boost-devel >= 1.56
+BuildRequires:  gperftools-libs
+#BuildRequires:  tcmalloc
 BuildRequires:  gperftools-devel
 BuildRequires:  libpcap-devel
 BuildRequires:  libstemmer-devel
@@ -90,7 +93,7 @@ BuildRequires:  openssl-devel
 BuildRequires:  pcre-devel
 BuildRequires:  scons
 BuildRequires:  snappy-devel
-BuildRequires:  yaml-cpp-devel
+BuildRequires:  devtoolset-4-yaml-cpp-devel
 BuildRequires:  zlib-devel
 BuildRequires:  asio-devel
 %ifnarch %{upstream_arches}
@@ -106,7 +109,9 @@ BuildRequires:  systemd
 BuildRequires:  python-pymongo
 BuildRequires:  PyYAML
 %endif
-
+Requires:       devtoolset-4-runtime
+Requires:       devtoolset-4-boost-devel
+Requires:       devtoolset-4-yaml-cpp
 # Mongodb must run on a 64-bit CPU (see bug #630898)
 ExcludeArch:    ppc %{sparc} s390
 
@@ -132,6 +137,9 @@ functionality).
 %package server
 Summary:        MongoDB server, sharding server and support scripts
 Group:          Applications/Databases
+Requires:       devtoolset-4-boost-devel
+Requires:       devtoolset-4-runtime
+Requires:       devtoolset-4-yaml-cpp
 Requires(pre):  shadow-utils
 %if 0%{?fedora} >= 15 || 0%{?rhel} >= 7
 Requires(post): systemd-units
@@ -186,6 +194,7 @@ the MongoDB sources.
 %patch20 -p1
 %patch21 -p1
 %endif
+%patch22 -p1
 
 # CRLF -> LF
 sed -i 's/\r//' README
@@ -232,7 +241,7 @@ VERBOSE=1
 # -> build/opt/mongo/db/pipeline/granularity_rounder_test,
 #    build/opt/mongo/db/pipeline/accumulator_test, build/opt/mongo/util/summation_test
 #    and build/opt/mongo/db/pipeline/document_source_test unittests fail
-CCFLAGS+=" -ffloat-store"
+CCFLAGS+=" -ffloat-store -std=c++11 -DBOOST_NO_CXX11_SCOPED_ENUMS"
 %endif
 %ifarch ppc64
 # Needed for altivec instructions in mongo/db/fts/unicode/byte_vector_altivec.h
@@ -344,6 +353,16 @@ do
 done < ./build/unittests.txt
 %endif
 
+binlist=("mongo" "mongoperf" "mongobridge")
+for bin in ${binlist[@]}
+do
+    mv %{buildroot}%{_bindir}/${bin} %{buildroot}%{_bindir}/${bin}_internal
+    touch %{buildroot}%{_bindir}/${bin}
+    echo '#!/bin/bash' > %{buildroot}%{_bindir}/${bin}
+    echo 'source /opt/rh/devtoolset-4/enable' >> %{buildroot}%{_bindir}/${bin}
+    echo "/usr/bin/${bin}"'_internal $@' >> %{buildroot}%{_bindir}/${bin}
+    chmod 755 %{buildroot}%{_bindir}/${bin}
+done
 
 %check
 %if %runselftest
@@ -365,15 +384,18 @@ sed -i "/service_entry_point_mock_test/d" build/unittests.txt
 sed -i "/chunk_diff_test/d" build/unittests.txt
 %endif
 # Run new-style unit tests (*_test files)
-./buildscripts/resmoke.py --dbpathPrefix `pwd`/var --continueOnFailure --mongo=%{buildroot}%{_bindir}/mongo --mongod=%{buildroot}%{_bindir}/%{daemon} --mongos=%{buildroot}%{_bindir}/%{daemonshard} --nopreallocj --suites unittests \
+source /opt/rh/devtoolset-4/enable && ./buildscripts/resmoke.py --dbpathPrefix `pwd`/var --continueOnFailure --mongo=%{buildroot}%{_bindir}/mongo_internal --mongod=%{buildroot}%{_bindir}/%{daemon} --mongos=%{buildroot}%{_bindir}/%{daemonshard} --nopreallocj --suites unittests \
 %ifarch %{upstream_arches} ppc64
 --storageEngine=wiredTiger
 %else
 --storageEngine=mmapv1
 %endif
 
+#Disable jsHeapLimit test so far 
+rm -f ./jstests/core/jsHeapLimit.js
+
 # Run JavaScript integration tests
-./buildscripts/resmoke.py --dbpathPrefix `pwd`/var --continueOnFailure --mongo=%{buildroot}%{_bindir}/mongo --mongod=%{buildroot}%{_bindir}/%{daemon} --mongos=%{buildroot}%{_bindir}/%{daemonshard} --nopreallocj --suites core \
+source /opt/rh/devtoolset-4/enable && ./buildscripts/resmoke.py --dbpathPrefix `pwd`/var --continueOnFailure --mongo=%{buildroot}%{_bindir}/mongo_internal --mongod=%{buildroot}%{_bindir}/%{daemon} --mongos=%{buildroot}%{_bindir}/%{daemonshard} --nopreallocj --suites core \
 %ifarch %{upstream_arches} ppc64
 --storageEngine=wiredTiger
 %else
@@ -483,6 +505,9 @@ fi
 %{_bindir}/mongo
 %{_bindir}/mongoperf
 %{_bindir}/mongobridge
+%{_bindir}/mongo_internal
+%{_bindir}/mongoperf_internal
+%{_bindir}/mongobridge_internal
 
 %{_mandir}/man1/mongo.1*
 %{_mandir}/man1/mongoperf.1*
@@ -526,6 +551,9 @@ fi
 
 
 %changelog
+* Wed Mar 29 2017 Huang Jinhua <sjtuhjh@hotmail.com> - 3.4.3-1
+- Estuary initial package for ARM64 
+
 * Wed Mar 29 2017 Marek Skalický <mskalick@redhat.com> - 3.4.3-1
 - Update to latest versions 3.4.3
 

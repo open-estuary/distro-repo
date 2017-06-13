@@ -24,7 +24,7 @@ if [ ! -d ${SRC_DIR} ] ; then
     exit 1
 fi
 
-#sudo yum-builddep -y ${SRC_DIR}/${SPEC_FILE}
+sudo yum-builddep -y ${SRC_DIR}/${SPEC_FILE}
 passphrase=`cat /home/KEY_PASSPHRASE`
 expect <<-END
 	set timeout -1
