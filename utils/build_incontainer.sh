@@ -5,7 +5,7 @@ export DEBEMAIL=situhjh@hotmail.com
 export DEBFULLNAME=Open-Estuary
 wget -O - http://repo.linaro.org/ubuntu/linarorepo.key | apt-key add -
 apt-get update
-apt-get install expect
+apt-get install expect -y
 apt-get install automake -y
 apt-get install dh-make -y
 apt-get install devscripts -y
@@ -15,7 +15,7 @@ passphrase="OPENESTUARY@123"
 
 SRC_DIR=$1
 TAR_FILENAME=$2
-FILENAME=${TAR_FILE_NAME%-*}
+FILENAME=${TAR_FILENAME%-*}
 if [ ! -d ${SRC_DIR} ]; then
     echo "${SRC_DIR} directory does not exist !"
     exit 1
