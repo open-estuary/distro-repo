@@ -59,11 +59,11 @@ if [ ! -d /root/debbuild/SDEBS ]; then
 fi
 
 if [ ! -d /root/debbuild/BUILDS ]; then
-        mkdir -p /root/debbuild/SDEBS
+        mkdir -p /root/debbuild/BUILDS
 fi
 
 if [ ! -d /root/debbuild/CHANGES ]; then
-        mkdir -p /root/debbuild/SDEBS
+        mkdir -p /root/debbuild/CHANGES
 fi
 
 
