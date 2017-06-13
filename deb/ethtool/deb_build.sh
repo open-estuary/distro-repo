@@ -9,4 +9,4 @@ if [ ! -f ${CUR_DIR}/src/${TAR_FILENAME} ] ; then
         sudo wget -O ${CUR_DIR}/src/${TAR_FILENAME} http://kernel.org/pub/software/network/ethtool/ethtool-${VERSION}.tar.gz
 fi
 
-${CUR_DIR}/../../utils/deb_build.sh  ${CUR_DIR}/src 
+${CUR_DIR}/../../utils/deb_build.sh  ${CUR_DIR}/src ${TAR_FILENAME} 

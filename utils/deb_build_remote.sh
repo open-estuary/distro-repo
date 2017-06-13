@@ -14,7 +14,7 @@ reponame="distro-repo"
 
 usage()
 {
-        echo "Usage: rpm_build_remote.sh -k "packages" [-m remoteip] [-u login_user] [-p login_password]"
+        echo "Usage: deb_build_remote.sh -k "packages" [-m remoteip] [-u login_user] [-p login_password]"
 }
 
 while getopts "k:m:p:u:h" OPTIONS
@@ -24,31 +24,29 @@ do
                 m) IP="$OPTARG";;
                 u) loginuser="$OPTARG";;
                 p) loginpassword="$OPTARG";;
-		h) usage;exit 1;;
+                h) usage;exit 1;;
                 \?) echo "ERROR - Invalid Parameter"; echo "ERROR - Invalid parameter" >&2; usage; exit 1;;
                 *) echo "ERROR - Invalid Parameter"; echo "ERROR - Invalid parameter" >&2; usage; exit 1;;
-        esac 
-done            
+        esac
+done
 
 if [ "x$packages" = "x" ];then
-	echo "Packages must not be void!"
-	usage
-	exit 1
+        echo "Packages must not be void!"
+        usage
+        exit 1
 fi
 
 sshcmd "if \[ \`ls /home/${loginuser} | grep "$reponame"\` \];then  cd /home/${loginuser}/$reponame;git pull;cd -;else cd /home/${loginuser};git clone ${giturl};cd -;fi"
 
 if [ "${packages}" = "all" ];then
-	sshcmd "sh /home/${loginuser}/${reponame}/rpm/rpm_build_all.sh"
-	exit
+        sshcmd "sh /home/${loginuser}/${reponame}/deb/deb_build_all.sh"
+        exit
 fi
 
 for package in $packages
 do
-	sshcmd "sh /home/${loginuser}/${reponame}/rpm/$package/rpm_build.sh"
+        sshcmd "sh /home/${loginuser}/${reponame}/deb/$package/deb_build.sh"
 done
 
 echo "Build have done, please check!"
 
-
-	
