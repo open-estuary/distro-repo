@@ -30,7 +30,7 @@ fi
 
 if [ -z "$(find ${SRC_DIR} -name "*.${file_type}")" ] ; then
     echo "There is no ${file_type} files under ${SRC_DIR} for ${TARGETOS}"
-    exit 0
+#   exit 0
 fi
 
 upload_files_repo() {
@@ -58,16 +58,53 @@ upload_files_repo() {
     rm -fr ${tmpdir}
 }
 
+echo "Begin to upload files!"
+if [ ${TARGETOS} = "centos" ];then
+	filelist="$(find ${SRC_DIR} -name "*.aarch64.${file_type}")"
+	DST_DIR="/est-repo/releases/${VERSION}/${TARGETOS}/aarch64"
+	upload_files_repo "${filelist}" "${DST_DIR}"
 
-filelist="$(find ${SRC_DIR} -name "*.aarch64.${file_type}")"
-DST_DIR="/est-repo/releases/${VERSION}/${TARGETOS}/aarch64"
-upload_files_repo "${filelist}" "${DST_DIR}"
+	filelist="$(find ${SRC_DIR} -name "*.noarch.${file_type}")"
+	DST_DIR="/est-repo/releases/${VERSION}/${TARGETOS}/noarch"
+	upload_files_repo "${filelist}" "${DST_DIR}"
 
-filelist="$(find ${SRC_DIR} -name "*.noarch.${file_type}")"
-DST_DIR="/est-repo/releases/${VERSION}/${TARGETOS}/noarch"
-upload_files_repo "${filelist}" "${DST_DIR}"
+	filelist="$(find ${SRC_DIR} -name "*.${TARGETOS}.src.${file_type}")"
+	DST_DIR="/est-repo/releases/${VERSION}/${TARGETOS}/SRPMS"
+	upload_files_repo "${filelist}" "${DST_DIR}"
+elif [ ${TARGETOS} = "debian" ];then
+	filelist="$(find ${SRC_DIR} -name "*.${file_type}")"
+	DST_DIR="/est-repo/releases/${VERSION}/${TARGETOS}"
+	upload_files_repo "${filelist}" "${DST_DIR}"
+	
+	filelist="$(find ${SRC_DIR} -name "*.orig.*")"
+        DST_DIR="/est-repo/releases/${VERSION}/${TARGETOS}"
+        upload_files_repo "${filelist}" "${DST_DIR}"
 
-filelist="$(find ${SRC_DIR} -name "*.${TARGETOS}.src.${file_type}")"
-DST_DIR="/est-repo/releases/${VERSION}/${TARGETOS}/SRPMS"
-upload_files_repo "${filelist}" "${DST_DIR}"
+	filelist="$(find ${SRC_DIR} -name "*.debian.*")"
+        DST_DIR="/est-repo/releases/${VERSION}/${TARGETOS}"
+        upload_files_repo "${filelist}" "${DST_DIR}"
+	
+	filelist="$(find ${SRC_DIR} -name "*.dsc")"
+        DST_DIR="/est-repo/releases/${VERSION}/${TARGETOS}"
+        upload_files_repo "${filelist}" "${DST_DIR}"
+else
+	filelist="$(find ${SRC_DIR} -name "*.${file_type}")"
+        DST_DIR="/est-repo/releases/${VERSION}/${TARGETOS}"
+        upload_files_repo "${filelist}" "${DST_DIR}"
+
+        filelist="$(find ${SRC_DIR} -name "*.orig.*")"
+        DST_DIR="/est-repo/releases/${VERSION}/${TARGETOS}"
+        upload_files_repo "${filelist}" "${DST_DIR}"
+
+        filelist="$(find ${SRC_DIR} -name "*.debian.*")"
+        DST_DIR="/est-repo/releases/${VERSION}/${TARGETOS}"
+        upload_files_repo "${filelist}" "${DST_DIR}"
+
+        filelist="$(find ${SRC_DIR} -name "*.dsc")"
+        DST_DIR="/est-repo/releases/${VERSION}/${TARGETOS}"
+        upload_files_repo "${filelist}" "${DST_DIR}"
+fi
+echo "Upload done!"
+
+
 
