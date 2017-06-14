@@ -46,7 +46,7 @@ fi
 echo "It may take some times to build, please wait."
 while true
 do
-	container_status=`docker ps -a | grep ethtooldebian | awk '{print $8}' | grep Exited`
+	container_status=`docker ps -a | grep ${Container_Name} | awk '{print $8}' | grep Exited`
         if [ -z ${container_status} ]; then
                 sleep 10s
         else
