@@ -3,12 +3,12 @@
 cd ~
 export DEBEMAIL=situhjh@hotmail.com
 export DEBFULLNAME=Open-Estuary
-wget -O - http://repo.linaro.org/ubuntu/linarorepo.key | apt-key add -
-apt-get update
-apt-get install expect -y
-apt-get install automake -y
-apt-get install dh-make -y
-apt-get install devscripts -y
+#wget -O - http://repo.linaro.org/ubuntu/linarorepo.key | apt-key add -
+#apt-get update
+#apt-get install expect -y
+#apt-get install automake -y
+#apt-get install dh-make -y
+#apt-get install devscripts -y
 
 echo "DEBSIGN_KEYID=24CC6CF4" >> /etc/devscripts.conf
 passphrase="OPENESTUARY@123"
