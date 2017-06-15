@@ -1,11 +1,16 @@
 #!/bin/bash
 
+CUR_DIR=$(cd `dirname $0`; pwd)
+
+. ${CUR_DIR}/function_cmd_scp.sh
+
 VERSION="5.0"
 
 SRC_DIR=$1
 TARGETOS=$2
-DST_IP="117.78.41.188"
-DST_USER="repo"
+IP="117.78.41.188"
+loginuser="repo"
+loginpassword="repodeploy@123"
 
 if [ -z "${TARGETOS}" ] ; then 
     echo "Usage: ./rpm_upload.sh <src_dir> <target os(such as CentOS/Ubuntu/Debian)>"
@@ -41,7 +46,7 @@ upload_files_repo() {
         return 
     fi
 
-    tmpdir="/tmp/rpm_upload"$(date +%N)
+    tmpdir="/tmp/pkg_upload"$(date +%N)
     if [ -d ${tmpdir} ] ; then
         rm -fr ${tmpdir}/*
     else 
@@ -54,7 +59,13 @@ upload_files_repo() {
     done
  
     echo "Upload files to ${DST_IP}:${dst_dir}"
-    scp -r ${tmpdir}/* ${DST_USER}@${DST_IP}:${dst_dir}
+    all_files=`ls ${tmpdir}/`
+    for file in ${all_files} ;
+    do
+        sshscp ${tmpdir}/$file ${dst_dir} no to
+    done
+
+    #scp -r ${tmpdir}/* ${DST_USER}@${DST_IP}:${dst_dir}
     rm -fr ${tmpdir}
 }
 
