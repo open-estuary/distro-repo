@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cd ~
-export DEBEMAIL=situhjh@hotmail.com
+export DEBEMAIL=sjtuhjh@hotmail.com
 export DEBFULLNAME=Open-Estuary
 wget -O - http://repo.linaro.org/ubuntu/linarorepo.key | apt-key add -
 apt-get update
