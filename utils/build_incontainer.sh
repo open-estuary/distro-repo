@@ -16,23 +16,33 @@ passphrase="OPENESTUARY@123"
 SRC_DIR=$1
 TAR_FILENAME=$2
 FILENAME=${TAR_FILENAME%-*}
+DISTRI=$3
+
+if [ $DISTRI = "debian" ];then
+	DESDIR=debbuild
+fi
+if [ $DISTRI = "ubuntu" ];then
+	DESDIR=ububuild
+fi
+
 if [ ! -d ${SRC_DIR} ]; then
     echo "${SRC_DIR} directory does not exist !"
     exit 1
 fi
+if
 
-if [ -d /root/debbuild/SOURCES/${FILENAME} ]; then
+if [ -d /root/${DESDIR}/SOURCES/${FILENAME} ]; then
     echo "${FILENAME} had been builded before, now begin clean the directory."
-    rm -rf /root/debbuild/SOURCES/${FILENAME}/*
+    rm -rf /root/${DESDIR}/SOURCES/${FILENAME}/*
 else
-    mkdir -p /root/debbuild/SOURCES/${FILENAME}
+    mkdir -p /root/${DESDIR}/SOURCES/${FILENAME}
 fi
 
-cp ${SRC_DIR}/* /root/debbuild/SOURCES/${FILENAME}/
-tar -zxvf /root/debbuild/SOURCES/${FILENAME}/${TAR_FILENAME} -C /root/debbuild/SOURCES/${FILENAME}/
-tar -zxvf /root/debbuild/SOURCES/${FILENAME}/debian.tar.gz -C /root/debbuild/SOURCES/${FILENAME}/${FILENAME}-*/
+cp ${SRC_DIR}/* /root/${DESDIR}/SOURCES/${FILENAME}/
+tar -zxvf /root/${DESDIR}/SOURCES/${FILENAME}/${TAR_FILENAME} -C /root/${DESDIR}/SOURCES/${FILENAME}/
+tar -zxvf /root/${DESDIR}/SOURCES/${FILENAME}/debian.tar.gz -C /root/${DESDIR}/SOURCES/${FILENAME}/${FILENAME}-*/
 
-cd /root/debbuild/SOURCES/${FILENAME}/${FILENAME}-*
+cd /root/${DESDIR}/SOURCES/${FILENAME}/${FILENAME}-*
 dh_make -s -copyright gpl2 -f ../${TAR_FILENAME} -y
 apt-get build-dep ${FILENAME} -y
 
@@ -50,29 +60,29 @@ expect <<-END
         expect eof
 END
 
-if [ ! -d /root/debbuild/DEBS ]; then
-        mkdir -p /root/debbuild/DEBS
+if [ ! -d /root/${DESDIR}/DEBS ]; then
+        mkdir -p /root/${DESDIR}/DEBS
 fi
 
-if [ ! -d /root/debbuild/SDEBS ]; then
-        mkdir -p /root/debbuild/SDEBS
+if [ ! -d /root/${DESDIR}/SDEBS ]; then
+        mkdir -p /root/${DESDIR}/SDEBS
 fi
 
-if [ ! -d /root/debbuild/BUILDS ]; then
-        mkdir -p /root/debbuild/BUILDS
+if [ ! -d /root/${DESDIR}/BUILDS ]; then
+        mkdir -p /root/${DESDIR}/BUILDS
 fi
 
-if [ ! -d /root/debbuild/CHANGES ]; then
-        mkdir -p /root/debbuild/CHANGES
+if [ ! -d /root/${DESDIR}/CHANGES ]; then
+        mkdir -p /root/${DESDIR}/CHANGES
 fi
 
 
-cp /root/debbuild/SOURCES/${FILENAME}/*.deb /root/debbuild/DEBS/
-cp /root/debbuild/SOURCES/${FILENAME}/*.dsc /root/debbuild/SDEBS/
-cp /root/debbuild/SOURCES/${FILENAME}/*.orig.tar.gz /root/debbuild/SDEBS/
-cp /root/debbuild/SOURCES/${FILENAME}/*.debian.tar.xz /root/debbuild/SDEBS/
-cp /root/debbuild/SOURCES/${FILENAME}/*.build /root/debbuild/BUILDS/
-cp /root/debbuild/SOURCES/${FILENAME}/*.changes /root/debbuild/CHANGES/
+cp /root/${DESDIR}/SOURCES/${FILENAME}/*.deb /root/${DESDIR}/DEBS/
+cp /root/${DESDIR}/SOURCES/${FILENAME}/*.dsc /root/${DESDIR}/SDEBS/
+cp /root/${DESDIR}/SOURCES/${FILENAME}/*.orig.tar.gz /root/${DESDIR}/SDEBS/
+cp /root/${DESDIR}/SOURCES/${FILENAME}/*.debian.tar.xz /root/${DESDIR}/SDEBS/
+cp /root/${DESDIR}/SOURCES/${FILENAME}/*.build /root/${DESDIR}/BUILDS/
+cp /root/${DESDIR}/SOURCES/${FILENAME}/*.changes /root/${DESDIR}/CHANGES/
 
-echo "Please check deb under ~/debbuild/DEBS/ or ~/debbuild/SDEBS/ directory !"
+echo "Please check deb under ~/${DESDIR}/DEBS/ or ~/${DESDIR}/SDEBS/ directory !"
 
