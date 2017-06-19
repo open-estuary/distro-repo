@@ -24,5 +24,5 @@ if [ ! -f ${CUR_DIR}/src/${TAR_FILENAME} ] ; then
     sudo wget -O ${CUR_DIR}/src/${TAR_FILENAME} https://sourceware.org/systemtap/ftp/releases/${TAR_FILENAME}
 fi
 
-#${CUR_DIR}/../../utils/deb_build.sh  ${CUR_DIR}/src ${TAR_FILENAME} $TARGETOS 
+${CUR_DIR}/../../utils/deb_build.sh  ${CUR_DIR}/src ${TAR_FILENAME} $TARGETOS 
 
