@@ -36,11 +36,11 @@ DISTRI=$3
 Container_Name=${TAR_FILENAME%-*}-$DISTRI
 
 if [ $DISTRI = "debian" ]; then
-	docker run -d -v ~/:/root/ --name ${Container_Name} openestuary/debian:1.1 bash /root/distro-repo/utils/build_incontainer.sh /root/${SRC_DIR_4} ${TAR_FILENAME} ${DISTRI}
+	docker run -d -v ~/:/root/ --name ${Container_Name} openestuary/debian:3.0-build bash /root/distro-repo/utils/build_incontainer.sh /root/${SRC_DIR_4} ${TAR_FILENAME} ${DISTRI}
 fi
 
 if [ $DISTRI = "ubuntu" ]; then
-	docker run -d -v ~/:/root/ --name ${Container_Name} openestuary/ubuntu:1.1 bash /root/distro-repo/utils/build_incontainer.sh /root/${SRC_DIR_4} ${TAR_FILENAME} ${DISTRI}
+	docker run -d -v ~/:/root/ --name ${Container_Name} openestuary/ubuntu:3.0-build bash /root/distro-repo/utils/build_incontainer.sh /root/${SRC_DIR_4} ${TAR_FILENAME} ${DISTRI}
 fi
 
 echo "It may take some times to build, please wait."
