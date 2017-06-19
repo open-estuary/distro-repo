@@ -17,7 +17,7 @@ else
         exit 1
 fi
 
-VERSION="7.1.7"
+VERSION="7.0.8"
 TAR_FILENAME="crash-""${VERSION}"".tar.gz"
 
 if [ ! -f ${CUR_DIR}/src/${TAR_FILENAME} ] ; then
