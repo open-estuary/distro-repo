@@ -3,15 +3,15 @@
 cd ~
 export DEBEMAIL=sjtuhjh@hotmail.com
 export DEBFULLNAME=Open-Estuary
-#wget -O - http://repo.linaro.org/ubuntu/linarorepo.key | apt-key add -
-#apt-get update
-#apt-get install expect -y
-#apt-get install automake -y
-#apt-get install dh-make -y
-#apt-get install devscripts -y
+wget -O - http://repo.linaro.org/ubuntu/linarorepo.key | apt-key add -
+apt-get update
+apt-get install expect -y
+apt-get install automake -y
+apt-get install dh-make -y
+apt-get install devscripts -y
 
 echo "DEBSIGN_KEYID=24CC6CF4" >> /etc/devscripts.conf
-passphrase="OPENESTUARY@123"
+passphrase=$(cat /root/KEY_PASSPHRASE)
 
 SRC_DIR=$1
 TAR_FILENAME=$2
@@ -74,7 +74,7 @@ fi
 
 #Step3: Build deb packages
 cd ${SUBDIR}
-dh_make -s -copyright gpl2 -f ../${TAR_FILENAME} -y
+dh_make -s --copyright gpl2 -f ../${TAR_FILENAME} -y
 #apt-get build-dep ${FILENAME} -y
 mk-build-deps -i -t 'apt-get -y' debian/control
 rm *build-deps*.deb

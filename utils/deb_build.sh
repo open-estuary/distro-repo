@@ -35,6 +35,10 @@ TAR_FILENAME=$2
 DISTRI=$3
 Container_Name=${TAR_FILENAME%-*}-$DISTRI
 
+if [ ! -f ~/KEY_PASSPHRASE ] ; then
+    cp /home/KEY_PASSPHRASE  ~/KEY_PASSPHRASE
+fi
+
 if [ $DISTRI = "debian" ]; then
 	docker run -d -v ~/:/root/ --name ${Container_Name} openestuary/debian:3.0-build bash /root/distro-repo/utils/build_incontainer.sh /root/${SRC_DIR_4} ${TAR_FILENAME} ${DISTRI}
 fi
