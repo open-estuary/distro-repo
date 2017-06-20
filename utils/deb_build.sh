@@ -16,7 +16,7 @@ docker_status=`service docker status | grep "inactive" | awk '{print $2}'`
 if [ -z ${docker_status} ]; then
 	echo "Docker service is inactive, begin to start docker service"
         sudo service docker start
-	if [ $? -ne 0 ];then
+	if [ $? -ne 0 ] ; then
                 echo "Starting docker service failed!"
                 exit 1
         else
@@ -35,12 +35,16 @@ TAR_FILENAME=$2
 DISTRI=$3
 Container_Name=${TAR_FILENAME%-*}-$DISTRI
 
+if [ ! -f ~/KEY_PASSPHRASE ] ; then
+    cp /home/KEY_PASSPHRASE  ~/KEY_PASSPHRASE
+fi
+
 if [ $DISTRI = "debian" ]; then
-	docker run -d -v ~/:/root/ --name ${Container_Name} openestuary/debian:1.1 sh /root/distro-repo/utils/build_incontainer.sh /root/${SRC_DIR_4} ${TAR_FILENAME} ${DISTRI}
+	docker run -d -v ~/:/root/ --name ${Container_Name} openestuary/debian:3.0-build bash /root/distro-repo/utils/build_incontainer.sh /root/${SRC_DIR_4} ${TAR_FILENAME} ${DISTRI}
 fi
 
 if [ $DISTRI = "ubuntu" ]; then
-	docker run -d -v ~/:/root/ --name ${Container_Name} openestuary/ubuntu:1.1 sh /root/distro-repo/utils/build_incontainer.sh /root/${SRC_DIR_4} ${TAR_FILENAME} ${DISTRI}
+	docker run -d -v ~/:/root/ --name ${Container_Name} openestuary/ubuntu:3.0-build bash /root/distro-repo/utils/build_incontainer.sh /root/${SRC_DIR_4} ${TAR_FILENAME} ${DISTRI}
 fi
 
 echo "It may take some times to build, please wait."
@@ -56,6 +60,7 @@ done
 echo "Building has been done. Please check deb under ~/debbuild(ububuild)/DEBS/ or ~/debbuild(ububuild)/SDEBS/ directory !"
 
 echo "Begin to remove building container."
+docker logs ${Container_Name}
 docker rm ${Container_Name}
 if [ $? -ne 0 ]; then
         echo "Remove building container failed!"
