@@ -17,12 +17,12 @@ else
         exit 1
 fi
 
-VERSION="3.1"
+VERSION="2.6"
 TAR_FILENAME="systemtap-""${VERSION}"".tar.gz"
 
 if [ ! -f ${CUR_DIR}/src/${TAR_FILENAME} ] ; then
     sudo wget -O ${CUR_DIR}/src/${TAR_FILENAME} https://sourceware.org/systemtap/ftp/releases/${TAR_FILENAME}
 fi
 
-#${CUR_DIR}/../../utils/deb_build.sh  ${CUR_DIR}/src ${TAR_FILENAME} $TARGETOS 
+${CUR_DIR}/../../utils/deb_build.sh  ${CUR_DIR}/src ${TAR_FILENAME} $TARGETOS 
 
