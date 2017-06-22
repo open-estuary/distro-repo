@@ -9,6 +9,7 @@ Distro-repo is to maintain everythings which are required to setup and use Open-
 
 ## <a name="2">How to use Open-Estuary repository</a>
 The open-estuary repository is supported on ARM64 platforms as follows:
+
 |Platform|Estuary Releases|Packages Type|
 |--|--|--|
 |CentOS|3.1|RPM|
@@ -18,27 +19,28 @@ The open-estuary repository is supported on ARM64 platforms as follows:
 ||||
 
 On the other hand, it is necessary to setup the repository firstly:
-   - CentOS:  
-     - Setup
+
+- CentOS:  
+   - Setup
        ```    
        sudo wget -O /etc/yum.repos.d/estuary.repo https://raw.githubusercontent.com/open-estuary/distro-repo/master/utils/estuary.repo    
        sudo chmod +r /etc/yum.repos.d/estuary.repo    
        sudo rpm --import ftp://repoftp:repopushez7411@117.78.41.188/releases/ESTUARY-GPG-KEY    
        yum clean dbcache    
        ```   
-     - Use `yum install <package-name>` to install packages.    
+   - Use `yum install <package-name>` to install packages.    
      
-   - Ubuntu: 
-     - Setup
+- Ubuntu: 
+   - Setup
        ```
        ```
-     - Use `apt-get install <package-name>` to install packages
+   - Use `apt-get install <package-name>` to install packages
        
-   - Ubuntu:      
-     - Setup       
+- Debian:      
+   - Setup       
        ```       
        ```     
-     - Use `apt-get install <package-name>` to install packages
+   - Use `apt-get install <package-name>` to install packages
 
 ## <a name="3">How to build packages</a>  
 It is strongly suggested to build on Estuary buildserver.  
