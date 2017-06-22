@@ -22,12 +22,14 @@ On the other hand, it is necessary to setup the repository firstly:
 
 - CentOS:  
   - Setup
-    - Http way (suggested for non-chinese users) 
-      > sudo wget -O /etc/yum.repos.d/estuary.repo https://raw.githubusercontent.com/open-estuary/distro-repo/master/estuaryhttp.repo    
-      > sudo chmod +r /etc/yum.repos.d/estuary.repo    
-      > sudo rpm --import http://repo.estuarydev.org/releases/ESTUARY-GPG-KEY   
-      > yum clean dbcache    
-    - ftp way (suggested for chinese users)       
+    - Http Way (recommended for non-chinese users) 
+      ```
+      sudo wget -O /etc/yum.repos.d/estuary.repo https://raw.githubusercontent.com/open-estuary/distro-repo/master/estuaryhttp.repo    
+      sudo chmod +r /etc/yum.repos.d/estuary.repo    
+      sudo rpm --import http://repo.estuarydev.org/releases/ESTUARY-GPG-KEY   
+      yum clean dbcache
+      ```
+    - Ftp Way (recommended for chinese users)       
       ```           
        sudo wget -O /etc/yum.repos.d/estuary.repo https://raw.githubusercontent.com/open-estuary/distro-repo/master/estuaryftp.repo 
        sudo chmod +r /etc/yum.repos.d/estuary.repo           
