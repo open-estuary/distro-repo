@@ -22,20 +22,19 @@ On the other hand, it is necessary to setup the repository firstly:
 
 - CentOS:  
   - Setup
-    - Http Way (recommended for non-chinese users) 
-      ```
-      sudo wget -O /etc/yum.repos.d/estuary.repo https://raw.githubusercontent.com/open-estuary/distro-repo/master/estuaryhttp.repo    
-      sudo chmod +r /etc/yum.repos.d/estuary.repo
-      sudo rpm --import http://repo.estuarydev.org/releases/ESTUARY-GPG-KEY
-      yum clean dbcache
-      ```   
-    - Ftp Way (recommended for chinese users)       
-      ```           
-       sudo wget -O /etc/yum.repos.d/estuary.repo https://raw.githubusercontent.com/open-estuary/distro-repo/master/estuaryftp.repo 
-       sudo chmod +r /etc/yum.repos.d/estuary.repo           
-       sudo rpm --import ftp://repoftp:repopushez7411@117.78.41.188/releases/ESTUARY-GPG-KEY           
-       yum clean dbcache
-       ``` 
+    ```
+    sudo wget -O /etc/yum.repos.d/estuary.repo https://raw.githubusercontent.com/open-estuary/distro-repo/master/estuaryhttp.repo    
+    sudo chmod +r /etc/yum.repos.d/estuary.repo
+    sudo rpm --import http://repo.estuarydev.org/releases/ESTUARY-GPG-KEY
+    yum clean dbcache
+    ```   
+   As for chiniese users, it could use ftp server to improve speed as follows:
+    ```           
+    sudo wget -O /etc/yum.repos.d/estuary.repo https://raw.githubusercontent.com/open-estuary/distro-repo/master/estuaryftp.repo 
+    sudo chmod +r /etc/yum.repos.d/estuary.repo           
+    sudo rpm --import ftp://repoftp:repopushez7411@117.78.41.188/releases/ESTUARY-GPG-KEY           
+    yum clean dbcache
+    ``` 
    - Use `yum install <package-name>` to install packages.    
      
 - Ubuntu: 
