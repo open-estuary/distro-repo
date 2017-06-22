@@ -84,35 +84,35 @@ if [ ${TARGETOS} = "centos" ];then
 	upload_files_repo "${filelist}" "${DST_DIR}"
 elif [ ${TARGETOS} = "debian" ];then
 	filelist="$(find ${SRC_DIR} -name "*.${file_type}")"
-	DST_DIR="/est-repo/releases/${VERSION}/${TARGETOS}"
+	DST_DIR="/est-repo/releases/${VERSION}/${TARGETOS}/pool/main"
 	upload_files_repo "${filelist}" "${DST_DIR}"
 	
 	filelist="$(find ${SRC_DIR} -name "*.orig.*")"
-        DST_DIR="/est-repo/releases/${VERSION}/${TARGETOS}"
+        DST_DIR="/est-repo/releases/${VERSION}/${TARGETOS}/pool/main"
         upload_files_repo "${filelist}" "${DST_DIR}"
 
 	filelist="$(find ${SRC_DIR} -name "*.debian.*")"
-        DST_DIR="/est-repo/releases/${VERSION}/${TARGETOS}"
+        DST_DIR="/est-repo/releases/${VERSION}/${TARGETOS}/pool/main"
         upload_files_repo "${filelist}" "${DST_DIR}"
 	
 	filelist="$(find ${SRC_DIR} -name "*.dsc")"
-        DST_DIR="/est-repo/releases/${VERSION}/${TARGETOS}"
+        DST_DIR="/est-repo/releases/${VERSION}/${TARGETOS}/pool/main"
         upload_files_repo "${filelist}" "${DST_DIR}"
 else
 	filelist="$(find ${SRC_DIR} -name "*.${file_type}")"
-        DST_DIR="/est-repo/releases/${VERSION}/${TARGETOS}"
+        DST_DIR="/est-repo/releases/${VERSION}/${TARGETOS}/pool/main"
         upload_files_repo "${filelist}" "${DST_DIR}"
 
         filelist="$(find ${SRC_DIR} -name "*.orig.*")"
-        DST_DIR="/est-repo/releases/${VERSION}/${TARGETOS}"
+        DST_DIR="/est-repo/releases/${VERSION}/${TARGETOS}/pool/main"
         upload_files_repo "${filelist}" "${DST_DIR}"
 
         filelist="$(find ${SRC_DIR} -name "*.debian.*")"
-        DST_DIR="/est-repo/releases/${VERSION}/${TARGETOS}"
+        DST_DIR="/est-repo/releases/${VERSION}/${TARGETOS}/pool/main"
         upload_files_repo "${filelist}" "${DST_DIR}"
 
         filelist="$(find ${SRC_DIR} -name "*.dsc")"
-        DST_DIR="/est-repo/releases/${VERSION}/${TARGETOS}"
+        DST_DIR="/est-repo/releases/${VERSION}/${TARGETOS}/pool/main"
         upload_files_repo "${filelist}" "${DST_DIR}"
 fi
 echo "Upload done!"
