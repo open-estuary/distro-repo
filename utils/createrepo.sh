@@ -5,7 +5,7 @@ CUR_DIR=$(cd `dirname $0`; pwd)
 . ${CUR_DIR}/function_cmd_scp.sh
 IP="117.78.41.188"
 loginuser="repo"
-loginpassword="repodeploy@123"
+loginpassword=`cat /home/PASSWORD_REPO`
 
 TARGETOS=$1
 if [ "${TARGETOS}" = "CentOS" ] || [ "${TARGETOS}" = "centos" ] ; then

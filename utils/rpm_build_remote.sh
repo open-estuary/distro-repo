@@ -7,7 +7,7 @@ CUR_DIR=$(cd `dirname $0`; pwd)
 packages=
 IP="192.168.1.180"
 loginuser="estuaryrepo"
-loginpassword="OpenEstuary@123"
+loginpassword=`cat ~/PASSWORD_WORKER`
 giturl="https://github.com/open-estuary/distro-repo.git"
 reponame="distro-repo"
 
