@@ -19,6 +19,7 @@ if [ -z "$(which debsigs 2>/dev/null)" ] ; then
     sudo apt-get install -y debsigs
 fi
 sudo apt-get install -y expect
+sudo apt-get install -y policycoreutils
 
 TMP_BUILD="/tmp/tmp_rpm2deb/"
 if [ -d ${TMP_BUILD} ] ; then 
@@ -32,7 +33,7 @@ cd ${TMP_BUILD}
 for rpmfile in ${SRC_DIR}/*.rpm
 do
      echo ""
-#    alien --target=arm64 ${rpmfile}
+     alien --target=arm64 ${rpmfile}
 done
 
 if [ "${SRC_DIR}" != "${DEST_DIR}" ] ; then

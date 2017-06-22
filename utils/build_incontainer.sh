@@ -48,7 +48,11 @@ cp ${SRC_DIR}/* /root/${DESDIR}/SOURCES/${FILENAME}/
 
 #Step2 : Decompress necessary files
 if [ -z "$(echo ${TAR_FILENAME} | grep '.orig.tar.gz')" ] ; then
-    tar -zxvf /root/${DESDIR}/SOURCES/${FILENAME}/${TAR_FILENAME} -C /root/${DESDIR}/SOURCES/${FILENAME}/
+    if [ ! -z "$(echo ${TAR_FILENAME} | grep 'tar.bz2')" ] ; then
+        tar -jxvf /root/${DESDIR}/SOURCES/${FILENAME}/${TAR_FILENAME} -C /root/${DESDIR}/SOURCES/${FILENAME}/
+    else 
+        tar -zxvf /root/${DESDIR}/SOURCES/${FILENAME}/${TAR_FILENAME} -C /root/${DESDIR}/SOURCES/${FILENAME}/
+    fi
 fi
 
 cd /root/${DESDIR}/SOURCES/${FILENAME}/
