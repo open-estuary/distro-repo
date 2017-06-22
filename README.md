@@ -96,7 +96,7 @@ Rpm&Deb packages which Open-Estuary support is listed in [packages_list.md](http
   Currently partial [software collections tools](https://www.softwarecollections.org/en/) have been ported to ARM64 platforms. Therefore, you could use `yum install devtoolset-4-gcc` or `yum install devtoolset-6-gcc` to install newer gcc. 
   As for how to use these tools, please refer to https://www.softwarecollections.org/en.
 
-* How to integrate new packages with new libs? 
+* How to integrate new packages with specific libs? 
 
   Currently the AliSQL has used glibc-2.25(that is devlibset-4-glibc) automatically. If you have any requests to use new packages with specific libs, just submit issue to Estuary via bugtrack system or leave message in this page.
 
