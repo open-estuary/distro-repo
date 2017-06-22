@@ -36,6 +36,11 @@ if [ ! -d ${SRC_DIR} ]; then
     exit 1
 fi
 
+if [ $TAR_FILENAME = "oprofile-1.1.0.tar.gz" ];then
+	apt-get update
+	apt-get install default-jdk=2:1.7-52 default-jre=2:1.7-52 default-jre-headless=2:1.7-52 -y
+fi
+
 if [ -d /root/${DESDIR}/SOURCES/${FILENAME} ]; then
     echo "${FILENAME} had been builded before, now begin clean the directory."
     rm -rf /root/${DESDIR}/SOURCES/${FILENAME}/*
