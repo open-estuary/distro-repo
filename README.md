@@ -2,6 +2,7 @@
 * [How to use Open-Estuary repository](#2)
 * [How to build packages](#3)
 * [Packages Open-Estuary maintains](#4)
+* [FAQ](#5)
 
 # Open-Estuary Package Distrubtions Repository
 ## <a name="1">Introduction</a>
@@ -85,9 +86,19 @@ We also provider a method to build all rpms&debs.
 ## <a name="4">Packages Open-Estuary maintains</a>  
 Rpm&Deb packages which Open-Estuary support is listed in [packages_list.md](https://github.com/open-estuary/distro-repo/blob/master/packages_list.md).  
 
+## <a name="5">FAQ</a>
+* How to use specific glibc ?
 
+  Currently you could use `yum install devlibset-4-glibc` to install glibc-2.25. Especially this new glibc will be installed into `/opt/rh/devlibset-4/root/user/` directory, and wouldn't affect system's glibc. 
+  
+* How to use new gcc ?
+  
+  Currently partial [software collections tools](https://www.softwarecollections.org/en/) have been ported to ARM64 platforms. Therefore, you could use `yum install devtoolset-4-gcc` or `yum install devtoolset-6-gcc` to install newer gcc. 
+  As for how to use these tools, please refer to https://www.softwarecollections.org/en.
 
+* How to integrate new packages with new libs? 
 
+  Currently the AliSQL has used glibc-2.25(that is devlibset-4-glibc) automatically. If you have any requests to use new packages with specific libs, just submit issue to Estuary via bugtrack system or leave message in this page.
 
 
 
