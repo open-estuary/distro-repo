@@ -102,5 +102,5 @@ Rpm&Deb packages which Open-Estuary support is listed in [packages_list.md](http
 
 * How to use other versions Estuary packages?
  
-  By default, the estuaryftp.repo or estuaryhttp.repo contain the latest version. If you want to use specific version, just replace the version number in baseurl with specific version. For example, replace `5.0' with `3.0` in baseurl in order to use Estuary 3.0 packages. Then the baseurl looks like `baseurl=http://repo.estuarydev.org/releases/3.0/centos/`.
+  By default, the estuaryftp.repo or estuaryhttp.repo contain the latest version. If you want to use specific version, just replace the version number in baseurl with specific version. For example, replace `5.0` with `3.0` in baseurl in order to use Estuary 3.0 packages. Then the baseurl looks like `baseurl=http://repo.estuarydev.org/releases/3.0/centos/`.
   
