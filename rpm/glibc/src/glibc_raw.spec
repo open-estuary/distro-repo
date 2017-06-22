@@ -1,15 +1,3 @@
-%define scl devlibset-4
-%global scl_prefix devlibset-4
-%global MPI_HOME %{_libdir}
-
-%{?scl:%scl_package glibc}
-%{!?scl:
- %global pkg_name %{name}
- %global _root_prefix %{_prefix}
- %global _root_datadir %{_datadir}
- %global _root_bindir %{_bindir}
-}
-
 %define _unpackaged_files_terminate_build 0
 %define glibcsrcdir  glibc-2.25-258-g25e39b4
 %define glibcversion 2.25.90
@@ -159,7 +147,7 @@
 # %%package glibc - The GNU C Library (glibc) core package.
 ##############################################################################
 Summary: The GNU libc libraries
-Name: %{?scl_prefix}glibc
+Name: glibc
 Version: %{glibcversion}
 Release: %{glibcrelease}
 # GPLv2+ is used in a bunch of programs, LGPLv2+ is used for libraries.
@@ -329,11 +317,11 @@ Provides: ld-linux.so.3
 Provides: ld-linux.so.3(GLIBC_2.4)
 %endif
 
-Requires: %{?scl_prefix}glibc-common = %{version}-%{release}
+Requires: glibc-common = %{version}-%{release}
 
 %if %{without bootstrap}
 # Use the NSS-based cryptographic libraries by default.
-Requires: %{?scl_prefix}libcrypt-nss%{_isa}
+Requires: libcrypt-nss%{_isa}
 %endif
 
 Requires(pre): basesystem
@@ -376,7 +364,7 @@ BuildRequires: python
 
 # This is to ensure that __frame_state_for is exported by glibc
 # will be compatible with egcs 1.x.y
-BuildRequires: devtoolset-4-gcc >= 5.0
+BuildRequires: gcc >= 3.2
 %define enablekernel 2.6.32
 Conflicts: kernel < %{enablekernel}
 %define target %{_target_cpu}-redhat-linux
@@ -394,17 +382,17 @@ Conflicts: kernel < %{enablekernel}
 %ifarch %{multiarcharches}
 # Need STT_IFUNC support
 %ifarch %{power64}
-BuildRequires: %{?scl_prefix}binutils >= 2.20.51.0.2
-Conflicts: %{?scl_prefix}binutils < 2.20.51.0.2
+BuildRequires: binutils >= 2.20.51.0.2
+Conflicts: binutils < 2.20.51.0.2
 %else
 %ifarch s390 s390x
 # Needed for STT_GNU_IFUNC support for s390/390x
-BuildRequires: %{?scl_prefix}binutils >= 2.23.52.0.1-8
-Conflicts: %{?scl_prefix}binutils < 2.23.52.0.1-8
+BuildRequires: binutils >= 2.23.52.0.1-8
+Conflicts: binutils < 2.23.52.0.1-8
 %else
 # Default to this version
-BuildRequires: %{?scl_prefix}binutils >= 2.19.51.0.10
-Conflicts: %{?scl_prefix}binutils < 2.19.51.0.10
+BuildRequires: binutils >= 2.19.51.0.10
+Conflicts: binutils < 2.19.51.0.10
 %endif
 %endif
 # Earlier releases have broken support for IRELATIVE relocations
@@ -412,12 +400,12 @@ Conflicts: prelink < 0.4.2
 %else
 # Need AS_NEEDED directive
 # Need --hash-style=* support
-BuildRequires: devtoolset-4-binutils >= 2.17.50.0.2-5
+BuildRequires: binutils >= 2.17.50.0.2-5
 %endif
 
-BuildRequires: devtoolset-4-gcc >= 5.0
+BuildRequires: gcc >= 3.2.1-5
 %ifarch s390 s390x
-BuildRequires: %{?scl_prefix}gcc >= 4.1.0-0.17
+BuildRequires: gcc >= 4.1.0-0.17
 %endif
 %if 0%{?_enable_debug_packages}
 BuildRequires: elfutils >= 0.72
@@ -428,7 +416,7 @@ BuildRequires: rpm >= 4.2-0.56
 %if %{with testsuite}
 # The testsuite builds static C++ binaries that require a C++ compiler,
 # static C++ runtime from libstdc++-static, and lastly static glibc.
-BuildRequires: devtoolset-4-gcc-c++
+BuildRequires: gcc-c++
 BuildRequires: libstdc++-static
 # A configure check tests for the ability to create static C++ binaries
 # before glibc is built and therefore we need a glibc-static for that
@@ -451,8 +439,8 @@ BuildRequires: glibc-static
 # is preserved. One problem is you can't have "no" locales installed,
 # in that case we offer a "glibc-minimal-langpack" sub-pakcage for
 # this purpose.
-Requires: %{?scl_prefix}glibc-langpack = %{version}-%{release}
-Requires: %{?scl_prefix}glibc-all-langpacks = %{version}-%{release}
+Requires: glibc-langpack = %{version}-%{release}
+Requires: glibc-all-langpacks = %{version}-%{release}
 
 %description
 The glibc package contains standard libraries which are used by
@@ -484,41 +472,41 @@ Install glibc-xen if you might run your system under the Xen hypervisor.
 # crypt subpackages
 ######################################################################
 
-%package -n %{?scl_prefix}libcrypt
+%package -n libcrypt
 Summary: Password hashing library (non-NSS version)
 Group: System Environment/Libraries
 Requires: %{name}%{_isa} = %{version}-%{release}
-Provides: %{?scl_prefix}libcrypt%{_isa}
-Conflicts: %{?scl_prefix}libcrypt-nss
+Provides: libcrypt%{_isa}
+Conflicts: libcrypt-nss
 
-%description -n %{?scl_prefix}libcrypt
+%description -n libcrypt
 This package provides the crypt function, which implements password
 hashing.  The glibc implementation of the cryptographic algorithms is
 used by this package.
 
-%post -n %{?scl_prefix}libcrypt
+%post -n libcrypt
 /sbin/ldconfig
 
-%postun -n %{?scl_prefix}libcrypt
+%postun -n libcrypt
 /sbin/ldconfig
 
 %if %{without bootstrap}
-%package -n %{?scl_prefix}libcrypt-nss
+%package -n libcrypt-nss
 Summary: Password hashing library (NSS version)
 Group: System Environment/Libraries
 Requires: %{name}%{_isa} = %{version}-%{release}
-Provides: %{?scl_prefix}libcrypt%{_isa}
-Conflicts: %{?scl_prefix}libcrypt
+Provides: libcrypt%{_isa}
+Conflicts: libcrypt
 
-%description -n %{?scl_prefix}libcrypt-nss
+%description -n libcrypt-nss
 This package provides the crypt function, which implements password
 hashing.  The cryptographic algorithm implementations are provided by
 the low-level NSS libraries.
 
-%post -n %{?scl_prefix}libcrypt-nss
+%post -n libcrypt-nss
 /sbin/ldconfig
 
-%postun -n %{?scl_prefix}libcrypt-nss
+%postun -n libcrypt-nss
 /sbin/ldconfig
 %endif
 
@@ -533,7 +521,7 @@ Requires(pre): %{name}-headers
 Requires: %{name}-headers = %{version}-%{release}
 Requires: %{name} = %{version}-%{release}
 Requires: libgcc%{_isa}
-Requires: %{?scl_prefix}libcrypt%{_isa}
+Requires: libcrypt%{_isa}
 
 %description devel
 The glibc-devel package contains the object files necessary
@@ -653,7 +641,7 @@ nothing else. It is designed for assembling a minimal system.
 ##############################################################################
 # glibc "nscd" sub-package
 ##############################################################################
-%package -n %{?scl_prefix}nscd
+%package -n nscd
 Summary: A Name Service Caching Daemon (nscd).
 Group: System Environment/Daemons
 Requires: %{name} = %{version}-%{release}
@@ -666,7 +654,7 @@ Requires(post): systemd
 Requires(preun): systemd
 Requires(postun): systemd, /usr/sbin/userdel
 
-%description -n %{?scl_prefix}nscd
+%description -n nscd
 Nscd caches name service lookups and can dramatically improve
 performance with NIS+, and may help with DNS as well.
 
@@ -674,31 +662,31 @@ performance with NIS+, and may help with DNS as well.
 # Subpackages for NSS modules except nss_files, nss_dns
 ##############################################################################
 
-%package -n %{?scl_prefix}nss_db
+%package -n nss_db
 Summary: Name Service Switch (NSS) module using hash-indexed files
 Group: System Environment/Base
 Requires: %{name}%{_isa} = %{version}-%{release}
 
-%description -n %{?scl_prefix}nss_db
-The nss_db Name Service Switch module uses hash-indexed files in %{_localstatedir}/db
+%description -n nss_db
+The nss_db Name Service Switch module uses hash-indexed files in /var/db
 to speed up user, group, service, host name, and other NSS-based lookups.
 
-%package -n %{?scl_prefix}nss_nis
+%package -n nss_nis
 Summary: Name Service Switch (NSS) module using NIS
 Group: System Environment/Base
 Requires: %{name}%{_isa} = %{version}-%{release}
 
-%description -n %{?scl_prefix}nss_nis
+%description -n nss_nis
 The nss_nis, nss_nisplus, and nss_compat Name Service Switch modules
 uses the Network Information System (NIS) to obtain user, group, host
 name, and other data.
 
-%package -n %{?scl_prefix}nss_hesiod
+%package -n nss_hesiod
 Summary: Name Service Switch (NSS) module using Hesiod
 Group: System Environment/Base
 Requires: %{name}%{_isa} = %{version}-%{release}
 
-%description -n %{?scl_prefix}nss_hesiod
+%description -n nss_hesiod
 The nss_hesiod Name Service Switch module uses the Domain Name System
 (DNS) as a source for user, group, and service information, following
 the Hesiod convention of Project Athena.
@@ -706,9 +694,9 @@ the Hesiod convention of Project Athena.
 %package nss-devel
 Summary: Development files for directly linking NSS service modules
 Group: Development/Libraries
-Requires: %{?scl_prefix}nss_db%{_isa} = %{version}-%{release}
-Requires: %{?scl_prefix}nss_nis%{_isa} = %{version}-%{release}
-Requires: %{?scl_prefix}nss_hesiod%{_isa} = %{version}-%{release}
+Requires: nss_db%{_isa} = %{version}-%{release}
+Requires: nss_nis%{_isa} = %{version}-%{release}
+Requires: nss_hesiod%{_isa} = %{version}-%{release}
 
 %description nss-devel
 The glibc-nss-devel package contains the object files necessary to
@@ -746,10 +734,10 @@ Summary: Debug information for package %{name}
 Group: Development/Debug
 AutoReqProv: no
 %ifarch %{debuginfocommonarches}
-Requires: %{?scl_prefix}glibc-debuginfo-common = %{version}-%{release}
+Requires: glibc-debuginfo-common = %{version}-%{release}
 %else
 %ifarch %{ix86} %{sparc}
-Obsoletes: %{?scl_prefix}glibc-debuginfo-common
+Obsoletes: glibc-debuginfo-common
 %endif
 %endif
 
@@ -975,13 +963,6 @@ EnableKernel="--enable-kernel=%{enablekernel}"
 echo "$GCC" > Gcc
 AddOns=`echo */configure | sed -e 's!/configure!!g;s!\(nptl\|powerpc-cpu\)\( \|$\)!!g;s! \+$!!;s! !,!g;s!^!,!;/^,\*$/d'`
 
-#if [ -z "$(grep '^libdir = $(exec_prefix)/lib64' Makeconfig)" ] ; then
-#    sed -i 's/^libdir\ =\ $(exec_prefix)\/lib/libdir\ =\ $(exec_prefix)\/lib64/g' Makeconfig
-#fi
-
-#if [ -z "$(grep '^slibdir = $(exec_prefix)/lib64' Makeconfig)" ] ; then
-#    sed -i 's/^slibdir\ =\ $(exec_prefix)\/lib/slibdir\ =\ $(exec_prefix)\/lib64/g' Makeconfig
-#fi
 ##############################################################################
 # build()
 #	Build glibc in `build-%{target}$1', passing the rest of the arguments
@@ -989,8 +970,6 @@ AddOns=`echo */configure | sed -e 's!/configure!!g;s!\(nptl\|powerpc-cpu\)\( \|$
 #	global values are used to determine build flags, add-ons, kernel
 #	version, multiarch support, system tap support, etc.
 ##############################################################################
-#
-#		--prefix=%{_prefix} \
 build()
 {
 	builddir=build-%{target}${1:+-$1}
@@ -1003,10 +982,9 @@ build()
 	# unwind info is present
 	configure_CFLAGS="$build_CFLAGS -fno-asynchronous-unwind-tables"
 	../configure CC="$GCC" CXX="$GXX" CFLAGS="$configure_CFLAGS" \
-		--enable-add-ons=$AddOns \
 		--prefix=%{_prefix} \
-                --libdir=%{_prefix}/%{_lib} \
-		--with-headers=/usr/include/ $EnableKernel --enable-bind-now \
+		--enable-add-ons=$AddOns \
+		--with-headers=%{_prefix}/include $EnableKernel --enable-bind-now \
 		--build=%{target} \
 %ifarch %{multiarcharches}
 		--enable-multi-arch \
@@ -1062,7 +1040,7 @@ build nosegneg -mno-tls-direct-seg-refs
 		mkdir -p power6emul/{lib,lib64}
 		$GCC -shared -O2 -fpic -o power6emul/%{_lib}/power6emul.so %{SOURCE8} -Wl,-z,initfirst
 %ifarch ppc64
-		gcc -shared -nostdlib -O2 -fpic -m32 -o power6emul/%{_lib}/power6emul.so -xc - < /dev/null
+		gcc -shared -nostdlib -O2 -fpic -m32 -o power6emul/lib/power6emul.so -xc - < /dev/null
 %endif
 		export LD_PRELOAD=`pwd`/power6emul/\$LIB/power6emul.so
 	fi
@@ -1108,7 +1086,7 @@ $GCC -static -L. -Os -g %{SOURCE2} \
 	-o glibc_post_upgrade.%{_target_cpu} \
 	'-DLIBTLS="/%{_lib}/tls/"' \
 	'-DGCONV_MODULES_DIR="%{_libdir}/gconv"' \
-	'-DLD_SO_CONF="%{_sysconfdir}/ld.so.conf"' \
+	'-DLD_SO_CONF="/etc/ld.so.conf"' \
 	'-DICONVCONFIG="%{_sbindir}/iconvconfig.%{_target_cpu}"'
 popd
 
@@ -1178,14 +1156,14 @@ install_different()
 		libbase=${lib#*/}
 		# Take care that `libbaseso' has a * that needs expanding so
 		# take care with quoting.
-		libbaseso=$(basename $RPM_BUILD_ROOT%{_prefix}/%{_lib}/${libbase}-*.so)
+		libbaseso=$(basename $RPM_BUILD_ROOT/%{_lib}/${libbase}-*.so)
 		# Only install if different from default build library.
 		if cmp -s ${lib}.so ../build-%{target}/${lib}.so; then
 			ln -sf "$subdir_up"/$libbaseso $libdestdir/$libbaseso
 		else
 			cp -a ${lib}.so $libdestdir/$libbaseso
 		fi
-		dlib=$libdestdir/$(basename $RPM_BUILD_ROOT%{_prefix}/%{_lib}/${libbase}.so.*)
+		dlib=$libdestdir/$(basename $RPM_BUILD_ROOT/%{_lib}/${libbase}.so.*)
 		ln -sf $libbaseso $dlib
 	done
 }
@@ -1197,11 +1175,11 @@ install_different()
 %if %{without bootstrap}
 # Move the NSS-based implementation out of the way.
 libcrypt_found=false
-for libcrypt in ${RPM_BUILD_ROOT}%{_prefix}/lib/libcrypt-*.so ; do
+for libcrypt in ${RPM_BUILD_ROOT}/%{_lib}/libcrypt-*.so ; do
   if $libcrypt_found; then
-     Multiple libcrypt files
-     ls -l ${RPM_BUILD_ROOT}/lib/libcrypt-*.so
-     exit 1
+    # Multiple libcrypt files
+    ls -l ${RPM_BUILD_ROOT}/%{_lib}/libcrypt-*.so
+    exit 1
   fi
   mv "$libcrypt" "$(echo "$libcrypt" | sed s/libcrypt-/libcrypt-nss-/)"
 done
@@ -1223,7 +1201,7 @@ unset libcrypt libcrypt_found
 %define nosegneg_subdir i686/nosegneg
 %define nosegneg_subdir_up ../..
 pushd build-%{target}-nosegneg
-destdir=$RPM_BUILD_ROOT%{_prefix}/%{_lib}
+destdir=$RPM_BUILD_ROOT/%{_lib}
 install_different "$destdir" "%{nosegneg_subdir}" "%{nosegneg_subdir_up}"
 popd
 %endif # %{buildxen}
@@ -1237,7 +1215,7 @@ popd
 %define power6_legacy power6x
 %define power6_legacy_up ..
 pushd build-%{target}-power6
-destdir=$RPM_BUILD_ROOT%{_prefix}/%{_lib}
+destdir=$RPM_BUILD_ROOT/%{_lib}
 install_different "$destdir" "%{power6_subdir}" "%{power6_subdir_up}"
 # Make a legacy /usr/lib[64]/power6x directory that is a symlink to the
 # power6 runtime.
@@ -1254,7 +1232,7 @@ popd
 %define power7_subdir power7
 %define power7_subdir_up ..
 pushd build-%{target}-power7
-destdir=$RPM_BUILD_ROOT%{_prefix}/%{_lib}
+destdir=$RPM_BUILD_ROOT/%{_lib}
 install_different "$destdir" "%{power7_subdir}" "%{power7_subdir_up}"
 popd
 %endif
@@ -1263,7 +1241,7 @@ popd
 %define power8_subdir power8
 %define power8_subdir_up ..
 pushd build-%{target}-power8
-destdir=$RPM_BUILD_ROOT%{_prefix}/%{_lib}
+destdir=$RPM_BUILD_ROOT/%{_lib}
 install_different "$destdir" "%{power8_subdir}" "%{power8_subdir_up}"
 popd
 %endif
@@ -1276,7 +1254,7 @@ popd
 # XXX: This looks like a bug in glibc that accidentally installed these
 #      wrong files. We probably don't need this today.
 rm -f $RPM_BUILD_ROOT%{_libdir}/libNoVersion*
-rm -f $RPM_BUILD_ROOT%{_prefix}/%{_lib}/libNoVersion*
+rm -f $RPM_BUILD_ROOT/%{_lib}/libNoVersion*
 
 # rquota.x and rquota.h are now provided by quota
 rm -f $RPM_BUILD_ROOT%{_prefix}/include/rpcsvc/rquota.[hx]
@@ -1285,8 +1263,8 @@ rm -f $RPM_BUILD_ROOT%{_prefix}/include/rpcsvc/rquota.[hx]
 rm -f $RPM_BUILD_ROOT%{_sbindir}/rpcinfo
 
 # Remove the old nss modules.
-rm -f ${RPM_BUILD_ROOT}%{_prefix}/%{_lib}/libnss1-*
-rm -f ${RPM_BUILD_ROOT}%{_prefix}/%{_lib}/libnss-*.so.1
+rm -f ${RPM_BUILD_ROOT}/%{_lib}/libnss1-*
+rm -f ${RPM_BUILD_ROOT}/%{_lib}/libnss-*.so.1
 
 ##############################################################################
 # Install info files
@@ -1295,7 +1273,7 @@ rm -f ${RPM_BUILD_ROOT}%{_prefix}/%{_lib}/libnss-*.so.1
 %if %{with docs}
 # Move the info files if glibc installed them into the wrong location.
 if [ -d $RPM_BUILD_ROOT%{_prefix}/info -a "%{_infodir}" != "%{_prefix}/info" ]; then
-  mkdir -p $RPM_BUILD_ROOT%{_prefix}/%{_infodir}
+  mkdir -p $RPM_BUILD_ROOT%{_infodir}
   mv -f $RPM_BUILD_ROOT%{_prefix}/info/* $RPM_BUILD_ROOT%{_infodir}
   rm -rf $RPM_BUILD_ROOT%{_prefix}/info
 fi
@@ -1314,7 +1292,7 @@ rm -f $RPM_BUILD_ROOT%{_infodir}/libc.info*
 
 %ifnarch %{auxarches}
 olddir=`pwd`
-pushd ${RPM_BUILD_ROOT}%{_prefix}/%{_lib}/locale
+pushd ${RPM_BUILD_ROOT}%{_prefix}/lib/locale
 rm -f locale-archive
 # Intentionally we do not pass --alias-file=, aliases will be added
 # by build-locale-archive.
@@ -1330,10 +1308,10 @@ for i in eo *_*
 do
     lang=${i%%_*}
     if [ ! -e langpack-${lang}.filelist ]; then
-        echo "%dir %{_prefix}/%{_lib}/locale" >> langpack-${lang}.filelist
+        echo "%dir %{_prefix}/lib/locale" >> langpack-${lang}.filelist
     fi
-    echo "%dir  %{_prefix}/%{_lib}/locale/$i" >> langpack-${lang}.filelist
-    echo "%{_prefix}/${_lib}/locale/$i/*" >> langpack-${lang}.filelist
+    echo "%dir  %{_prefix}/lib/locale/$i" >> langpack-${lang}.filelist
+    echo "%{_prefix}/lib/locale/$i/*" >> langpack-${lang}.filelist
 done
 popd
 pushd ${RPM_BUILD_ROOT}%{_prefix}/share/locale
@@ -1342,44 +1320,39 @@ do
     locale=${i%%%%/*}
     lang=${locale%%%%_*}
     echo "%lang($lang) %{_prefix}/share/locale/${i}" \
-         >> ${RPM_BUILD_ROOT}%{_prefix}/%{_lib}/locale/langpack-${lang}.filelist
+         >> ${RPM_BUILD_ROOT}%{_prefix}/lib/locale/langpack-${lang}.filelist
 done
 popd
-mv  ${RPM_BUILD_ROOT}%{_prefix}/%{_lib}/locale/*.filelist .
+mv  ${RPM_BUILD_ROOT}%{_prefix}/lib/locale/*.filelist .
 %endif
 
 ##############################################################################
 # Install configuration files for services
 ##############################################################################
-mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}
-install -p -m 644 %{SOURCE7} $RPM_BUILD_ROOT%{_sysconfdir}/nsswitch.conf
+
+install -p -m 644 %{SOURCE7} $RPM_BUILD_ROOT/etc/nsswitch.conf
 
 %ifnarch %{auxarches}
-mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/default
-install -p -m 644 nis/nss $RPM_BUILD_ROOT%{_sysconfdir}/default/nss
+mkdir -p $RPM_BUILD_ROOT/etc/default
+install -p -m 644 nis/nss $RPM_BUILD_ROOT/etc/default/nss
 
 # This is for ncsd - in glibc 2.2
-install -m 644 nscd/nscd.conf $RPM_BUILD_ROOT%{_sysconfdir}
-mkdir -p $RPM_BUILD_ROOT%{_prefix}/..%{_tmpfilesdir}
-install -m 644 %{SOURCE4} %{buildroot}%{_prefix}/..%{_tmpfilesdir}
-mkdir -p ${RPM_BUILD_ROOT}%{_unitdir}/
-sed -i "s#/etc#%{_scl_root}/etc#g" nscd/nscd.service
-sed -i "s#/usr#%{_scl_root}/usr#g" nscd/nscd.service
-sed -i "s#/run#%{_scl_root}/run#g" nscd/nscd.service
-mv nscd/nscd.service nscd/%{scl_prefix}nscd.service
-mv nscd/nscd.socket nscd/%{scl_prefix}nscd.socket
-install -m 644 nscd/%{scl_prefix}nscd.service nscd/%{scl_prefix}nscd.socket $RPM_BUILD_ROOT%{_unitdir}/
+install -m 644 nscd/nscd.conf $RPM_BUILD_ROOT/etc
+mkdir -p $RPM_BUILD_ROOT%{_tmpfilesdir}
+install -m 644 %{SOURCE4} %{buildroot}%{_tmpfilesdir}
+mkdir -p $RPM_BUILD_ROOT/lib/systemd/system
+install -m 644 nscd/nscd.service nscd/nscd.socket $RPM_BUILD_ROOT/lib/systemd/system
 %endif
 
 # Include ld.so.conf
-echo 'include ld.so.conf.d/*.conf' > $RPM_BUILD_ROOT%{_sysconfdir}/ld.so.conf
-truncate -s 0 $RPM_BUILD_ROOT%{_sysconfdir}/ld.so.cache
-chmod 644 $RPM_BUILD_ROOT%{_sysconfdir}/ld.so.conf
-mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/ld.so.conf.d
+echo 'include ld.so.conf.d/*.conf' > $RPM_BUILD_ROOT/etc/ld.so.conf
+truncate -s 0 $RPM_BUILD_ROOT/etc/ld.so.cache
+chmod 644 $RPM_BUILD_ROOT/etc/ld.so.conf
+mkdir -p $RPM_BUILD_ROOT/etc/ld.so.conf.d
 %ifnarch %{auxarches}
-mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/sysconfig
-truncate -s 0 $RPM_BUILD_ROOT%{_sysconfdir}/sysconfig/nscd
-truncate -s 0 $RPM_BUILD_ROOT%{_sysconfdir}/gai.conf
+mkdir -p $RPM_BUILD_ROOT/etc/sysconfig
+truncate -s 0 $RPM_BUILD_ROOT/etc/sysconfig/nscd
+truncate -s 0 $RPM_BUILD_ROOT/etc/gai.conf
 %endif
 
 # Include %{_libdir}/gconv/gconv-modules.cache
@@ -1481,22 +1454,22 @@ rm -f $RPM_BUILD_ROOT%{_prefix}/lib/debug%{_libdir}/*_p.a
   sed -e '\,.*/share/locale/\([^/_]\+\).*/LC_MESSAGES/.*\.mo,d' \
       -e '\,.*/share/i18n/locales/.*,d' \
       -e '\,.*/share/i18n/charmaps/.*,d' \
-      -e '\,%{_sysconfdir}/\(localtime\|nsswitch.conf\|ld\.so\.conf\|ld\.so\.cache\|default\|rpc\|gai\.conf\),d' \
-      -e '\,/lib/lib\(pcprofile\|memusage\)\.so,d' \
+      -e '\,/etc/\(localtime\|nsswitch.conf\|ld\.so\.conf\|ld\.so\.cache\|default\|rpc\|gai\.conf\),d' \
+      -e '\,/%{_lib}/lib\(pcprofile\|memusage\)\.so,d' \
       -e '\,bin/\(memusage\|mtrace\|xtrace\|pcprofiledump\),d'
 } | sort > rpm.filelist
 
 touch common.filelist
 
 mkdir -p $RPM_BUILD_ROOT%{_libdir}
-mv -f $RPM_BUILD_ROOT%{_prefix}/lib/lib{pcprofile,memusage}.so $RPM_BUILD_ROOT%{_libdir}
+mv -f $RPM_BUILD_ROOT/%{_lib}/lib{pcprofile,memusage}.so $RPM_BUILD_ROOT%{_libdir}
 
 # The xtrace and memusage scripts have hard-coded paths that need to be
 # translated to a correct set of paths using the $LIB token which is
 # dynamically translated by ld.so as the default lib directory.
 for i in $RPM_BUILD_ROOT%{_prefix}/bin/{xtrace,memusage}; do
-  sed -e 's~=/lib/libpcprofile.so~=%{_libdir}/libpcprofile.so~' \
-      -e 's~=/lib/libmemusage.so~=%{_libdir}/libmemusage.so~' \
+  sed -e 's~=/%{_lib}/libpcprofile.so~=%{_libdir}/libpcprofile.so~' \
+      -e 's~=/%{_lib}/libmemusage.so~=%{_libdir}/libmemusage.so~' \
       -e 's~='\''/\\\$LIB/libpcprofile.so~='\''%{_prefix}/\\$LIB/libpcprofile.so~' \
       -e 's~='\''/\\\$LIB/libmemusage.so~='\''%{_prefix}/\\$LIB/libmemusage.so~' \
       -i $i
@@ -1566,7 +1539,7 @@ grep '%{_prefix}/share' < rpm.filelist | \
 # that start with g, or i would get put into common.filelist and
 # rpm.filelist.
 sed -i -e '\|%{_prefix}/bin|d' \
-       -e '\|%{_prefix}/%{_lib}/locale|d' \
+       -e '\|%{_prefix}/lib/locale|d' \
        -e '\|%{_prefix}/sbin/[^gi]|d' \
        -e '\|%{_prefix}/share|d' rpm.filelist
 
@@ -1613,29 +1586,21 @@ for module in db nis nisplus compat hesiod files dns; do
   grep -E "/libnss_$module(\.so\.[0-9.]+|-[0-9.]+\.so)$" \
     rpm.filelist > nss_$module.filelist
 done
-
 # nis includes nisplus and compat
 cat nss_nisplus.filelist nss_compat.filelist >> nss_nis.filelist
 # Symlinks go into the nss-devel package (instead of the main devel
 # package).
 grep '/libnss_[a-z]*\.so$' devel.filelist > nss-devel.filelist
-
-# Fix db/Makefile installtion
-mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/db
-mv $RPM_BUILD_ROOT%{_prefix}/var/db/Makefile $RPM_BUILD_ROOT%{_localstatedir}/db/Makefile
-sed -i 's/\/usr\/var\/db/\/var\/db/g' rpm.filelist
-
-# %{_localstatedir}/db/Makefile goes into nss_hesiod, remove the other files from
+# /var/db/Makefile goes into nss_hesiod, remove the other files from
 # the main and devel file list.
 sed -i -e '\,/libnss_.*\.so[0-9.]*$,d' \
-    -e '\,%{_localstatedir}/db/Makefile,d' \
+    -e '\,/var/db/Makefile,d' \
     rpm.filelist devel.filelist
 # Restore the built-in NSS modules.
 cat nss_files.filelist nss_dns.filelist >> rpm.filelist
 
 # Prepare the libcrypt-related file lists.
 grep '/libcrypt-[0-9.]*.so$' rpm.filelist > libcrypt.filelist
-
 test $(wc -l < libcrypt.filelist) -eq 1
 %if %{without bootstrap}
 sed s/libcrypt/libcrypt-nss/ < libcrypt.filelist > libcrypt-nss.filelist
@@ -1653,8 +1618,8 @@ rm -rf $RPM_BUILD_ROOT%{_prefix}/share/zoneinfo
 # doesn't seem to be any macro to give us that.  So we do the next best thing,
 # which is to at least keep the timestamp consistent.  The choice of using
 # glibc_post_upgrade.c is arbitrary.
-touch -r %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/ld.so.conf
-touch -r sunrpc/etc.rpc $RPM_BUILD_ROOT%{_sysconfdir}/rpc
+touch -r %{SOURCE2} $RPM_BUILD_ROOT/etc/ld.so.conf
+touch -r sunrpc/etc.rpc $RPM_BUILD_ROOT/etc/rpc
 
 # We allow undefined symbols in shared libraries because the libraries
 # referenced at link time here, particularly ld.so, may be different than
@@ -1680,14 +1645,14 @@ cp posix/gai.conf documentation/
 
 %ifarch s390x
 # Compatibility symlink
-mkdir -p $RPM_BUILD_ROOT%{_prefix}/lib
-ln -sf /%{_lib}/ld64.so.1 $RPM_BUILD_ROOT%{_prefix}/%{_lib}/ld64.so.1
+mkdir -p $RPM_BUILD_ROOT/lib
+ln -sf /%{_lib}/ld64.so.1 $RPM_BUILD_ROOT/lib/ld64.so.1
 %endif
 
 # Leave a compatibility symlink for the dynamic loader on armhfp targets,
 # at least until the world gets rebuilt
 %ifarch armv7hl armv7hnl
-ln -sf %{_prefix}/%{_lib}/ld-linux-armhf.so.3 $RPM_BUILD_ROOT%{_prefix}/%{_lib}/ld-linux.so.3
+ln -sf /lib/ld-linux-armhf.so.3 $RPM_BUILD_ROOT/lib/ld-linux.so.3
 %endif
 
 %if %{with benchtests}
@@ -1889,18 +1854,18 @@ sed -e '/%%dir/d;/%%config/d;/%%verify/d;s/%%lang([^)]*) //;s#^/*##' \
 
 %else
 
-mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/{db,run}/nscd
-touch $RPM_BUILD_ROOT%{_localstatedir}/{db,run}/nscd/{passwd,group,hosts,services}
-touch $RPM_BUILD_ROOT%{_localstatedir}/run/nscd/{socket,nscd.pid}
+mkdir -p $RPM_BUILD_ROOT/var/{db,run}/nscd
+touch $RPM_BUILD_ROOT/var/{db,run}/nscd/{passwd,group,hosts,services}
+touch $RPM_BUILD_ROOT/var/run/nscd/{socket,nscd.pid}
 
 %endif # %{auxarches}
 
 %ifnarch %{auxarches}
-truncate -s 0 $RPM_BUILD_ROOT%{_prefix}/%{_lib}/locale/locale-archive
+truncate -s 0 $RPM_BUILD_ROOT/%{_prefix}/lib/locale/locale-archive
 %endif
 
-mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/cache/ldconfig
-truncate -s 0 $RPM_BUILD_ROOT%{_localstatedir}/cache/ldconfig/aux-cache
+mkdir -p $RPM_BUILD_ROOT/var/cache/ldconfig
+truncate -s 0 $RPM_BUILD_ROOT/var/cache/ldconfig/aux-cache
 
 ##############################################################################
 # Run the glibc testsuite
@@ -1913,12 +1878,6 @@ truncate -s 0 $RPM_BUILD_ROOT%{_localstatedir}/cache/ldconfig/aux-cache
 # and exit with 0. In the future we want to compare against a baseline and
 # exit with 1 if the results deviate from the baseline.
 run_tests () {
-
-        #Fix nptl test failurs when glibc is not installed into /usr directory 
-        ln -s /usr/%{_lib}/libgcc_s.so.1 libgcc_s.so.1
-        ln -s /usr/%{_lib}/libstdc++.so.6 libstdc++.so.6
-        ln -s /usr/%{_lib}/libfreebl3.so libfreebl3.so
-
 	truncate -s 0 check.log
 	tail -f check.log &
 	tailpid=$!
@@ -2035,9 +1994,9 @@ done
 echo ====================TESTING END=====================
 PLTCMD='/^Relocation section .*\(\.rela\?\.plt\|\.rela\.IA_64\.pltoff\)/,/^$/p'
 echo ====================PLT RELOCS LD.SO================
-readelf -Wr $RPM_BUILD_ROOT%{_prefix}/lib/ld-*.so | sed -n -e "$PLTCMD"
+readelf -Wr $RPM_BUILD_ROOT/%{_lib}/ld-*.so | sed -n -e "$PLTCMD"
 echo ====================PLT RELOCS LIBC.SO==============
-readelf -Wr $RPM_BUILD_ROOT%{_prefix}/lib/libc-*.so | sed -n -e "$PLTCMD"
+readelf -Wr $RPM_BUILD_ROOT/%{_lib}/libc-*.so | sed -n -e "$PLTCMD"
 echo ====================PLT RELOCS END==================
 
 %if %{with valgrind}
@@ -2071,7 +2030,7 @@ end
 -- (have a template of non-zero size), then we rebuild the
 -- locale cache (locale-archive) from the pre-populated
 -- locale cache (locale-archive.tmpl) i.e. template.
-if posix.stat("%{_prefix}/%{_lib}/locale/locale-archive.tmpl", "size") > 0 then
+if posix.stat("%{_prefix}/lib/locale/locale-archive.tmpl", "size") > 0 then
   pid = posix.fork()
   if pid == 0 then
     posix.exec("%{_prefix}/sbin/build-locale-archive", "--install-langs", "%%{_install_langs}")
@@ -2085,7 +2044,7 @@ end
 -- We are being uninstalled and if this is an upgrade
 -- then the new packages template will be used to
 -- recreate a new copy of the cache.
-os.remove("%{_prefix}/%{_lib}/locale/locale-archive")
+os.remove("%{_prefix}/lib/locale/locale-archive")
 
 %if %{with docs}
 %post devel
@@ -2109,23 +2068,23 @@ fi
 
 %postun utils -p /sbin/ldconfig
 
-%pre -n %{?scl_prefix}nscd
+%pre -n nscd
 getent group nscd >/dev/null || /usr/sbin/groupadd -g 28 -r nscd
 getent passwd nscd >/dev/null ||
   /usr/sbin/useradd -M -o -r -d / -s /sbin/nologin \
 		    -c "NSCD Daemon" -u 28 -g nscd nscd
 
-%post -n %{?scl_prefix}nscd
-%systemd_post %{scl_prefix}nscd.service
+%post -n nscd
+%systemd_post nscd.service
 
-%preun -n %{?scl_prefix}nscd
-%systemd_preun %{scl_prefix}nscd.service
+%preun -n nscd
+%systemd_preun nscd.service
 
-%postun -n %{?scl_prefix}nscd
+%postun -n nscd
 if test $1 = 0; then
   /usr/sbin/userdel nscd > /dev/null 2>&1 || :
 fi
-%systemd_postun_with_restart %{scl_prefix}nscd.service
+%systemd_postun_with_restart nscd.service
 
 %if %{xenpackage}
 %post xen -p /sbin/ldconfig
@@ -2140,35 +2099,35 @@ rm -f *.filelist*
 %defattr(-,root,root)
 %dir %{_prefix}/%{_lib}/audit
 %if %{buildxen} && !%{xenpackage}
-%dir %{_prefix}/%{_lib}/%{nosegneg_subdir_base}
-%dir %{_prefix}/%{_lib}/%{nosegneg_subdir}
+%dir /%{_lib}/%{nosegneg_subdir_base}
+%dir /%{_lib}/%{nosegneg_subdir}
 %endif
 %if %{buildpower6}
-%dir %{_prefix}/%{_lib}/power6
-%dir %{_prefix}/%{_lib}/power6x
+%dir /%{_lib}/power6
+%dir /%{_lib}/power6x
 %endif
 %if %{buildpower7}
-%dir %{_prefix}/%{_lib}/power7
+%dir /%{_lib}/power7
 %endif
 %if %{buildpower8}
-%dir %{_prefix}/%{_lib}/power8
+%dir /%{_lib}/power8
 %endif
 %ifarch s390x
-%{_prefix}/%{_lib}/ld64.so.1
+/lib/ld64.so.1
 %endif
 %ifarch armv7hl armv7hnl
-%{_prefix}/%{_lib}/ld-linux.so.3
+/lib/ld-linux.so.3
 %endif
-%verify(not md5 size mtime) %config(noreplace) %{_sysconfdir}/nsswitch.conf
-%verify(not md5 size mtime) %config(noreplace) %{_sysconfdir}/ld.so.conf
-%verify(not md5 size mtime) %config(noreplace) %{_sysconfdir}/rpc
-%dir %{_sysconfdir}/ld.so.conf.d
+%verify(not md5 size mtime) %config(noreplace) /etc/nsswitch.conf
+%verify(not md5 size mtime) %config(noreplace) /etc/ld.so.conf
+%verify(not md5 size mtime) %config(noreplace) /etc/rpc
+%dir /etc/ld.so.conf.d
 %dir %{_prefix}/libexec/getconf
 %dir %{_libdir}/gconv
-%dir %attr(0700,root,root) %{_localstatedir}/cache/ldconfig
-%attr(0600,root,root) %verify(not md5 size mtime) %ghost %config(missingok,noreplace) %{_localstatedir}/cache/ldconfig/aux-cache
-%attr(0644,root,root) %verify(not md5 size mtime) %ghost %config(missingok,noreplace) %{_sysconfdir}/ld.so.cache
-%attr(0644,root,root) %verify(not md5 size mtime) %ghost %config(missingok,noreplace) %{_sysconfdir}/gai.conf
+%dir %attr(0700,root,root) /var/cache/ldconfig
+%attr(0600,root,root) %verify(not md5 size mtime) %ghost %config(missingok,noreplace) /var/cache/ldconfig/aux-cache
+%attr(0644,root,root) %verify(not md5 size mtime) %ghost %config(missingok,noreplace) /etc/ld.so.cache
+%attr(0644,root,root) %verify(not md5 size mtime) %ghost %config(missingok,noreplace) /etc/gai.conf
 %doc README NEWS INSTALL BUGS CONFORMANCE elf/rtld-debugger-interface.txt
 # If rpm doesn't support %license, then use %doc instead.
 %{!?_licensedir:%global license %%doc}
@@ -2177,24 +2136,24 @@ rm -f *.filelist*
 %if %{xenpackage}
 %files -f nosegneg.filelist xen
 %defattr(-,root,root)
-%dir %{_prefix}/%{_lib}/%{nosegneg_subdir_base}
-%dir ${_prefix}/%{_lib}/%{nosegneg_subdir}
+%dir /%{_lib}/%{nosegneg_subdir_base}
+%dir /%{_lib}/%{nosegneg_subdir}
 %endif
 
 %ifnarch %{auxarches}
 %files -f common.filelist common
 %defattr(-,root,root)
-%dir %{_prefix}/%{_lib}/locale
-%dir %{_prefix}/%{_lib}/locale/C.utf8
-%{_prefix}/%{_lib}/locale/C.utf8/*
-%dir %attr(755,root,root) %{_sysconfdir}/default
-%verify(not md5 size mtime) %config(noreplace) %{_sysconfdir}/default/nss
+%dir %{_prefix}/lib/locale
+%dir %{_prefix}/lib/locale/C.utf8
+%{_prefix}/lib/locale/C.utf8/*
+%dir %attr(755,root,root) /etc/default
+%verify(not md5 size mtime) %config(noreplace) /etc/default/nss
 %doc documentation/README.timezone
 %doc documentation/gai.conf
 
 %files all-langpacks
-%attr(0644,root,root) %verify(not md5 size mtime) %{_prefix}/%{_lib}/locale/locale-archive.tmpl
-%attr(0644,root,root) %verify(not md5 size mtime mode) %ghost %config(missingok,noreplace) %{_prefix}/%{_lib}/locale/locale-archive
+%attr(0644,root,root) %verify(not md5 size mtime) %{_prefix}/lib/locale/locale-archive.tmpl
+%attr(0644,root,root) %verify(not md5 size mtime mode) %ghost %config(missingok,noreplace) %{_prefix}/lib/locale/locale-archive
 
 %files locale-source
 %defattr(-,root,root)
@@ -2215,39 +2174,39 @@ rm -f *.filelist*
 %files -f utils.filelist utils
 %defattr(-,root,root)
 
-%files -f nscd.filelist -n %{?scl_prefix}nscd
+%files -f nscd.filelist -n nscd
 %defattr(-,root,root)
-%config(noreplace) %{_sysconfdir}/nscd.conf
-%dir %attr(0755,root,root) %{_localstatedir}/run/nscd
-%dir %attr(0755,root,root) %{_localstatedir}/db/nscd
-/usr/lib/systemd/system/%{scl_prefix}nscd.service
-/usr/lib/systemd/system/%{scl_prefix}nscd.socket
-%{_prefix}/..%{_tmpfilesdir}/nscd.conf
-%attr(0644,root,root) %verify(not md5 size mtime) %ghost %config(missingok,noreplace) %{_localstatedir}/run/nscd/nscd.pid
-%attr(0666,root,root) %verify(not md5 size mtime) %ghost %config(missingok,noreplace) %{_localstatedir}/run/nscd/socket
-%attr(0600,root,root) %verify(not md5 size mtime) %ghost %config(missingok,noreplace) %{_localstatedir}/run/nscd/passwd
-%attr(0600,root,root) %verify(not md5 size mtime) %ghost %config(missingok,noreplace) %{_localstatedir}/run/nscd/group
-%attr(0600,root,root) %verify(not md5 size mtime) %ghost %config(missingok,noreplace) %{_localstatedir}/run/nscd/hosts
-%attr(0600,root,root) %verify(not md5 size mtime) %ghost %config(missingok,noreplace) %{_localstatedir}/run/nscd/services
-%attr(0600,root,root) %verify(not md5 size mtime) %ghost %config(missingok,noreplace) %{_localstatedir}/db/nscd/passwd
-%attr(0600,root,root) %verify(not md5 size mtime) %ghost %config(missingok,noreplace) %{_localstatedir}/db/nscd/group
-%attr(0600,root,root) %verify(not md5 size mtime) %ghost %config(missingok,noreplace) %{_localstatedir}/db/nscd/hosts
-%attr(0600,root,root) %verify(not md5 size mtime) %ghost %config(missingok,noreplace) %{_localstatedir}/db/nscd/services
-%ghost %config(missingok,noreplace) %{_sysconfdir}/sysconfig/nscd
+%config(noreplace) /etc/nscd.conf
+%dir %attr(0755,root,root) /var/run/nscd
+%dir %attr(0755,root,root) /var/db/nscd
+/lib/systemd/system/nscd.service
+/lib/systemd/system/nscd.socket
+%{_tmpfilesdir}/nscd.conf
+%attr(0644,root,root) %verify(not md5 size mtime) %ghost %config(missingok,noreplace) /var/run/nscd/nscd.pid
+%attr(0666,root,root) %verify(not md5 size mtime) %ghost %config(missingok,noreplace) /var/run/nscd/socket
+%attr(0600,root,root) %verify(not md5 size mtime) %ghost %config(missingok,noreplace) /var/run/nscd/passwd
+%attr(0600,root,root) %verify(not md5 size mtime) %ghost %config(missingok,noreplace) /var/run/nscd/group
+%attr(0600,root,root) %verify(not md5 size mtime) %ghost %config(missingok,noreplace) /var/run/nscd/hosts
+%attr(0600,root,root) %verify(not md5 size mtime) %ghost %config(missingok,noreplace) /var/run/nscd/services
+%attr(0600,root,root) %verify(not md5 size mtime) %ghost %config(missingok,noreplace) /var/db/nscd/passwd
+%attr(0600,root,root) %verify(not md5 size mtime) %ghost %config(missingok,noreplace) /var/db/nscd/group
+%attr(0600,root,root) %verify(not md5 size mtime) %ghost %config(missingok,noreplace) /var/db/nscd/hosts
+%attr(0600,root,root) %verify(not md5 size mtime) %ghost %config(missingok,noreplace) /var/db/nscd/services
+%ghost %config(missingok,noreplace) /etc/sysconfig/nscd
 %endif
 
-%files -f nss_db.filelist -n %{?scl_prefix}nss_db
-%files -f nss_nis.filelist -n %{?scl_prefix}nss_nis
-%files -f nss_hesiod.filelist -n %{?scl_prefix}nss_hesiod
-%{_localstatedir}/db/Makefile
+%files -f nss_db.filelist -n nss_db
+%files -f nss_nis.filelist -n nss_nis
+%files -f nss_hesiod.filelist -n nss_hesiod
+/var/db/Makefile
 %doc hesiod/README.hesiod
 %files -f nss-devel.filelist nss-devel
 
-%files -f libcrypt.filelist -n %{?scl_prefix}libcrypt
+%files -f libcrypt.filelist -n libcrypt
 %doc documentation/README.ufc-crypt
 %ghost /%{_lib}/libcrypt.so.1
 %if %{without bootstrap}
-%files -f libcrypt-nss.filelist -n %{?scl_prefix}libcrypt-nss
+%files -f libcrypt-nss.filelist -n libcrypt-nss
 %ghost /%{_lib}/libcrypt.so.1
 %endif
 

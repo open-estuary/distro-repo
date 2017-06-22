@@ -1,5 +1,6 @@
 #!/bin/bash
 
+BUILD_DEVTOOL_GCC=1
 CUR_DIR=$(cd `dirname $0`; pwd)
 
 sudo yum install -y devtoolset-4-gcc
@@ -21,4 +22,11 @@ fi
 sudo cp ${CUR_DIR}/src/SUPPORTED /root/rpmbuild/SOURCES/SUPPORTED
 #sed -i 's/x86_64/aarch64/g' ${CUR_DIR}/${SRC_DIR}/glibc.spec
 
-${CUR_DIR}/../../utils/rpm_build.sh  ${CUR_DIR}/${SRC_DIR} glibc.spec arch=aarch64 without-testsuite without-bootstrap
+
+if [ ${BUILD_DEVTOOL_GCC} -eq 0 ] ; then
+    SPECFILE="glibc_raw.spec"
+else 
+    SPECFILE="glibc.spec"
+fi
+
+${CUR_DIR}/../../utils/rpm_build.sh  ${CUR_DIR}/${SRC_DIR} ${SPECFILE} arch=aarch64 without-testsuite without-bootstrap

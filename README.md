@@ -2,34 +2,52 @@
 * [How to use Open-Estuary repository](#2)
 * [How to build packages](#3)
 * [Packages Open-Estuary maintains](#4)
+* [FAQ](#5)
 
 # Open-Estuary Package Distrubtions Repository
 ## <a name="1">Introduction</a>
-Distro-repo is to maintain everythings which are required to setup and use RPM/Deb repository.  
+Distro-repo is to maintain everythings which are required to setup and use Open-Estuary RPM/Deb repository.  
 
 ## <a name="2">How to use Open-Estuary repository</a>
-Make sure which distrobution you are using, ***CentOS*** or ***Ubuntu/Debian***.
+The open-estuary repository is supported on ARM64 platforms as follows:
 
-#### CentOS  
-1. Defaultly, estuary.repo is in */etc/yum.repos.d/* directory. Please to make sure.  
+|Distribution OS|Estuary Releases|Packages Type|
+|--|--|--|
+|CentOS(7.3)|3.1|RPM|
+|CentOS(7.3)|5.0|RPM|
+|Ubuntu(18.0)|5.0|Deb|
+|Debian(8.0)|5.0|Deb|
+||||
 
-If not, just download estuary.repo from *distro-repo/util/estuaryftp.repo（or estuaryhttp.repo）*, then move it to */etc/yum.repos.d/*.(estuaryftp.repo is domestic yum using ftp, and estuaryhttp.repo is foreign yum using http.)  
- 
-2. run `yum clean all`.
+On the other hand, it is necessary to setup the repository firstly:
 
-3. run `yum repolist`.
-You will find estuary-repo in standard output, if all is done.  
-
-Now you can use `yum install xxxxx` to install packages Open-Estuary supports.  
-
-#### Ubuntu/Debian
-1. Defaultly, estuary repository is listed in */etc/apt/source.list*. Please to make sure.  
-
-If not, just download source.list from *distro-repo/util/source.list*, then move it to */etc/apt/*.  
-
-2. run `apt-get update`.  
+- CentOS:  
+  - Setup
+    ```
+    sudo wget -O /etc/yum.repos.d/estuary.repo https://raw.githubusercontent.com/open-estuary/distro-repo/master/estuaryhttp.repo    
+    sudo chmod +r /etc/yum.repos.d/estuary.repo
+    sudo rpm --import http://repo.estuarydev.org/releases/ESTUARY-GPG-KEY
+    yum clean dbcache
+    ```
     
-Now you can use `apt-get install xxxxx` to install packages Open-Estuary supports. 
+   - Use `yum install <package-name>` to install packages.   
+   - Especially chinese users could use ftp server to improve speed as follows:    
+     ```               
+     sudo wget -O /etc/yum.repos.d/estuary.repo https://raw.githubusercontent.com/open-estuary/distro-repo/master/estuaryftp.repo     
+     sudo chmod +r /etc/yum.repos.d/estuary.repo               
+     sudo rpm --import ftp://repoftp:repopushez7411@117.78.41.188/releases/ESTUARY-GPG-KEY               
+     yum clean dbcache
+- Ubuntu: 
+  - Setup
+     ```
+     ```
+  - Use `apt-get install <package-name>` to install packages
+       
+- Debian:      
+  - Setup       
+     ```       
+     ```     
+  - Use `apt-get install <package-name>` to install packages
 
 ## <a name="3">How to build packages</a>  
 It is strongly suggested to build on Estuary buildserver.  
@@ -68,9 +86,21 @@ We also provider a method to build all rpms&debs.
 ## <a name="4">Packages Open-Estuary maintains</a>  
 Rpm&Deb packages which Open-Estuary support is listed in [packages_list.md](https://github.com/open-estuary/distro-repo/blob/master/packages_list.md).  
 
+## <a name="5">FAQ</a>
+* How to use specific glibc ?
 
+  Currently you could use `yum install devlibset-4-glibc` to install glibc-2.25. Especially this new glibc will be installed into `/opt/rh/devlibset-4/root/user/` directory, and wouldn't affect system's glibc. 
+  
+* How to use new gcc ?
+  
+  Currently partial [software collections tools](https://www.softwarecollections.org/en/) have been ported to ARM64 platforms. Therefore, you could use `yum install devtoolset-4-gcc` or `yum install devtoolset-6-gcc` to install newer gcc. 
+  As for how to use these tools, please refer to https://www.softwarecollections.org/en.
 
+* How to integrate new packages with specific libs? 
 
+  Currently the AliSQL has used glibc-2.25(that is devlibset-4-glibc) automatically. If you have any requests to use new packages with specific libs, just submit issue to Estuary via bugtrack system or submit one issue in this repository.
 
-
-
+* How to use other versions Estuary packages?
+ 
+  By default, the estuaryftp.repo or estuaryhttp.repo contain the latest version. If you want to use specific version, just replace the version number in baseurl with specific version. For example, replace `5.0` with `3.0` in baseurl in order to use Estuary 3.0 packages. Then the baseurl looks like `baseurl=http://repo.estuarydev.org/releases/3.0/centos/`.
+  

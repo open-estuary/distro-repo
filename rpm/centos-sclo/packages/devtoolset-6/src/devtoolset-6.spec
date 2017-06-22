@@ -26,7 +26,8 @@ Source1: %{scl_prefix}toolchain-docker-%{df_toolchain_s}.tar.bz2
 Source2: %{scl_prefix}perftools-docker-%{df_perftools_s}.tar.bz2
 
 # The base package must require everything in the collection
-Requires: %{scl_prefix}toolchain %{scl_prefix}perftools
+Requires: %{scl_prefix}toolchain
+#Requires: %{scl_prefix}perftools
 Obsoletes: %{name} < %{version}-%{release}
 
 BuildRequires: scl-utils-build >= 20120927-11
@@ -63,26 +64,27 @@ Summary: Package shipping basic toolchain applications
 Group: Applications/File
 Requires: %{scl_prefix}runtime
 Requires: %{scl_prefix}gcc %{scl_prefix}gcc-c++ %{scl_prefix}gcc-gfortran
-Requires: %{scl_prefix}binutils %{scl_prefix}gdb %{scl_prefix}strace
-Requires: %{scl_prefix}dwz %{scl_prefix}elfutils %{scl_prefix}memstomp
-Requires: %{scl_prefix}ltrace %{scl_prefix}make
+Requires: %{scl_prefix}binutils %{scl_prefix}gdb 
+#Requires: %{scl_prefix}strace
+#Requires: %{scl_prefix}dwz %{scl_prefix}elfutils %{scl_prefix}memstomp
+#Requires: %{scl_prefix}ltrace %{scl_prefix}make
 Obsoletes: %{name}-toolchain < %{version}-%{release}
 
 %description toolchain
 Package shipping basic toolchain applications (compiler, debugger, ...)
 
-%package perftools
-Summary: Package shipping performance tools
-Group: Applications/File
-Requires: %{scl_prefix}runtime
-Requires: %{scl_prefix}oprofile %{scl_prefix}systemtap %{scl_prefix}valgrind
-%ifarch x86_64 ppc64
-Requires: %{scl_prefix}dyninst
-%endif
-Obsoletes: %{name}-perftools < %{version}-%{release}
+#%package perftools
+#Summary: Package shipping performance tools
+#Group: Applications/File
+#Requires: %{scl_prefix}runtime
+#Requires: %{scl_prefix}oprofile %{scl_prefix}systemtap %{scl_prefix}valgrind
+#%ifarch x86_64 ppc64
+#Requires: %{scl_prefix}dyninst
+#%endif
+#Obsoletes: %{name}-perftools < %{version}-%{release}
 
-%description perftools
-Package shipping performance tools (systemtap, oprofile)
+#%description perftools
+#Package shipping performance tools (systemtap, oprofile)
 
 %package dockerfiles
 Summary: Package shipping Dockerfiles for Developer Toolset
@@ -201,7 +203,7 @@ install -p -m 644 %{?scl_name}.7 %{buildroot}%{_mandir}/man7/
 
 %files runtime
 %scl_files
-%attr(0644,root,root) %verify(not md5 size mtime) %ghost %config(missingok,noreplace) %{_sysconfdir}/selinux-equiv.created
+%attr(0644,root,root) %verify(not md5 size mtime) %ghost %config(missingok,noreplace) 
 %dir %{_scl_root}/etc/alternatives
 %dir %{_datadir}/appdata
 
@@ -210,7 +212,7 @@ install -p -m 644 %{?scl_name}.7 %{buildroot}%{_mandir}/man7/
 
 %files toolchain
 
-%files perftools
+#%files perftools
 
 %if 0%{?rhel} >= 7
 %files dockerfiles

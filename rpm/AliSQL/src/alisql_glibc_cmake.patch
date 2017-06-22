@@ -1,0 +1,16 @@
+diff -rup old/CMakeLists.txt new/CMakeLists.txt
+--- old/CMakeLists.txt	2017-05-03 17:12:17.000000000 +0800
++++ new/CMakeLists.txt	2017-06-21 14:24:17.951843068 +0800
+@@ -14,6 +14,12 @@
+ # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
+ 
+ CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
++
++SET(CMAKE_SKIP_BUILD_RPATH  FALSE)
++SET(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
++SET(CMAKE_INSTALL_RPATH "/opt/rh/devlibset-4/root/usr/lib:/opt/rh/devlibset-4/root/usr/lib64:/opt/rh/devtoolset-4/root/usr/lib/gcc/aarch64-redhat-linux/5.3.1/:/usr/lib:/usr/lib64")
++SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
++
+ # Avoid warnings in higher versions
+ if("${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}" GREATER 2.6)
+  CMAKE_POLICY(VERSION 2.8)
