@@ -27,7 +27,8 @@ On the other hand, it is necessary to setup the repository firstly:
     sudo chmod +r /etc/yum.repos.d/estuary.repo
     sudo rpm --import http://repo.estuarydev.org/releases/ESTUARY-GPG-KEY
     yum clean dbcache
-    ```   
+    ```
+    
    - Use `yum install <package-name>` to install packages.   
    - Especially chinese users could use ftp server to improve speed as follows:    
      ```               
@@ -35,8 +36,6 @@ On the other hand, it is necessary to setup the repository firstly:
      sudo chmod +r /etc/yum.repos.d/estuary.repo               
      sudo rpm --import ftp://repoftp:repopushez7411@117.78.41.188/releases/ESTUARY-GPG-KEY               
      yum clean dbcache
-     ``` 
-     
 - Ubuntu: 
   - Setup
      ```
