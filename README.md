@@ -10,7 +10,7 @@ Distro-repo is to maintain everythings which are required to setup and use Open-
 ## <a name="2">How to use Open-Estuary repository</a>
 The open-estuary repository is supported on ARM64 platforms as follows:
 
-|Platform|Estuary Releases|Packages Type|
+|Distribution OS|Estuary Releases|Packages Type|
 |--|--|--|
 |CentOS(7.3)|3.1|RPM|
 |CentOS(7.3)|5.0|RPM|
