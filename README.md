@@ -5,31 +5,40 @@
 
 # Open-Estuary Package Distrubtions Repository
 ## <a name="1">Introduction</a>
-Distro-repo is to maintain everythings which are required to setup and use RPM/Deb repository.  
+Distro-repo is to maintain everythings which are required to setup and use Open-Estuary RPM/Deb repository.  
 
 ## <a name="2">How to use Open-Estuary repository</a>
-Make sure which distrobution you are using, ***CentOS*** or ***Ubuntu/Debian***.
+The open-estuary repository is supported on ARM64 platforms as follows:
+|Platform|Estuary Releases|Packages Type|
+|--|--|--|
+|CentOS|3.1|RPM|
+|CentOS|5.0|RPM|
+|Ubuntu|5.0|Deb|
+|Debian|5.0|Deb|
+||||
 
-#### CentOS  
-1. Defaultly, estuary.repo is in */etc/yum.repos.d/* directory. Please to make sure.  
-
-If not, just download estuary.repo from *distro-repo/util/estuaryftp.repo（or estuaryhttp.repo）*, then move it to */etc/yum.repos.d/*.(estuaryftp.repo is domestic yum using ftp, and estuaryhttp.repo is foreign yum using http.)  
- 
-2. run `yum clean all`.
-
-3. run `yum repolist`.
-You will find estuary-repo in standard output, if all is done.  
-
-Now you can use `yum install xxxxx` to install packages Open-Estuary supports.  
-
-#### Ubuntu/Debian
-1. Defaultly, estuary repository is listed in */etc/apt/source.list*. Please to make sure.  
-
-If not, just download source.list from *distro-repo/util/source.list*, then move it to */etc/apt/*.  
-
-2. run `apt-get update`.  
-    
-Now you can use `apt-get install xxxxx` to install packages Open-Estuary supports. 
+On the other hand, it is necessary to setup the repository firstly:
+   - CentOS:  
+     - Setup
+       ```    
+       sudo wget -O /etc/yum.repos.d/estuary.repo https://raw.githubusercontent.com/open-estuary/distro-repo/master/utils/estuary.repo    
+       sudo chmod +r /etc/yum.repos.d/estuary.repo    
+       sudo rpm --import ftp://repoftp:repopushez7411@117.78.41.188/releases/ESTUARY-GPG-KEY    
+       yum clean dbcache    
+       ```   
+     - Use `yum install <package-name>` to install packages.    
+     
+   - Ubuntu: 
+     - Setup
+       ```
+       ```
+     - Use `apt-get install <package-name>` to install packages
+       
+   - Ubuntu:      
+     - Setup       
+       ```       
+       ```     
+     - Use `apt-get install <package-name>` to install packages
 
 ## <a name="3">How to build packages</a>  
 It is strongly suggested to build on Estuary buildserver.  
