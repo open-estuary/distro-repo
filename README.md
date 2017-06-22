@@ -98,7 +98,7 @@ Rpm&Deb packages which Open-Estuary support is listed in [packages_list.md](http
 
 * How to integrate new packages with specific libs? 
 
-  Currently the AliSQL has used glibc-2.25(that is devlibset-4-glibc) automatically. If you have any requests to use new packages with specific libs, just submit issue to Estuary via bugtrack system or leave message in this page.
+  Currently the AliSQL has used glibc-2.25(that is devlibset-4-glibc) automatically. If you have any requests to use new packages with specific libs, just submit issue to Estuary via bugtrack system or submit one issue in this repository.
 
 
 
