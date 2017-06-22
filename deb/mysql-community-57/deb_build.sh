@@ -1,12 +1,12 @@
 #!/bin/bash
 
-TARGET="debian"
-OS_VERSION="8"
+TARGET="ubuntu"
+OS_VERSION="16.04"
 
-if [ x"${1}" == x"ubuntu" ] ; then
+if [ x"${1}" == x"debian" ] ; then
     TARGET=$1
-    OS_VERSION="16.04"
-elif [ ! -z "${1}" ] && [ x"${1}" != x"debian" ] ; then
+    OS_VERSION="8"
+elif [ ! -z "${1}" ] && [ x"${1}" != x"ubuntu" ] ; then
     echo "Unsupport platform: ${1}, it must be debian or ubuntu"
     exit 1
 fi
