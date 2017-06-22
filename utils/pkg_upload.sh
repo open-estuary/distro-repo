@@ -79,7 +79,7 @@ if [ ${TARGETOS} = "centos" ];then
 	DST_DIR="/est-repo/releases/${VERSION}/${TARGETOS}/noarch"
 	upload_files_repo "${filelist}" "${DST_DIR}"
 
-	filelist="$(find ${SRC_DIR} -name "*.${TARGETOS}.src.${file_type}")"
+	filelist="$(find ${SRC_DIR} -name "*.src.${file_type}")"
 	DST_DIR="/est-repo/releases/${VERSION}/${TARGETOS}/SRPMS"
 	upload_files_repo "${filelist}" "${DST_DIR}"
 elif [ ${TARGETOS} = "debian" ];then
