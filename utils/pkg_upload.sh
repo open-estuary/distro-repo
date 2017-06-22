@@ -10,7 +10,7 @@ SRC_DIR=$1
 TARGETOS=$2
 IP="117.78.41.188"
 loginuser="repo"
-loginpassword="repodeploy@123"
+loginpassword=`cat /home/PASSWORD_REPO`
 
 if [ -z "${TARGETOS}" ] ; then 
     echo "Usage: ./rpm_upload.sh <src_dir> <target os(such as CentOS/Ubuntu/Debian)>"

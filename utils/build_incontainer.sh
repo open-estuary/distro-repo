@@ -11,7 +11,7 @@ apt-get install dh-make -y
 apt-get install devscripts -y
 apt-get install equivs -y
 
-echo "DEBSIGN_KEYID=24CC6CF4" >> /etc/devscripts.conf
+echo "DEBSIGN_KEYID=3108CDA4" >> /etc/devscripts.conf
 passphrase=$(cat /root/KEY_PASSPHRASE)
 gpg --import /root/ESTUARY-GPG-SECURE-KEY
 
