@@ -15,7 +15,8 @@ Source0: https://github.com/sclorg/rhscl-dockerfiles/archive/%{dfcommit}/rhscl-d
 Source1: README
 
 # The base package must require everything in the collection
-Requires: %{scl_prefix}toolchain %{scl_prefix}ide %{scl_prefix}perftools
+Requires: %{scl_prefix}toolchain %{scl_prefix}ide 
+#Requires: %{scl_prefix}perftools
 Obsoletes: %{name} < %{version}-%{release}
 
 BuildRequires: scl-utils-build >= 20120927-11
@@ -59,9 +60,11 @@ Summary: Package shipping basic toolchain applications
 Group: Applications/File
 Requires: %{scl_prefix}runtime
 Requires: %{scl_prefix}gcc %{scl_prefix}gcc-c++ %{scl_prefix}gcc-gfortran
-Requires: %{scl_prefix}binutils %{scl_prefix}gdb %{scl_prefix}strace
-Requires: %{scl_prefix}dwz %{scl_prefix}elfutils %{scl_prefix}memstomp
-Requires: %{scl_prefix}ltrace
+Requires: %{scl_prefix}binutils 
+#Requires: %{scl_prefix}gdb 
+#Requires: %{scl_prefix}strace
+#Requires: %{scl_prefix}dwz %{scl_prefix}elfutils %{scl_prefix}memstomp
+#Requires: %{scl_prefix}ltrace
 Obsoletes: %{name}-toolchain < %{version}-%{release}
 
 %description toolchain
@@ -71,71 +74,71 @@ Package shipping basic toolchain applications (compiler, debugger, ...)
 Summary: Package shipping Eclipse IDE
 Group: Applications/File
 Requires: %{scl_prefix}runtime
-Requires: %{scl_prefix}eclipse-cdt
-Requires: %{scl_prefix}eclipse-cdt-docker
-Requires: %{scl_prefix}eclipse-cdt-parsers
-Requires: %{scl_prefix}eclipse-changelog
-Requires: %{scl_prefix}eclipse-egit
-Requires: %{scl_prefix}eclipse-egit-mylyn
-Requires: %{scl_prefix}eclipse-emf-runtime
-Requires: %{scl_prefix}eclipse-gcov
-Requires: %{scl_prefix}eclipse-gef
-Requires: %{scl_prefix}eclipse-gprof
-Requires: %{scl_prefix}eclipse-jdt
-Requires: %{scl_prefix}eclipse-jgit
-Requires: %{scl_prefix}eclipse-linuxtools
-Requires: %{scl_prefix}eclipse-linuxtools-docker
-Requires: %{scl_prefix}eclipse-linuxtools-javadocs
-Requires: %{scl_prefix}eclipse-linuxtools-libhover
-Requires: %{scl_prefix}eclipse-manpage
-Requires: %{scl_prefix}eclipse-mylyn
-Requires: %{scl_prefix}eclipse-mylyn-builds
-Requires: %{scl_prefix}eclipse-mylyn-builds-hudson
-Requires: %{scl_prefix}eclipse-mylyn-context-cdt
-Requires: %{scl_prefix}eclipse-mylyn-context-java
-Requires: %{scl_prefix}eclipse-mylyn-context-pde
-Requires: %{scl_prefix}eclipse-mylyn-docs-epub
-Requires: %{scl_prefix}eclipse-mylyn-docs-wikitext
-Requires: %{scl_prefix}eclipse-mylyn-tasks-bugzilla
-Requires: %{scl_prefix}eclipse-mylyn-tasks-trac
-Requires: %{scl_prefix}eclipse-mylyn-tasks-web
-Requires: %{scl_prefix}eclipse-mylyn-versions
-Requires: %{scl_prefix}eclipse-mylyn-versions-cvs
-Requires: %{scl_prefix}eclipse-mylyn-versions-git
-Requires: %{scl_prefix}eclipse-oprofile
-Requires: %{scl_prefix}eclipse-p2-discovery
-Requires: %{scl_prefix}eclipse-pde
-Requires: %{scl_prefix}eclipse-perf
-Requires: %{scl_prefix}eclipse-platform
-Requires: %{scl_prefix}eclipse-ptp
-Requires: %{scl_prefix}eclipse-ptp-master
-Requires: %{scl_prefix}eclipse-ptp-rm-contrib
-Requires: %{scl_prefix}eclipse-ptp-sci
-Requires: %{scl_prefix}eclipse-ptp-sdm
-Requires: %{scl_prefix}eclipse-pydev
-Requires: %{scl_prefix}eclipse-pydev-mylyn
-Requires: %{scl_prefix}eclipse-remote
-Requires: %{scl_prefix}eclipse-rpm-editor
-Requires: %{scl_prefix}eclipse-rse
-Requires: %{scl_prefix}eclipse-rse-server
-Requires: %{scl_prefix}eclipse-systemtap
-Requires: %{scl_prefix}eclipse-tm-terminal
-Requires: %{scl_prefix}eclipse-valgrind
+#Requires: %{scl_prefix}eclipse-cdt
+#Requires: %{scl_prefix}eclipse-cdt-docker
+#Requires: %{scl_prefix}eclipse-cdt-parsers
+#Requires: %{scl_prefix}eclipse-changelog
+#Requires: %{scl_prefix}eclipse-egit
+#Requires: %{scl_prefix}eclipse-egit-mylyn
+#Requires: %{scl_prefix}eclipse-emf-runtime
+#Requires: %{scl_prefix}eclipse-gcov
+#Requires: %{scl_prefix}eclipse-gef
+#Requires: %{scl_prefix}eclipse-gprof
+#Requires: %{scl_prefix}eclipse-jdt
+#Requires: %{scl_prefix}eclipse-jgit
+#Requires: %{scl_prefix}eclipse-linuxtools
+#Requires: %{scl_prefix}eclipse-linuxtools-docker
+#Requires: %{scl_prefix}eclipse-linuxtools-javadocs
+#Requires: %{scl_prefix}eclipse-linuxtools-libhover
+#Requires: %{scl_prefix}eclipse-manpage
+#Requires: %{scl_prefix}eclipse-mylyn
+#Requires: %{scl_prefix}eclipse-mylyn-builds
+#Requires: %{scl_prefix}eclipse-mylyn-builds-hudson
+#Requires: %{scl_prefix}eclipse-mylyn-context-cdt
+#Requires: %{scl_prefix}eclipse-mylyn-context-java
+#Requires: %{scl_prefix}eclipse-mylyn-context-pde
+#Requires: %{scl_prefix}eclipse-mylyn-docs-epub
+#Requires: %{scl_prefix}eclipse-mylyn-docs-wikitext
+#Requires: %{scl_prefix}eclipse-mylyn-tasks-bugzilla
+#Requires: %{scl_prefix}eclipse-mylyn-tasks-trac
+#Requires: %{scl_prefix}eclipse-mylyn-tasks-web
+#Requires: %{scl_prefix}eclipse-mylyn-versions
+#Requires: %{scl_prefix}eclipse-mylyn-versions-cvs
+#Requires: %{scl_prefix}eclipse-mylyn-versions-git
+#Requires: %{scl_prefix}eclipse-oprofile
+#Requires: %{scl_prefix}eclipse-p2-discovery
+#Requires: %{scl_prefix}eclipse-pde
+#Requires: %{scl_prefix}eclipse-perf
+#Requires: %{scl_prefix}eclipse-platform
+#Requires: %{scl_prefix}eclipse-ptp
+#Requires: %{scl_prefix}eclipse-ptp-master
+#Requires: %{scl_prefix}eclipse-ptp-rm-contrib
+#Requires: %{scl_prefix}eclipse-ptp-sci
+#Requires: %{scl_prefix}eclipse-ptp-sdm
+#Requires: %{scl_prefix}eclipse-pydev
+#Requires: %{scl_prefix}eclipse-pydev-mylyn
+#Requires: %{scl_prefix}eclipse-remote
+#Requires: %{scl_prefix}eclipse-rpm-editor
+#Requires: %{scl_prefix}eclipse-rse
+#Requires: %{scl_prefix}eclipse-rse-server
+#Requires: %{scl_prefix}eclipse-systemtap
+#Requires: %{scl_prefix}eclipse-tm-terminal
+#Requires: %{scl_prefix}eclipse-valgrind
 Obsoletes: %{name}-ide < %{version}-%{release}
 
 %description ide
 Package shipping Eclipse IDE
 
-%package perftools
-Summary: Package shipping performance tools
-Group: Applications/File
-Requires: %{scl_prefix}runtime
-Requires: %{scl_prefix}oprofile %{scl_prefix}systemtap %{scl_prefix}valgrind
-Requires: %{scl_prefix}dyninst
-Obsoletes: %{name}-perftools < %{version}-%{release}
+#%package perftools
+#Summary: Package shipping performance tools
+#Group: Applications/File
+#Requires: %{scl_prefix}runtime
+#Requires: %{scl_prefix}oprofile %{scl_prefix}systemtap %{scl_prefix}valgrind
+#Requires: %{scl_prefix}dyninst
+#Obsoletes: %{name}-perftools < %{version}-%{release}
 
-%description perftools
-Package shipping performance tools (systemtap, oprofile)
+#%description perftools
+#Package shipping performance tools (systemtap, oprofile)
 
 %package dockerfiles
 Summary: Package shipping Dockerfiles for Developer Toolset
@@ -376,9 +379,11 @@ install -p -m 644 configuration.xml %{buildroot}%{_sysconfdir}/xdg/xmvn/
 %if 0%{?rhel} >= 7
 install -d %{buildroot}%{dockerfiledir}
 
-collections="devtoolset-4 devtoolset-4-toolchain devtoolset-4-dyninst \
-             devtoolset-4-elfutils devtoolset-4-oprofile devtoolset-4-systemtap \
-             devtoolset-4-valgrind"
+collections="devtoolset-4 devtoolset-4-toolchain"
+
+#collections="devtoolset-4 devtoolset-4-toolchain devtoolset-4-dyninst \
+#             devtoolset-4-elfutils devtoolset-4-oprofile devtoolset-4-systemtap \
+#             devtoolset-4-valgrind"
 install -d -p -m 755 %{buildroot}%{dockerfiledir}/rhel{6,7}
 for d in $collections; do
   install -d -p -m 755 %{buildroot}%{dockerfiledir}/rhel{6,7}/$d
@@ -412,7 +417,7 @@ install -p -m 644 %{?scl_name}.7 %{buildroot}%{_mandir}/man7/
 
 %files ide
 
-%files perftools
+#%files perftools
 
 %if 0%{?rhel} >= 7
 %files dockerfiles

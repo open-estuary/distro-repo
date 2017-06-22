@@ -15,6 +15,7 @@ Source5:        my.cnf
 
 Patch0:         alisql_epoll_sub_aarch64.patch
 Patch1:         alisql_innodb_memcache_handler_api_aarch64.patch
+Patch2:         alisql_glibc_cmake.patch
 
 BuildRequires:  gcc gcc-c++
 BuildRequires:  cmake
@@ -22,17 +23,19 @@ BuildRequires:  libaio-devel
 BuildRequires:  numactl-devel
 BuildRequires:  systemd
 BuildRequires:  zlib-devel
-BuildRequires:  openssl-devel
+#BuildRequires:  openssl-devel
+BuildRequires:  devlibset-4-glibc devlibset-4-glibc-devel devlibset-4-glibc-headers
 Requires:       ncurses-devel 
 Requires:       bison 
 Requires:       perl
-Requires:       openssl-devel
+#Requires:       openssl-devel
+Requires:       devlibset-4-glibc devlibset-4-glibc-devel devlibset-4-glibc-headers
 
 %define MYSQL_USER mysql
 %define MYSQL_GROUP mysql
 %define mysqldatadir /var/lib/mysql
 
-%global ssl_option -DWITH_SSL=yes
+%global ssl_option -DWITH_SSL=bundled
 %global systemd     1
 %global nodebuginfo 1
 %global src_dir     %{name}-%{name}-%{version}-5
@@ -84,6 +87,7 @@ Group:          Applications/Databases
 Provides:       AliSQL-common = %{version}-%{release}
 Obsoletes:      AliSQL-common < %{version}-%{release}
 Obsoletes:      mysql-common < %{version}-%{release}
+Requires:       devlibset-4-glibc devlibset-4-glibc-devel devlibset-4-glibc-headers
 
 %description    common
 This packages contains common files needed by MySQL client library, and MySQL database server.
@@ -113,6 +117,7 @@ Obsoletes:      mysql-bench
 Provides:       AliSQL-bench = %{version}-%{release}
 Obsoletes:      AliSQL-bench < %{version}-%{release}
 Conflicts:      mysql-community-bench < %{version}-%{release}
+Requires:       devlibset-4-glibc devlibset-4-glibc-devel devlibset-4-glibc-headers
 
 %description    bench
 AliSQL benchmakr suites which contains the MySQL Benchmark Suite for MySQL database
@@ -141,6 +146,7 @@ AliSQL libs which contains the shared libraries for MySQL client applications.
 %setup -q -n %{src_dir}
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build
 cd BUILD
@@ -148,6 +154,12 @@ sh autorun.sh
 cd ..
 mkdir build
 cd build
+
+#In order to use specific glibc2.25
+INCLUDE_PATHS=" -I/opt/rh/devlibset-4/root/usr/include"
+export CFLAGS="${INCLUDE_PATHS} -Wl,-rpath,/opt/rh/devlibset-4/root/usr/lib:/opt/rh/devlibset-4/root/usr/lib64 -Wl,-dynamic-linker=/opt/rh/devlibset-4/root/usr/lib/ld-linux-aarch64.so.1"
+export CXXFLAGS="${INCLUDE_PATHS} -Wl,-rpath,/opt/rh/devlibset-4/root/usr/lib:/opt/rh/devlibset-4/root/usr/lib64 -Wl,-dynamic-linker=/opt/rh/devlibset-4/root/usr/lib/ld-linux-aarch64.so.1"
+
 cmake .. -DBUILD_CONFIG=mysql_release \
          -DINSTALL_LAYOUT=RPM \
          -DCMAKE_BUILD_TYPE=RelWithDebInfo \
