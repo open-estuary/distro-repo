@@ -9,9 +9,11 @@ apt-get install expect -y
 apt-get install automake -y
 apt-get install dh-make -y
 apt-get install devscripts -y
+apt-get install equivs -y
 
 echo "DEBSIGN_KEYID=3108CDA4" >> /etc/devscripts.conf
 passphrase=$(cat /root/KEY_PASSPHRASE)
+gpg --import /root/ESTUARY-GPG-SECURE-KEY
 
 SRC_DIR=$1
 TAR_FILENAME=$2
