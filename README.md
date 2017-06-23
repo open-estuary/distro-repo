@@ -40,19 +40,19 @@ On the other hand, it is necessary to setup the repository firstly:
 - Ubuntu: 
   - Setup
      ```
-     sudo wget -O - http://repo.estuarydev.org/releases/ESTUARY-GPG-KEY | apt-key add -
+     sudo wget -O - http://repo.estuarydev.org/releases/ESTUARY-GPG-KEY | apt-key add -
      sudo wget -O /etc/apt/sources.list.d/estuary.list https://raw.githubusercontent.com/open-estuary/distro-repo/master/estuaryhttp_ubuntu.list
      sudo apt-get update
-     ```
+     ```
   - Use `apt-get install <package-name>` to install packages
        
 - Debian:      
-  - Setup       
-    ```    
-    sudo wget -O - http://repo.estuarydev.org/releases/ESTUARY-GPG-KEY | apt-key add -     
-    sudo wget -O /etc/apt/sources.list.d/estuary.list https://raw.githubusercontent.com/open-estuary/distro-repo/master/estuaryhttp_debian.list
-    sudo apt-get update
-     ```     
+  - Setup       
+     ```    
+     sudo wget -O - http://repo.estuarydev.org/releases/ESTUARY-GPG-KEY | apt-key add -     
+     sudo wget -O /etc/apt/sources.list.d/estuary.list https://raw.githubusercontent.com/open-estuary/distro-repo/master/estuaryhttp_debian.list
+     sudo apt-get update
+    
   - Use `apt-get install <package-name>` to install packages
 
 ## <a name="3">How to build packages</a>  
