@@ -2,18 +2,46 @@
 
 CUR_DIR=$(cd `dirname $0`; pwd)
 
+VERSION="5.0"
+
 . ${CUR_DIR}/function_cmd_scp.sh
 IP="117.78.41.188"
 loginuser="repo"
 loginpassword=`cat /home/PASSWORD_REPO`
 
 TARGETOS=$1
+
+###############################################################################################
+# Utility to create deb repo"
+###############################################################################################
+create_deb_repo() {
+    platform=$1    
+   
+    sshcmd "cd /est-repo/releases/${VERSION}/${platform} && dpkg-scanpackages pool/main /dev/null > /est-repo/releases/${VERSION}/${platform}/dists/estuary-${VERSION}/main/binary-arm64/Packages; cat /est-repo/releases/${VERSION}/${platform}/dists/estuary-${VERSION}/main/binary-arm64/Packages | gzip > /est-repo/releases/${VERSION}/${platform}/dists/estuary-${VERSION}/main/binary-arm64/Packages.gz; cat /est-repo/releases/${VERSION}/${platform}/dists/estuary-${VERSION}/main/binary-arm64/Packages | bzip2 >  /est-repo/releases/${VERSION}/${platform}/dists/estuary-${VERSION}/main/binary-arm64/Packages.bz2"
+        
+    sshcmd "cd /est-repo/releases/${VERSION}/${platform} && dpkg-scansources pool/main > /est-repo/releases/${VERSION}/${platform}/dists/estuary-${VERSION}/main/source/Sources; cat /est-repo/releases/${VERSION}/${platform}/dists/estuary-${VERSION}/main/source/Sources | gzip > /est-repo/releases/${VERSION}/${platform}/dists/estuary-${VERSION}/main/source/Sources.gz; cat /est-repo/releases/${VERSION}/${platform}/dists/estuary-${VERSION}/main/source/Sources | bzip2 > /est-repo/releases/${VERSION}/${platform}/dists/estuary-${VERSION}/main/source/Sources.bz2; "
+        
+    sshcmd "apt-ftparchive release /est-repo/releases/${VERSION}/${platform}/dists/estuary-${VERSION} > /est-repo/releases/${VERSION}/${platform}/dists/estuary-${VERSION}/Release"
+
+    tmp_dir="/tmp/debrepo_release/"
+    if [ -d ${tmp_dir} ] ; then 
+        rm -fr ${tmp_dir}/*
+    else
+        mkdir -p ${tmp_dir}
+    fi
+
+    wget -O ${tmp_dir}/Release ftp://repoftp:repopushez7411@117.78.41.188/releases/${VERSION}/${platform}/dists/estuary-${VERSION}/Release
+    gpg --batch --passphrase-file /home/KEY_PASSPHRASE  --yes --default-key "3108CDA4" --armor --output ${tmp_dir}/Release.gpg --detach-sig ${tmp_dir}/Release
+    sshscp ${tmp_dir}/Release.gpg /est-repo/releases/${VERSION}/${platform}/dists/estuary-${VERSION}/ no to
+}
+
+
 if [ "${TARGETOS}" = "CentOS" ] || [ "${TARGETOS}" = "centos" ] ; then
-	sshcmd "createrepo /est-repo/releases/5.0/centos"	
+    sshcmd "createrepo /est-repo/releases/${VERSION}/centos"	
 elif [ "${TARGETOS}" = "Ubuntu" ] || [ "${TARGETOS}" = "ubuntu" ] ; then
-	sshcmd "dpkg-scanpackages /est-repo/releases/5.0/ubuntu/pool/main /dev/null | gzip > /est-repo/releases/5.0/ubuntu/dists/estuary-5.0/main/binary-arm64/Packages.gz;dpkg-scansources /est-repo/releases/5.0/ubuntu/pool/main | gzip > /est-repo/releases/5.0/ubuntu/dists/estuary-5.0/main/source/Sources.gz"
+    create_deb_repo "ubuntu"
 elif [ "${TARGETOS}" = "Debian" ] || [ "${TARGETOS}" = "debian" ] ; then
-	sshcmd "dpkg-scanpackages /est-repo/releases/5.0/debian/pool/main /dev/null | gzip > /est-repo/releases/5.0/debian/dists/estuary-5.0/main/binary-arm64/Packages.gz;dpkg-scansources /est-repo/releases/5.0/debian/pool/main | gzip > /est-repo/releases/5.0/debian/dists/estuary-5.0/main/source/Sources.gz"
+    create_deb_repo "debian"
 else
     echo "Currently it only support CentOS, Ubuntu or Debian"
     exit 0
