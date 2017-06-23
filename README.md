@@ -40,13 +40,50 @@ On the other hand, it is necessary to setup the repository firstly:
 - Ubuntu: 
   - Setup
      ```
-     ```
+     sudo wget -O - http://repo.estuarydev.org/releases/ESTUARY-GPG-KEY| apt-key add -
+     sudo wget -O /etc/apt/sources.list.d/estuary.list https://raw.githubusercontent.com/open-estuary/distro-repo/master/estuaryhttp_debian.list
+     sudo apt-get update
+     ```
   - Use `apt-get install <package-name>` to install packages
        
 - Debian:      
   - Setup       
-     ```       
-     ```     
+     ```    
+   
+    
+
+  
+     - CentOS:  
+  - Setup
+    ```
+    sudo wget -O /etc/yum.repos.d/estuary.repo https://raw.githubusercontent.com/open-estuary/distro-repo/master/estuaryhttp.repo    
+    sudo chmod +r /etc/yum.repos.d/estuary.repo
+    sudo rpm --import http://repo.estuarydev.org/releases/ESTUARY-GPG-KEY
+    yum clean dbcache
+    ```
+    
+   - Use `yum install <package-name>` to install packages.   
+   - Especially chinese users could use ftp server to improve speed as follows:    
+     ```               
+     sudo wget -O /etc/yum.repos.d/estuary.repo https://raw.githubusercontent.com/open-estuary/distro-repo/master/estuaryftp.repo     
+     sudo chmod +r /etc/yum.repos.d/estuary.repo               
+     sudo rpm --import ftp://repoftp:repopushez7411@117.78.41.188/releases/ESTUARY-GPG-KEY               
+     yum clean dbcache
+- Ubuntu: 
+  - Setup
+     ```
+     sudo wget -O - http://repo.estuarydev.org/releases/ESTUARY-GPG-KEY| apt-key add -
+     sudo wget -O /etc/apt/sources.list.d/estuary.list https://raw.githubusercontent.com/open-estuary/distro-repo/master/estuaryhttp_ubuntu.list
+     sudo apt-get update
+     ```
+  - Use `apt-get install <package-name>` to install packages
+       
+- Debian:      
+  - Setup       
+     ```    
+    sudo wget -O - http://repo.estuarydev.org/releases/ESTUARY-GPG-KEY| 
+    apt-key add -     sudo wget -O /etc/apt/sources.list.d/estuary.list https://raw.githubusercontent.com/open-estuary/distro-repo/master/estuaryhttp_debian.list     sudo apt-get update
+     ```     
   - Use `apt-get install <package-name>` to install packages
 
 ## <a name="3">How to build packages</a>  
