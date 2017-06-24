@@ -54,17 +54,15 @@ fi
 cp ${SRC_DIR}/* /root/${DESDIR}/SOURCES/${FILENAME}/
 
 #Step2 : Decompress necessary files
-if [ -z "$(echo ${TAR_FILENAME} | grep '.orig.tar.gz')" ] ; then
+cd /root/${DESDIR}/SOURCES/${FILENAME}/
+if [ ! -z "$(ls *.dsc 2>/dev/null)" ] ; then
+    dpkg-source --no-check -x *.dsc
+else
     if [ ! -z "$(echo ${TAR_FILENAME} | grep 'tar.bz2')" ] ; then
         tar -jxvf /root/${DESDIR}/SOURCES/${FILENAME}/${TAR_FILENAME} -C /root/${DESDIR}/SOURCES/${FILENAME}/
     else 
         tar -zxvf /root/${DESDIR}/SOURCES/${FILENAME}/${TAR_FILENAME} -C /root/${DESDIR}/SOURCES/${FILENAME}/
     fi
-fi
-
-cd /root/${DESDIR}/SOURCES/${FILENAME}/
-if [ ! -z "$(ls *.dsc 2>/dev/null)" ] ; then
-    dpkg-source -x *.dsc
 fi
 
 SUBDIR=""
@@ -92,7 +90,7 @@ rm *build-deps*.deb
 
 expect <<-END
         set timeout -1
-        spawn debuild
+        spawn debuild --no-tgz-check
         expect {
                 "Enter passphrase:" {send "${passphrase}\r"}
                 timeout {send_user "Enter pass phrase timeout\n"}

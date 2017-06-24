@@ -57,6 +57,8 @@ upload_files_repo() {
     do
         cp ${filename} ${tmpdir}/
     done
+
+    sshcmd " [ -d ${dst_dir} ] || $(mkdir -p ${dst_dir}) "
  
     echo "Upload files to ${DST_IP}:${dst_dir}"
     all_files=`ls ${tmpdir}/`
