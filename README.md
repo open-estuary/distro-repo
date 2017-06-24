@@ -20,6 +20,8 @@ The open-estuary repository is supported on ARM64 platforms as follows:
 ||||
 
 On the other hand, it is necessary to setup the repository firstly:
+> By default, we should use http repository(such as estuaryftp.repo or estuaryftp_xxx.list).
+> However Chinese users could use ftp repository in order to enjoy better access speed.
 
 - CentOS:  
   - Setup
