@@ -99,11 +99,13 @@ It lists the packages which are maintained by Open-Estuary team so far.
 ## <a name="2">Packages List</a> 
 Currently the following packages are supported by Open-Estuary repo:
 '''
-    filehandle.write("%s"%default_str)
+    filehandle.write("%s\n"%default_str)
     filehandle.write("|Package Name|Estuary Releases|Packages Releases|Platforms|Notes|\n")
     filehandle.write("|--|--|--|--|--|\n")
 
-    for pkg in pkg_dict.keys():
+    pkg_keys = pkg_dict.keys()
+    pkg_keys.sort()
+    for pkg in pkg_keys:
         elems = pkg.split('\t')
         filehandle.write("|%s|%s|%s|%s|%s|\n"%(elems[0], VERSION, elems[1], pkg_dict[pkg], ""))
 
