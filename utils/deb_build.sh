@@ -34,6 +34,7 @@ SRC_DIR_4=${SRC_DIR_3#*/}
 TAR_FILENAME=$2
 DISTRI=$3
 Container_Name=${TAR_FILENAME%-*}-$DISTRI
+Container_Name=${Container_Name/+/}
 
 if [ ! -f ~/KEY_PASSPHRASE ] ; then
     cp /home/KEY_PASSPHRASE  ~/KEY_PASSPHRASE
