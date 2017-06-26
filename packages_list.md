@@ -12,8 +12,7 @@ Currently the following packages are supported by Open-Estuary repo:
 
 |Package Name|Estuary Releases|Packages Releases|Platforms|Notes|
 |--|--|--|--|--|
-    
-|python-lxml|5.0|3.7.2|CentOS||
+    |python-lxml|5.0|3.7.2|CentOS||
 |open-lldp|5.0|1.0.1|CentOS||
 |ktap|5.0|0.4+git20150927|Debian||
 |devtoolset-4-yaml-cpp|5.0|0.5.3|CentOS||
