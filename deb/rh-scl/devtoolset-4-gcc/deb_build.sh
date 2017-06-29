@@ -22,13 +22,13 @@ if [ ! -d "${SRC}" ] ; then
     mkdir -p ${SRC}
 fi
 
-DSC_FILE="gcc-6_6.3.0-19.dsc"
-DEBIAN_FILE="gcc-6_6.3.0-19.diff.gz"
+DSC_FILE="gcc-6_6.3.0-12ubuntu2.dsc"
+DEBIAN_FILE="gcc-6_6.3.0-12ubuntu2.diff.gz"
 
 if [ ! -f ${CUR_DIR}/${SRC}/${TAR_FILENAME} ] ; then
-    wget -O ${CUR_DIR}/${SRC}/${TAR_FILENAME}  http://ftp.cn.debian.org/debian/pool/main/g/gcc-6/${TAR_FILENAME}
-    wget -O ${CUR_DIR}/${SRC}/${DSC_FILE}      http://ftp.cn.debian.org/debian/pool/main/g/gcc-6/${DSC_FILE}
-    wget -O ${CUR_DIR}/${SRC}/${DEBIAN_FILE}   http://ftp.cn.debian.org/debian/pool/main/g/gcc-6/${DEBIAN_FILE}
+    wget -O ${CUR_DIR}/${SRC}/${TAR_FILENAME}  https://launchpad.net/ubuntu/+archive/primary/+files/${TAR_FILENAME}
+    wget -O ${CUR_DIR}/${SRC}/${DSC_FILE}      https://launchpad.net/ubuntu/+archive/primary/+files/${DSC_FILE}
+    wget -O ${CUR_DIR}/${SRC}/${DEBIAN_FILE}   https://launchpad.net/ubuntu/+archive/primary/+files/${DEBIAN_FILE}
     #mv ${CUR_DIR}/${SRC}/${TAR_FILENAME} ${CUR_DIR}/${SRC}/${NEW_TAR_FILENAME}
 fi
 
