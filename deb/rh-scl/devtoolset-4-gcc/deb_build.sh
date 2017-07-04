@@ -1,5 +1,8 @@
 #!/bin/bash
 
+echo "Not implement devtoolset-4-gcc"
+exit 0
+
 TARGET="ubuntu"
 OS_VERSION="16.04"
 
@@ -32,4 +35,4 @@ if [ ! -f ${CUR_DIR}/${SRC}/${TAR_FILENAME} ] ; then
     #mv ${CUR_DIR}/${SRC}/${TAR_FILENAME} ${CUR_DIR}/${SRC}/${NEW_TAR_FILENAME}
 fi
 
-${CUR_DIR}/../../../utils/deb_build.sh  ${CUR_DIR}/${SRC} ${TAR_FILENAME} ${TARGET}
+${CUR_DIR}/../../../utils/deb_build.sh  ${CUR_DIR}/${SRC} ${TAR_FILENAME} ${TARGET} "" "yes"

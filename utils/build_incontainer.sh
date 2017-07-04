@@ -3,13 +3,22 @@
 cd ~
 export DEBEMAIL=sjtuhjh@hotmail.com
 export DEBFULLNAME=Open-Estuary
+
+ppa_test_enable=$5
+if [ x"${ppa_test_enable}" == x"yes" ] ; then
+    echo "Enable PPA test repository"
+    add-apt-repository -y ppa:ubuntu-toolchain-r/test
+fi
+wget -O - http://repo.estuarydev.org/releases/ESTUARY-GPG-KEY | apt-key add -
 wget -O - http://repo.linaro.org/ubuntu/linarorepo.key | apt-key add -
+wget -O /etc/apt/sources.list.d/estuary.list https://raw.githubusercontent.com/open-estuary/distro-repo/master/estuaryftp_${3}.list
 apt-get update
 apt-get install expect -y
 apt-get install automake -y
 apt-get install dh-make -y
 apt-get install devscripts -y
 apt-get install equivs -y
+apt-get install dh-systemd -y
 
 echo "DEBSIGN_KEYID=3108CDA4" >> /etc/devscripts.conf
 passphrase=$(cat /root/KEY_PASSPHRASE)
@@ -17,6 +26,11 @@ gpg --import /root/ESTUARY-GPG-SECURE-KEY
 
 SRC_DIR=$1
 TAR_FILENAME=$2
+
+if [ ! -z "${4}" ] ; then
+    export DEB_BUILD_OPTIONS="${4}"
+fi
+
 FILENAME="${TAR_FILENAME%*.orig.tar.gz}"
 if [ x"${TAR_FILENAME}" == x"${FILENAME}" ] ; then
     FILENAME=${TAR_FILENAME%*.tar.gz}
@@ -90,7 +104,7 @@ rm *build-deps*.deb
 
 expect <<-END
         set timeout -1
-        spawn debuild --no-tgz-check
+        spawn debuild --no-tgz-check -j32
         expect {
                 "Enter passphrase:" {send "${passphrase}\r"}
                 timeout {send_user "Enter pass phrase timeout\n"}
