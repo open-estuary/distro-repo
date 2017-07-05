@@ -100,16 +100,24 @@ It lists the packages which are maintained by Open-Estuary team so far.
 Currently the following packages are supported by Open-Estuary repo:
 '''
     filehandle.write("%s\n"%default_str)
-    filehandle.write("|Package Name|Estuary Releases|Packages Releases|Platforms|Notes|\n")
-    filehandle.write("|--|--|--|--|--|\n")
+    filehandle.write("|Package Name|Estuary Releases|Packages Releases|CentOS|Ubuntu|Debian|Notes|\n")
+    filehandle.write("|--|--|--|--|--|--|--|\n")
 
     pkg_keys = pkg_dict.keys()
     pkg_keys.sort()
     for pkg in pkg_keys:
         elems = pkg.split('\t')
-        filehandle.write("|%s|%s|%s|%s|%s|\n"%(elems[0], VERSION, elems[1], pkg_dict[pkg], ""))
+        distro = pkg_dict[pkg]
+        distro_enable_dict = {}
+        for distro_key in g_pkg_src.keys():
+            if re.search(distro_key, distro):
+                distro_enable_dict[distro_key] = "Y"
+        centos = distro_enable_dict.get("CentOS", "")
+        ubuntu = distro_enable_dict.get("Ubuntu", "")
+        debian = distro_enable_dict.get("Debian", "")
+        filehandle.write("|%s|%s|%s|%s|%s|%s|%s|\n"%(elems[0], VERSION, elems[1], centos, ubuntu, debian, ""))
 
-    filehandle.write("||||||\n")
+    filehandle.write("||||||||\n")
     filehandle.close()
     return
 

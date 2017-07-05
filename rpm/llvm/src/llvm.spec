@@ -1,3 +1,15 @@
+%define scl devtoolset-4
+%global scl_prefix devtoolset-4
+%global MPI_HOME %{_libdir}
+
+%{?scl:%scl_package llvm}
+%{!?scl:
+ %global pkg_name %{name}
+ %global _root_prefix %{_prefix}
+ %global _root_datadir %{_datadir}
+ %global _root_bindir %{_bindir}
+}
+
 # Components enabled if supported by target architecture:
 %ifarch %ix86 x86_64
   %bcond_without gold
@@ -7,14 +19,14 @@
 
 %global llvm_bindir %{_libdir}/%{name}
 
-Name:		llvm
+Name:		%{?scl_prefix}llvm
 Version:	4.0.1
 Release:	1%{?dist}
 Summary:	The Low Level Virtual Machine
 
 License:	NCSA
 URL:		http://llvm.org
-Source0:	http://llvm.org/releases/%{version}/%{name}-%{version}.src.tar.xz
+Source0:	http://llvm.org/releases/%{version}/llvm-%{version}.src.tar.xz
 
 # recognize s390 as SystemZ when configuring build
 Patch0:		llvm-3.7.1-cmake-s390.patch
@@ -74,7 +86,7 @@ Summary:	LLVM static libraries
 Static libraries for the LLVM compiler infrastructure.
 
 %prep
-%autosetup -n %{name}-%{version}.src -p1
+%autosetup -n llvm-%{version}.src -p1
 
 %ifarch armv7hl
 
@@ -143,7 +155,7 @@ cd _build
 	-DLLVM_INSTALL_TOOLCHAIN_ONLY:BOOL=OFF \
 	\
 	-DSPHINX_WARNINGS_AS_ERRORS=OFF \
-	-DSPHINX_EXECUTABLE=%{_bindir}/sphinx-build
+	-DSPHINX_EXECUTABLE=/usr/bin/sphinx-build
 
 make %{?_smp_mflags}
 
@@ -197,13 +209,16 @@ fi
 %exclude %{_libdir}/cmake/llvm/LLVMStaticExports.cmake
 
 %files doc
-%doc %{_pkgdocdir}/html
+%doc %{_docdir}/llvm/html
 
 %files static
 %{_libdir}/*.a
 %{_libdir}/cmake/llvm/LLVMStaticExports.cmake
 
 %changelog
+* Tue Jul 4  2017 Huang Jinhua <sjtuhjh@hotmail.com> - 4.0.1-1
+- Add to devtoolset-4 tools
+
 * Wed Jun 21 2017 Tom Stellard <tstellar@redhat.com> - 4.0.1-1
 - 4.0.1 Release
 
