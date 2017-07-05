@@ -28,7 +28,6 @@ Currently the following packages are supported by Open-Estuary repo:
 |devlibset-4|5.0|4.0|Y|Y|||
 |devlibset-4-glibc|5.0|2.25||Y|||
 |devlibset-4-glibc|5.0|2.25.90|Y||||
-|devtoollib-4-glibc|5.0|2.25.90|Y||||
 |devtoolset-4|5.0|4.0|Y|Y|||
 |devtoolset-4-binutils|5.0|2.25|Y||||
 |devtoolset-4-boost|5.0|1.63.0|Y||||
@@ -44,7 +43,6 @@ Currently the following packages are supported by Open-Estuary repo:
 |ethtool|5.0|4.8|Y||Y||
 |findbugs|5.0|2.0.3|Y||||
 |fio|5.0|2.19|Y||||
-|glibc|5.0|2.25.90|Y||||
 |gtest|5.0|1.7.0|Y||||
 |isl|5.0|0.16.1|Y||||
 |javapackages-tools|5.0|3.4.1|Y||||
