@@ -55,8 +55,10 @@ Currently the following packages are supported by Open-Estuary repo:
 |lttng-modules|5.0|2.9.2|Y||||
 |mariadb|5.0|10.1.21|Y||||
 |mongo-c-driver|5.0|1.6.2|Y||||
+|mongo-tools|5.0|3.4.6||Y|||
 |mongo-tools|5.0|3.5.7|Y||||
 |mongodb|5.0|3.4.3|Y||||
+|mongodb|5.0|3.4.6||Y|||
 |mysql-community|5.0|5.6.36|Y||||
 |mysql-connector-c++|5.0|1.1.8|Y||||
 |mysql-connector-python|5.0|2.1.6|Y||||
