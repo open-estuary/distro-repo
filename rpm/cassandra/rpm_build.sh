@@ -1,25 +1,24 @@
 #!/bin/bash
 
-CUR_DIR="$(cd `dirname $0`; pwd)"
-TARGET_OS="centos"
-if [ ! -z "${1}" ] ; then
-    TARGET_OS=${1}
+CUR_DIR=$(cd `dirname $0`; pwd)
+
+TARGET="centos"
+BUILDDIR_BASE=rpmbuild/SOURCES/cassandra_dir/
+BUILDDIR="$(cd ~;pwd)"/${BUILDDIR_BASE}
+
+if [ -d ${BUILDDIR} ] ; then
+    rm -fr ${BUILDDIR}/*
+else 
+    mkdir -p ${BUILDDIR}
 fi
 
-OLD_VERSION="3.0.13"
-NEW_VERSION="3.10"
+VERSION="3.0"
 
-RPM_SRC_FILE="apache-cassandra-${NEW_VERSION}-src.tar.gz"
-SUB_DIR="30x"
-SRC_DIR=src-cassandra
+python ${CUR_DIR}/cassandra_pkgs_download.py ${BUILDDIR}
 
-if [ ! -f ${CUR_DIR}/${SRC_DIR}/${RPM_SRC_FILE} ] ; then
-    if [ ! -d ${CUR_DIR}/${SRC_DIR} ] ; then
-        mkdir -p ${CUR_DIR}/${SRC_DIR}
-    fi 
-    wget -O ${CUR_DIR}/${SRC_DIR}/${RPM_SRC_FILE}  http://mirrors.hust.edu.cn/apache/cassandra/${NEW_VERSION}/${RPM_SRC_FILE}
-fi
+${CUR_DIR}/../../utils/rpm_resign.sh ${BUILDDIR}
 
-sed -i "s/${OLD_VERSION}/${NEW_VERSION}/g" ${CUR_DIR}/${SRC_DIR}/cassandra.spec
+#Upload to estuary repository
+${CUR_DIR}/../../utils/pkg_upload.sh ${BUILDDIR}/ ${TARGET}
 
-${CUR_DIR}/../../utils/rpm_build.sh  ${CUR_DIR}/${SRC_DIR} cassandra.spec
+

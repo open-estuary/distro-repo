@@ -36,24 +36,24 @@ DISTRI=$3
 BUILD_OPTIONS=$4
 PPA_TEST_ENABLE=$5
 
-Container_Name=${TAR_FILENAME%-*}-$DISTRI
-Container_Name=${Container_Name/+/}
+CONTAINER_NAME=${TAR_FILENAME%-*}-$DISTRI
+CONTAINER_NAME=${CONTAINER_NAME/+/}
 
 if [ ! -f ~/KEY_PASSPHRASE ] ; then
     cp /home/KEY_PASSPHRASE  ~/KEY_PASSPHRASE
 fi
 
 if [ $DISTRI = "debian" ]; then
-	docker run -d -v ~/:/root/ --name ${Container_Name} openestuary/debian:3.0-build bash /root/distro-repo/utils/build_incontainer.sh /root/${SRC_DIR_4} ${TAR_FILENAME} ${DISTRI} "${BUILD_OPTIONS}" "${PPA_TEST_ENABLE}"
+	docker run -d -v ~/:/root/ --name ${CONTAINER_NAME} openestuary/debian:3.0-build bash /root/distro-repo/utils/build_incontainer.sh /root/${SRC_DIR_4} ${TAR_FILENAME} ${DISTRI} "${BUILD_OPTIONS}" "${PPA_TEST_ENABLE}"
 
 elif [ $DISTRI = "ubuntu" ]; then
-	docker run -d -v ~/:/root/ --name ${Container_Name} openestuary/ubuntu:3.0-build-1 bash /root/distro-repo/utils/build_incontainer.sh /root/${SRC_DIR_4} ${TAR_FILENAME} ${DISTRI} "${BUILD_OPTIONS}" "${PPA_TEST_ENABLE}"
+	docker run -d -v ~/:/root/ --name ${CONTAINER_NAME} openestuary/ubuntu:3.0-build-1 bash /root/distro-repo/utils/build_incontainer.sh /root/${SRC_DIR_4} ${TAR_FILENAME} ${DISTRI} "${BUILD_OPTIONS}" "${PPA_TEST_ENABLE}"
 fi
 
 echo "It may take some times to build, please wait."
 while true
 do
-	container_status=`docker ps -a | grep ${Container_Name} | awk '{print $8}' | grep Exited`
+	container_status=`docker ps -a | grep ${CONTAINER_NAME} | awk '{print $8}' | grep Exited`
         if [ -z ${container_status} ]; then
                 sleep 10s
         else
@@ -63,8 +63,8 @@ done
 echo "Building has been done. Please check deb under ~/debbuild(ububuild)/DEBS/ or ~/debbuild(ububuild)/SDEBS/ directory !"
 
 echo "Begin to remove building container."
-docker logs ${Container_Name}
-docker rm ${Container_Name}
+docker logs ${CONTAINER_NAME}
+docker rm ${CONTAINER_NAME}
 if [ $? -ne 0 ]; then
         echo "Remove building container failed!"
 else
