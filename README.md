@@ -1,14 +1,14 @@
 * [Introduction](#1)
-* [How to use Open-Estuary repository](#2)
-* [How to build packages](#3)
-* [Packages Open-Estuary maintains](#4)
+* [Open-Estuary Repository](#2)
+* [Packages List](#3)
+* [Packages Building](#4)
 * [FAQ](#5)
 
 # Open-Estuary Package Distrubtions Repository
 ## <a name="1">Introduction</a>
 Distro-repo is to maintain everythings which are required to setup and use Open-Estuary RPM/Deb repository.  
 
-## <a name="2">How to use Open-Estuary repository</a>
+## <a name="2">Open-Estuary Repository</a>
 The open-estuary repository is supported on ARM64 platforms as follows:
 
 |Distribution OS|Estuary Releases|Packages Type|
@@ -56,7 +56,11 @@ On the other hand, it is necessary to setup the repository firstly:
      sudo apt-get update
   - Use `apt-get install <package-name>` to install packages
 
-## <a name="3">How to build packages</a>  
+## <a name="4">Packages List</a>  
+As for the list of packages which are integrated into Estuary, please refer to [Estuary New Packages Lists](https://github.com/open-estuary/distro-repo/blob/master/packages_list.md).  
+
+## <a name="3">Packages Building</a>  
+
 It is strongly suggested to build on Estuary buildserver.  
 
 #### RPM  
@@ -89,9 +93,6 @@ We also provider a method to build all rpms&debs.
 2. run `sh util/rpmdeb_uploadall` to upload rpms&debs to repository 
 
 3. run `yum install xxxx(package-name)` or `apt-get install xxxx(package-name)` to install packages.  
-
-## <a name="4">Packages Open-Estuary maintains</a>  
-Rpm&Deb packages which Open-Estuary support is listed in [packages_list.md](https://github.com/open-estuary/distro-repo/blob/master/packages_list.md).  
 
 ## <a name="5">FAQ</a>
 * How to use specific glibc ?
