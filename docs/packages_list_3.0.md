@@ -19,6 +19,8 @@ Currently the following packages are supported by Open-Estuary repo:
 |bigdata|3.0|1.0|Y||||
 |blktrace|3.0|1.0.5|Y||||
 |cadvisor|3.0|0.26.1|Y||||
+|cassandra|3.0|2.0|||||
+|cassandra|3.0|3.0||Y|||
 |cassandra-cpp-driver|3.0|2.7.0|Y||||
 |ceph-deploy|3.0|1.5.37|Y||||
 |compat-openssl10|3.0|1.0.2j|Y||||
