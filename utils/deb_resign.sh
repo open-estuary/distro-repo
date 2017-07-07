@@ -5,8 +5,8 @@ export DEBEMAIL=sjtuhjh@hotmail.com
 export DEBFULLNAME=Open-Estuary
 
 apt-get update
-apt-get install dpkg-sig
-apt-get install expect
+apt-get install -y dpkg-sig
+apt-get install -y expect
 
 echo "DEBSIGN_KEYID=3108CDA4" >> /etc/devscripts.conf
 passphrase=$(cat /root/KEY_PASSPHRASE)

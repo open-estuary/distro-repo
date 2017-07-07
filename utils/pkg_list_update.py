@@ -127,5 +127,14 @@ if __name__ == "__main__":
     if len(sys.argv) >= 2:
         output_filename = sys.argv[1]
 
+    if len(sys.argv) >= 3:
+        old_version = VERSION
+        VERSION = sys.argv[2]
+        for key in g_pkg_src.keys():
+            for pkg_type in g_pkg_src[key].keys():     
+                url = g_pkg_src[key][pkg_type] 
+                url = url.replace(old_version, VERSION)
+                g_pkg_src[key][pkg_type] = url
+
     gen_pkg_list(output_filename)
 
