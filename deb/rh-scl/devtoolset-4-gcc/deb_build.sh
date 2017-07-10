@@ -1,7 +1,7 @@
 #!/bin/bash
 
-echo "Not implement devtoolset-4-gcc"
-exit 0
+#echo "Not implement devtoolset-4-gcc"
+#exit 0
 
 TARGET="ubuntu"
 OS_VERSION="16.04"

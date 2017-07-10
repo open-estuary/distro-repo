@@ -85,8 +85,9 @@ def gen_pkg_list(pkg_list_filename):
                 decode_deb_packages_list(g_pkg_src[key][pkg_type], key, pkg_dict)
 
 
-    pkg_dict["cassandra\t3.0"] = "Centos,Ubuntu"
-    pkg_dict["cassandra\t2.0"] = "Centos"
+    pkg_dict["cassandra\t3.0"] = "CentOS,Ubuntu"
+    pkg_dict["cassandra\t2.0"] = "CentOS"
+    pkg_dict["elasticsearch\t5.5"] = "CentOS"
 
     filehandle = open(pkg_list_filename, "w")
     
