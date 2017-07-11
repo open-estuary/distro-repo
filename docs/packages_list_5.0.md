@@ -17,7 +17,7 @@ Currently the following packages are supported by Open-Estuary repo:
 |Percona-Server-57|5.0|5.7.17|Y||||
 |alisql|5.0|5.6.32||Y|||
 |bazel|5.0|0.4.5|Y||||
-|bigdata|5.0|1.0|Y||Y||
+|bigdata|5.0|1.0|Y|Y|Y||
 |blktrace|5.0|1.0.5|Y||||
 |boost1.63|5.0|1.63.0||Y|||
 |cadvisor|5.0|0.26.1|Y||||
@@ -25,6 +25,7 @@ Currently the following packages are supported by Open-Estuary repo:
 |cassandra|5.0|3.0|Y|Y|||
 |cassandra-cpp-driver|5.0|2.7.0|Y||||
 |ceph-deploy|5.0|1.5.37|Y||||
+|cockroach|5.0|1.0.3|Y||||
 |compat-openssl10|5.0|1.0.2j|Y||||
 |crash|5.0|7.0.8|||Y||
 |crypto-policies|5.0|20170330|Y||||
@@ -45,7 +46,8 @@ Currently the following packages are supported by Open-Estuary repo:
 |devtoolset-6-gdb|5.0|7.12|Y||||
 |devtoolset-6-make|5.0|4.1|Y||||
 |elasticsearch|5.0|5.5|Y||||
-|ethtool|5.0|4.8|Y||Y||
+|etcd|5.0|3.1.9|Y||||
+|ethtool|5.0|4.8|Y|Y|Y||
 |findbugs|5.0|2.0.3|Y||||
 |fio|5.0|2.19|Y||||
 |go-bindata|5.0|3.0.7|Y||||
