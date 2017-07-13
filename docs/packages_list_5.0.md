@@ -52,9 +52,11 @@ Currently the following packages are supported by Open-Estuary repo:
 |fio|5.0|2.19|Y||||
 |go-bindata|5.0|3.0.7|Y||||
 |golang-googlecode-net|5.0|0|Y||||
+|grafana|5.0|4.4.1|Y||||
 |gtest|5.0|1.7.0|Y||||
 |isl|5.0|0.16.1|Y||||
 |javapackages-tools|5.0|3.4.1|Y||||
+|kops|5.0|1.6.2|Y||||
 |ktap|5.0|0.4|Y||||
 |ktap|5.0|0.4+git20150927|||Y||
 |kubernetes|5.0|1.6.4|Y||||
