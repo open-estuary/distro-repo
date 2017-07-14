@@ -86,17 +86,17 @@ All packages for building rpm is in *distro-repo/rpm/*.
 All packages for building deb is in *distro-repo/deb/*.
   - Build
     ```
-    git clone https://github.com/open-estuary/distro-repo.git
-    sh distro-repo/deb/xxxx(package_name)/deb_build.sh debian(or ubuntu)
+    git clone https://github.com/open-estuary/distro-repo.git 
+    sh distro-repo/deb/xxxx(package_name)/deb_build.sh debian(or ubuntu) 
     ```
   - Upload
     ```
-    sh distro-repo/utils/pkg_upload debbuild debian(or ubuntu)
+    sh distro-repo/utils/pkg_upload debbuild debian(or ubuntu) 
     ```
-    > "debbuild" refer to the directory which has debs.
-  - Create repo
+    > "debbuild" refer to the directory which has debs. 
+  - Create repo 
     ```
-    sh createrepo.sh debian(or ubuntu)
+    sh createrepo.sh debian(or ubuntu) 
     ```
 
 ## <a name="5">FAQ</a>
