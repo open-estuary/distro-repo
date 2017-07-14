@@ -18,7 +18,7 @@ else
 fi
 
 RPMVERSION="4.9.20"
-PKGRELEASE="3.1.rc1"
+PKGRELEASE="3.1"
 TAR_FILENAME="linux-""${RPMVERSION}.estuary.$PKGRELEASE"".tar.gz"
 
 
