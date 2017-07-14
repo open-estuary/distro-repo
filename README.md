@@ -79,28 +79,25 @@ All packages for building rpm is in *distro-repo/rpm/*.
     > "rpmbuild" refer to the directory which has rpms.
   - Create repo
     ```
-    sh createrepo.sh target_os
+    sh createrepo.sh centos
     ```
 
 - DEB:
 All packages for building deb is in *distro-repo/deb/*.
-
-1. Just run `sh deb/xxxx(package_name)/deb_build.sh` when you are in distro-repo directory, the corresponding deb will be building in build-worker.
-
-* Maybe you want to build all packages, Just run `sh util/deb_buildall.sh`.Then all packages in deb directory will be building.  
-
-2. run "sh util/deb_upload.sh" to upload all debs which have been builded to repository.   
-
-3. then you can install your own-building packages with `apt-get install xxxx(package-name)`.  
-
-#### RPM&DEB
-We also provider a method to build all rpms&debs.
-
-1. run `sh util/rpmdeb_buildall.sh`(in distro-repo directory).   
-
-2. run `sh util/rpmdeb_uploadall` to upload rpms&debs to repository 
-
-3. run `yum install xxxx(package-name)` or `apt-get install xxxx(package-name)` to install packages.  
+  - Build
+    ```
+    git clone https://github.com/open-estuary/distro-repo.git
+    sh distro-repo/deb/xxxx(package_name)/deb_build.sh debian(or ubuntu)
+    ```
+  - Upload
+    ```
+    sh distro-repo/utils/pkg_upload debbuild debian(or ubuntu)
+    ```
+    > "debbuild" refer to the directory which has rpms.
+  - Create repo
+    ```
+    sh createrepo.sh debian(or ubuntu)
+    ```
 
 ## <a name="5">FAQ</a>
 * How to use specific glibc ?
