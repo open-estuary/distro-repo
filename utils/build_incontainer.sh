@@ -57,6 +57,11 @@ if [ $TAR_FILENAME = "oprofile-1.1.0.tar.gz" ];then
 	apt-get install default-jdk=2:1.7-52 default-jre=2:1.7-52 default-jre-headless=2:1.7-52 -y
 fi
 
+if [ $TAR_FILENAME = "linux-4.9.20.estuary.3.1.rc1.tar.gz" ];then
+	apt-get update
+	apt-get install  quilt kernel-wedge libssl-dev asciidoc xmlto bison flex libaudit-dev libdw-dev libelf-dev libiberty-dev libnewt-dev libnuma-dev libperl-dev libunwind8-dev python-dev libtool libglib2.0-dev libudev-dev libwrap0-dev libpci-dev dh-systemd python-sphinx python-sphinx-rtd-theme
+fi
+
 if [ -d /root/${DESDIR}/SOURCES/${FILENAME} ]; then
     echo "${FILENAME} had been builded before, now begin clean the directory."
     rm -rf /root/${DESDIR}/SOURCES/${FILENAME}/*
