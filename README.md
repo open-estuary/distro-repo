@@ -20,7 +20,7 @@ The open-estuary repository is supported on ARM64 platforms as follows:
 ||||
 
 On the other hand, it is necessary to setup the repository firstly:
-> By default, we should use http repository(such as estuaryftp.repo or estuaryftp_xxx.list).
+> By default, we should use http repository(such as estuaryhttp.repo or estuaryhttp_xxx.list).
 > However Chinese users could use ftp repository in order to enjoy better access speed.
 
 - CentOS:  
@@ -61,10 +61,10 @@ As for the list of packages which are integrated into Estuary, please refer to [
 
 ## <a name="3">Packages Building</a>  
 
-It is strongly suggested to build on Estuary buildserver.  
+It is strongly suggested to build on Estuary buildboard.  
 
 #### RPM  
-All packages for building rpm is in *distro-repo/rpm/*, as gcc, libtool, mysql and so on. And there is rpm_build.sh script in these packages directory commonly.  
+All packages for building rpm is in *distro-repo/rpm/*.   
 
 1. Just run `sh rpm/xxxx(package_name)/rpm_build.sh` when you are in distro-repo directory, the corresponding rpm will be building in build-worker.
 
