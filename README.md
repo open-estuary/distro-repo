@@ -93,7 +93,7 @@ All packages for building deb is in *distro-repo/deb/*.
     ```
     sh distro-repo/utils/pkg_upload debbuild debian(or ubuntu)
     ```
-    > "debbuild" refer to the directory which has rpms.
+    > "debbuild" refer to the directory which has debs.
   - Create repo
     ```
     sh createrepo.sh debian(or ubuntu)
