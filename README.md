@@ -88,7 +88,7 @@ All packages for building deb is in *distro-repo/deb/*.
     ```
     git clone https://github.com/open-estuary/distro-repo.git
     sh distro-repo/deb/xxxx(package_name)/deb_build.sh debian(or ubuntu)
-    ```
+    ```
   - Upload
     ```
     sh distro-repo/utils/pkg_upload debbuild debian(or ubuntu)
