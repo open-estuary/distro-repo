@@ -39,6 +39,7 @@ On the other hand, it is necessary to setup the repository firstly:
      sudo chmod +r /etc/yum.repos.d/estuary.repo               
      sudo rpm --import ftp://repoftp:repopushez7411@117.78.41.188/releases/ESTUARY-GPG-KEY               
      yum clean dbcache
+     ```
 - Ubuntu: 
   - Setup
      ```
@@ -54,6 +55,7 @@ On the other hand, it is necessary to setup the repository firstly:
      sudo wget -O - http://repo.estuarydev.org/releases/ESTUARY-GPG-KEY | apt-key add -     
      sudo wget -O /etc/apt/sources.list.d/estuary.list https://raw.githubusercontent.com/open-estuary/distro-repo/master/estuaryhttp_debian.list
      sudo apt-get update
+     ```
   - Use `apt-get install <package-name>` to install packages
 
 ## <a name="4">Packages List</a>  
@@ -61,21 +63,27 @@ As for the list of packages which are integrated into Estuary, please refer to [
 
 ## <a name="3">Packages Building</a>  
 
-It is strongly suggested to build on Estuary buildboard.  
+It is strongly suggested to build on Estuary buildboard or buildserver.  
 
-#### RPM  
+- RPM:  
 All packages for building rpm is in *distro-repo/rpm/*.   
+  - Build
+    ```
+    git clone https://github.com/open-estuary/distro-repo.git
+    sh distro-repo/rpm/xxxx(package_name)/rpm_build.sh
+    ```
+  - Upload
+    ```
+    sh distro-repo/utils/pkg_upload rpmbuild centos
+    ```
+    > "rpmbuild" refer to the directory which has rpms.
+  - Create repo
+    ```
+    sh createrepo.sh target_os
+    ```
 
-1. Just run `sh rpm/xxxx(package_name)/rpm_build.sh` when you are in distro-repo directory, the corresponding rpm will be building in build-worker.
-
-* Maybe you want to build all packages, Just run `sh util/rpm_buildall.sh`.Then all packages in rpm directory will be building.  
-
-2. run `sh util/rpm_upload.sh` to upload all rpms which have been builded to repository.   
-
-3. then you can install your own-building packages with `yum install xxxx(package-name)`.  
-
-#### DEB
-All packages for building deb is in *distro-repo/deb/*, as gcc, libtool, mysql and so on. And there is deb_build.sh script in these packages directory commonly.  
+- DEB:
+All packages for building deb is in *distro-repo/deb/*.
 
 1. Just run `sh deb/xxxx(package_name)/deb_build.sh` when you are in distro-repo directory, the corresponding deb will be building in build-worker.
 
