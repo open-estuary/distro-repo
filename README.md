@@ -1,7 +1,7 @@
 * [Introduction](#1)
 * [Open-Estuary Repository](#2)
 * [Packages List](#3)
-* [Packages Building](#4)
+* [Packages Build](#4)
 * [FAQ](#5)
 
 # Open-Estuary Package Distrubtions Repository
@@ -61,7 +61,7 @@ On the other hand, it is necessary to setup the repository firstly:
 ## <a name="4">Packages List</a>  
 As for the list of packages which are integrated into Estuary, please refer to [Estuary New Packages Lists](https://github.com/open-estuary/distro-repo/blob/master/packages_list.md).  
 
-## <a name="3">Packages Building</a>  
+## <a name="3">Packages Build</a>  
 
 It is strongly suggested to build on Estuary buildboard or buildserver.  
 
