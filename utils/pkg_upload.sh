@@ -85,9 +85,13 @@ if [ ${TARGETOS} = "centos" ];then
 	DST_DIR="/est-repo/releases/${VERSION}/${TARGETOS}/SRPMS"
 	upload_files_repo "${filelist}" "${DST_DIR}"
 elif [ ${TARGETOS} = "debian" ];then
-	filelist="$(find ${SRC_DIR} -name "*.${file_type}")"
+	filelist="$(find ${SRC_DIR} -name "*.u${file_type}")"
 	DST_DIR="/est-repo/releases/${VERSION}/${TARGETOS}/pool/main"
 	upload_files_repo "${filelist}" "${DST_DIR}"
+
+        filelist="$(find ${SRC_DIR} -name "*.${file_type}")"
+        DST_DIR="/est-repo/releases/${VERSION}/${TARGETOS}/pool/main"
+        upload_files_repo "${filelist}" "${DST_DIR}"
 	
 	filelist="$(find ${SRC_DIR} -name "*.orig.*")"
         DST_DIR="/est-repo/releases/${VERSION}/${TARGETOS}/pool/main"
@@ -105,6 +109,10 @@ elif [ ${TARGETOS} = "debian" ];then
         DST_DIR="/est-repo/releases/${VERSION}/${TARGETOS}/pool/main"
         upload_files_repo "${filelist}" "${DST_DIR}"
 else
+        filelist="$(find ${SRC_DIR} -name "*.u${file_type}")"
+        DST_DIR="/est-repo/releases/${VERSION}/${TARGETOS}/pool/main"
+        upload_files_repo "${filelist}" "${DST_DIR}"
+
 	filelist="$(find ${SRC_DIR} -name "*.${file_type}")"
         DST_DIR="/est-repo/releases/${VERSION}/${TARGETOS}/pool/main"
         upload_files_repo "${filelist}" "${DST_DIR}"
@@ -120,7 +128,6 @@ else
         filelist="$(find ${SRC_DIR} -name "*.diff.*")"
         DST_DIR="/est-repo/releases/${VERSION}/${TARGETOS}/pool/main"
         upload_files_repo "${filelist}" "${DST_DIR}"
-
 
         filelist="$(find ${SRC_DIR} -name "*.dsc")"
         DST_DIR="/est-repo/releases/${VERSION}/${TARGETOS}/pool/main"

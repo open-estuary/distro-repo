@@ -138,6 +138,7 @@ if [ ! -d /root/${DESDIR}/CHANGES ]; then
 fi
 
 cp /root/${DESDIR}/SOURCES/${FILENAME}/*.deb /root/${DESDIR}/DEBS/
+cp /root/${DESDIR}/SOURCES/${FILENAME}/*.udeb /root/${DESDIR}/DEBS/
 cp /root/${DESDIR}/SOURCES/${FILENAME}/*.dsc /root/${DESDIR}/SDEBS/
 cp /root/${DESDIR}/SOURCES/${FILENAME}/*.orig.tar.gz /root/${DESDIR}/SDEBS/
 cp /root/${DESDIR}/SOURCES/${FILENAME}/*.debian.tar.xz /root/${DESDIR}/SDEBS/
