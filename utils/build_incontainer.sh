@@ -101,7 +101,7 @@ dh_make -s --copyright gpl2 -f ../${TAR_FILENAME} -y
 #apt-get build-dep ${FILENAME} -y
 if [ $TAR_FILENAME = "linux-4.9.20.estuary.3.1.tar.gz" ];then
         apt-get update
-        apt-get install  quilt kernel-wedge libssl-dev asciidoc xmlto bison flex libaudit-dev libdw-dev libelf-dev libiberty-dev libnewt-dev libnuma-dev libperl-dev libunwind8-dev python-dev libtool libglib2.0-dev libudev-dev libwrap0-dev libpci-dev dh-systemd python-sphinx python-sphinx-rtd-theme -y
+        apt-get install bc gcc-4.9 quilt kernel-wedge libssl-dev asciidoc xmlto bison flex libaudit-dev libdw-dev libelf-dev libiberty-dev libnewt-dev libnuma-dev libperl-dev libunwind8-dev python-dev libtool libglib2.0-dev libudev-dev libwrap0-dev libpci-dev dh-systemd python-sphinx python-sphinx-rtd-theme -y
 else
 	mk-build-deps -i -t 'apt-get -y' debian/control
 	rm *build-deps*.deb
