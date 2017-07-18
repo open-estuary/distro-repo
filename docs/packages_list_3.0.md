@@ -23,6 +23,7 @@ Currently the following packages are supported by Open-Estuary repo:
 |cassandra|3.0|3.0|Y|Y|||
 |cassandra-cpp-driver|3.0|2.7.0|Y||||
 |ceph-deploy|3.0|1.5.37|Y||||
+|cockroach|3.0|1.0.3|Y||||
 |compat-openssl10|3.0|1.0.2j|Y||||
 |crypto-policies|3.0|20170330|Y||||
 |devlibset-4|3.0|4.0|Y||||
@@ -32,6 +33,7 @@ Currently the following packages are supported by Open-Estuary repo:
 |devtoolset-4-boost|3.0|1.63.0|Y||||
 |devtoolset-4-gcc|3.0|5.3.1|Y||||
 |devtoolset-4-gdb|3.0|7.10|Y||||
+|devtoolset-4-golang|3.0|1.8.1|Y||||
 |devtoolset-4-llvm|3.0|4.0.1|Y||||
 |devtoolset-4-yaml-cpp|3.0|0.5.3|Y||||
 |devtoolset-6|3.0|6.0|Y||||
@@ -40,13 +42,19 @@ Currently the following packages are supported by Open-Estuary repo:
 |devtoolset-6-gdb|3.0|7.12|Y||||
 |devtoolset-6-make|3.0|4.1|Y||||
 |elasticsearch|3.0|5.5|Y||||
+|etcd|3.0|3.1.9|Y||||
 |ethtool|3.0|4.8|Y||||
 |findbugs|3.0|2.0.3|Y||||
 |fio|3.0|2.19|Y||||
+|go-bindata|3.0|3.0.7|Y||||
+|golang-googlecode-net|3.0|0|Y||||
+|grafana|3.0|4.4.1|Y||||
 |gtest|3.0|1.7.0|Y||||
 |isl|3.0|0.16.1|Y||||
 |javapackages-tools|3.0|3.4.1|Y||||
+|kops|3.0|1.6.2|Y||||
 |ktap|3.0|0.4|Y||||
+|kubernetes|3.0|1.6.4|Y||||
 |leveldb|3.0|1.20|Y||||
 |libbson|3.0|1.6.2|Y||||
 |lttng-modules|3.0|2.9.2|Y||||
