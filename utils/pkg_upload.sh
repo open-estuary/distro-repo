@@ -5,6 +5,9 @@ CUR_DIR=$(cd `dirname $0`; pwd)
 . ${CUR_DIR}/function_cmd_scp.sh
 
 VERSION="5.0"
+if [ $# -eq 3 ];then
+        VERSION=$3
+fi
 
 SRC_DIR=$1
 TARGETOS=$2

@@ -3,6 +3,9 @@
 CUR_DIR=$(cd `dirname $0`; pwd)
 
 VERSION="5.0"
+if [ $# -eq 2 ];then
+        VERSION=$2
+fi
 
 . ${CUR_DIR}/function_cmd_scp.sh
 IP="117.78.41.188"
