@@ -1,7 +1,7 @@
 * [Introduction](#1)
 * [Open-Estuary Repository](#2)
 * [Packages List](#3)
-* [Packages Building](#4)
+* [Packages Build](#4)
 * [FAQ](#5)
 
 # Open-Estuary Package Distrubtions Repository
@@ -20,7 +20,7 @@ The open-estuary repository is supported on ARM64 platforms as follows:
 ||||
 
 On the other hand, it is necessary to setup the repository firstly:
-> By default, we should use http repository(such as estuaryftp.repo or estuaryftp_xxx.list).
+> By default, we should use http repository(such as estuaryhttp.repo or estuaryhttp_xxx.list).
 > However Chinese users could use ftp repository in order to enjoy better access speed.
 
 - CentOS:  
@@ -39,6 +39,7 @@ On the other hand, it is necessary to setup the repository firstly:
      sudo chmod +r /etc/yum.repos.d/estuary.repo               
      sudo rpm --import ftp://repoftp:repopushez7411@117.78.41.188/releases/ESTUARY-GPG-KEY               
      yum clean dbcache
+     ```
 - Ubuntu: 
   - Setup
      ```
@@ -54,45 +55,49 @@ On the other hand, it is necessary to setup the repository firstly:
      sudo wget -O - http://repo.estuarydev.org/releases/ESTUARY-GPG-KEY | apt-key add -     
      sudo wget -O /etc/apt/sources.list.d/estuary.list https://raw.githubusercontent.com/open-estuary/distro-repo/master/estuaryhttp_debian.list
      sudo apt-get update
+     ```
   - Use `apt-get install <package-name>` to install packages
 
 ## <a name="4">Packages List</a>  
 As for the list of packages which are integrated into Estuary, please refer to [Estuary New Packages Lists](https://github.com/open-estuary/distro-repo/blob/master/packages_list.md).  
 
-## <a name="3">Packages Building</a>  
+## <a name="3">Packages Build</a>  
 
-It is strongly suggested to build on Estuary buildserver.  
+It is strongly suggested to build on Estuary buildboard or buildserver.  
 
-#### RPM  
-All packages for building rpm is in *distro-repo/rpm/*, as gcc, libtool, mysql and so on. And there is rpm_build.sh script in these packages directory commonly.  
+- RPM:  
+All packages for building rpm is in *distro-repo/rpm/*.   
+  - Build
+    ```
+    git clone https://github.com/open-estuary/distro-repo.git
+    sh distro-repo/rpm/xxxx(package_name)/rpm_build.sh
+    ```
+  - Upload
+    ```
+    sh distro-repo/utils/pkg_upload rpmbuild centos
+    ```
+    > "rpmbuild" refer to the directory which has rpms.
+  - Create repo
+    ```
+    sh createrepo.sh centos
+    ```
 
-1. Just run `sh rpm/xxxx(package_name)/rpm_build.sh` when you are in distro-repo directory, the corresponding rpm will be building in build-worker.
-
-* Maybe you want to build all packages, Just run `sh util/rpm_buildall.sh`.Then all packages in rpm directory will be building.  
-
-2. run `sh util/rpm_upload.sh` to upload all rpms which have been builded to repository.   
-
-3. then you can install your own-building packages with `yum install xxxx(package-name)`.  
-
-#### DEB
-All packages for building deb is in *distro-repo/deb/*, as gcc, libtool, mysql and so on. And there is deb_build.sh script in these packages directory commonly.  
-
-1. Just run `sh deb/xxxx(package_name)/deb_build.sh` when you are in distro-repo directory, the corresponding deb will be building in build-worker.
-
-* Maybe you want to build all packages, Just run `sh util/deb_buildall.sh`.Then all packages in deb directory will be building.  
-
-2. run "sh util/deb_upload.sh" to upload all debs which have been builded to repository.   
-
-3. then you can install your own-building packages with `apt-get install xxxx(package-name)`.  
-
-#### RPM&DEB
-We also provider a method to build all rpms&debs.
-
-1. run `sh util/rpmdeb_buildall.sh`(in distro-repo directory).   
-
-2. run `sh util/rpmdeb_uploadall` to upload rpms&debs to repository 
-
-3. run `yum install xxxx(package-name)` or `apt-get install xxxx(package-name)` to install packages.  
+- DEB:
+All packages for building deb is in *distro-repo/deb/*.
+  - Build
+    ```
+    git clone https://github.com/open-estuary/distro-repo.git
+    sh distro-repo/deb/xxxx(package_name)/deb_build.sh debian(or ubuntu)
+    ```
+  - Upload
+    ```
+    sh distro-repo/utils/pkg_upload debbuild debian(or ubuntu)
+    ```
+    > "debbuild" refer to the directory which has debs.
+  - Create repo
+    ```
+    sh createrepo.sh debian(or ubuntu)
+    ```
 
 ## <a name="5">FAQ</a>
 * How to use specific glibc ?

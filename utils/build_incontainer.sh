@@ -57,11 +57,6 @@ if [ $TAR_FILENAME = "oprofile-1.1.0.tar.gz" ];then
 	apt-get install default-jdk=2:1.7-52 default-jre=2:1.7-52 default-jre-headless=2:1.7-52 -y
 fi
 
-if [ $TAR_FILENAME = "linux-4.9.20.estuary.3.1.rc1.tar.gz" ];then
-	apt-get update
-	apt-get install  quilt kernel-wedge libssl-dev asciidoc xmlto bison flex libaudit-dev libdw-dev libelf-dev libiberty-dev libnewt-dev libnuma-dev libperl-dev libunwind8-dev python-dev libtool libglib2.0-dev libudev-dev libwrap0-dev libpci-dev dh-systemd python-sphinx python-sphinx-rtd-theme
-fi
-
 if [ -d /root/${DESDIR}/SOURCES/${FILENAME} ]; then
     echo "${FILENAME} had been builded before, now begin clean the directory."
     rm -rf /root/${DESDIR}/SOURCES/${FILENAME}/*
@@ -104,8 +99,13 @@ fi
 cd ${SUBDIR}
 dh_make -s --copyright gpl2 -f ../${TAR_FILENAME} -y
 #apt-get build-dep ${FILENAME} -y
-mk-build-deps -i -t 'apt-get -y' debian/control
-rm *build-deps*.deb
+if [ $TAR_FILENAME = "linux-4.9.20.estuary.3.1.tar.gz" ];then
+        apt-get update
+        apt-get install bc gcc-4.9 quilt kernel-wedge libssl-dev asciidoc xmlto bison flex libaudit-dev libdw-dev libelf-dev libiberty-dev libnewt-dev libnuma-dev libperl-dev libunwind8-dev python-dev libtool libglib2.0-dev libudev-dev libwrap0-dev libpci-dev dh-systemd python-sphinx python-sphinx-rtd-theme -y
+else
+	mk-build-deps -i -t 'apt-get -y' debian/control
+	rm *build-deps*.deb
+fi
 
 expect <<-END
         set timeout -1
@@ -138,6 +138,7 @@ if [ ! -d /root/${DESDIR}/CHANGES ]; then
 fi
 
 cp /root/${DESDIR}/SOURCES/${FILENAME}/*.deb /root/${DESDIR}/DEBS/
+cp /root/${DESDIR}/SOURCES/${FILENAME}/*.udeb /root/${DESDIR}/DEBS/
 cp /root/${DESDIR}/SOURCES/${FILENAME}/*.dsc /root/${DESDIR}/SDEBS/
 cp /root/${DESDIR}/SOURCES/${FILENAME}/*.orig.tar.gz /root/${DESDIR}/SDEBS/
 cp /root/${DESDIR}/SOURCES/${FILENAME}/*.debian.tar.xz /root/${DESDIR}/SDEBS/

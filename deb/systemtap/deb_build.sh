@@ -17,7 +17,7 @@ else
         exit 1
 fi
 
-VERSION="2.6"
+VERSION="3.1"
 TAR_FILENAME="systemtap-""${VERSION}"".tar.gz"
 
 if [ ! -f ${CUR_DIR}/src/${TAR_FILENAME} ] ; then
