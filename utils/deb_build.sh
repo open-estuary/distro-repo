@@ -50,20 +50,9 @@ elif [ $DISTRI = "ubuntu" ]; then
 	docker run -d -v ~/:/root/ --name ${CONTAINER_NAME} openestuary/ubuntu:3.0-build-1 bash /root/distro-repo/utils/build_incontainer.sh /root/${SRC_DIR_4} ${TAR_FILENAME} ${DISTRI} "${BUILD_OPTIONS}" "${PPA_TEST_ENABLE}"
 fi
 
-echo "It may take some times to build, please wait."
-while true
-do
-	container_status=`docker ps -a | grep ${CONTAINER_NAME} | awk '{print $8}' | grep Exited`
-        if [ -z ${container_status} ]; then
-                sleep 10s
-        else
-                break
-        fi
-done
-echo "Building has been done. Please check deb under ~/debbuild(ububuild)/DEBS/ or ~/debbuild(ububuild)/SDEBS/ directory !"
+docker logs -f ${CONTAINER_NAME}
 
 echo "Begin to remove building container."
-docker logs ${CONTAINER_NAME}
 docker rm ${CONTAINER_NAME}
 if [ $? -ne 0 ]; then
         echo "Remove building container failed!"

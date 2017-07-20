@@ -145,5 +145,5 @@ cp /root/${DESDIR}/SOURCES/${FILENAME}/*.debian.tar.xz /root/${DESDIR}/SDEBS/
 cp /root/${DESDIR}/SOURCES/${FILENAME}/*.build /root/${DESDIR}/BUILDS/
 cp /root/${DESDIR}/SOURCES/${FILENAME}/*.changes /root/${DESDIR}/CHANGES/
 
-echo "Please check deb under ~/${DESDIR}/DEBS/ or ~/${DESDIR}/SDEBS/ directory !"
+echo "Build has done, Please check deb under ~/${DESDIR}/DEBS/ or ~/${DESDIR}/SDEBS/ directory !"
 
