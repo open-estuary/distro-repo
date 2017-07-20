@@ -131,7 +131,7 @@ def build_packages(package_dir, logdir):
 if __name__ == "__main__":
     packagedir = "./"
     logdir = "/tmp/debbuildlog"
-    targetos = 
+    targetos = "" 
     if len(sys.argv) >= 4:
         targetos = sys.argv[3]
 
@@ -140,6 +140,11 @@ if __name__ == "__main__":
 
     if len(sys.argv) >= 2:
         packagedir = sys.argv[1]
+
+    if targetos == "" or targetos== "ubuntu":
+        logdir = logdir + "/ubuntu"
+    elif  targetos == "debian":
+	logdir = logdir + "/debian"
 
     if not os.path.exists(logdir):
         os.makedirs(logdir)
