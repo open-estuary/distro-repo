@@ -10,6 +10,10 @@ elif [ ! -z "${1}" ] && [ x"${1}" != x"ubuntu" ] ; then
     exit 1
 fi
 
+if [ $TARGETOS = "ubuntu" ];then
+    exit 1
+fi
+
 VERSION="0.7.3"
 TAR_FILENAME="ltrace-""${VERSION}"".tar.gz"
 

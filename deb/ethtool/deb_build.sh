@@ -10,6 +10,10 @@ elif [ ! -z "${1}" ] && [ x"${1}" != x"ubuntu" ] ; then
     exit 1
 fi
 
+#if [ $TARGETOS = "ubuntu" ];then
+#    exit 1
+#fi
+
 VERSION="4.8"
 TAR_FILENAME="ethtool-""${VERSION}"".tar.gz"
 

@@ -10,6 +10,10 @@ elif [ ! -z "${1}" ] && [ x"${1}" != x"ubuntu" ] ; then
     exit 1
 fi
 
+if [ $TARGETOS = "ubuntu" ];then
+    exit 1
+fi
+
 VERSION="0.4"
 TAR_FILENAME="ktap-""${VERSION}+git20150927"".tar.gz"
 
