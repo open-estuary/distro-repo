@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 
 CUR_DIR=$(cd `dirname $0`; pwd)
 
@@ -13,7 +13,7 @@ if [ $# -lt 3 ]; then
 fi
 
 docker_status=`service docker status | grep "inactive" | awk '{print $2}'`
-if [ -z ${docker_status} ]; then
+if [ ! -z ${docker_status} ]; then
 	echo "Docker service is inactive, begin to start docker service"
         sudo service docker start
 	if [ $? -ne 0 ] ; then
