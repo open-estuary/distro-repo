@@ -17,7 +17,7 @@ Currently the following packages are supported by Open-Estuary repo:
 |Percona-Server-57|5.0|5.7.17|Y||||
 |alisql|5.0|5.6.32||Y|||
 |bazel|5.0|0.4.5|Y||||
-|bigdata|5.0|1.0|Y|Y|||
+|bigdata|5.0|1.0|Y|Y|Y||
 |blktrace|5.0|1.0.5|Y||||
 |boost1.63|5.0|1.63.0||Y|||
 |cadvisor|5.0|0.26.1|Y||||
@@ -46,7 +46,7 @@ Currently the following packages are supported by Open-Estuary repo:
 |devtoolset-6-make|5.0|4.1|Y||||
 |elasticsearch|5.0|5.5|Y||||
 |etcd|5.0|3.1.9|Y||||
-|ethtool|5.0|4.8|Y|Y|||
+|ethtool|5.0|4.8|Y|Y|Y||
 |findbugs|5.0|2.0.3|Y||||
 |fio|5.0|2.19|Y||||
 |go-bindata|5.0|3.0.7|Y||||
@@ -72,6 +72,12 @@ Currently the following packages are supported by Open-Estuary repo:
 |mysql-connector-python|5.0|2.1.6|Y||||
 |mysql-utilities|5.0|1.6.5|Y||||
 |mysql57-community|5.0|5.7.18|Y||||
+|nginx|5.0|1.13.3|Y||||
+|nginx-module-geoip|5.0|1.13.3|Y||||
+|nginx-module-image-filter|5.0|1.13.3|Y||||
+|nginx-module-njs|5.0|1.13.3.0.1.11|Y||||
+|nginx-module-perl|5.0|1.13.3|Y||||
+|nginx-module-xslt|5.0|1.13.3|Y||||
 |nicstat|5.0|1.95|Y||||
 |open-lldp|5.0|1.0.1|Y||||
 |packETHcli|5.0|1.8|Y||||
