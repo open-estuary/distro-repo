@@ -96,6 +96,8 @@ Currently the following packages are supported by Open-Estuary repo:
 |systemtap|5.0|3.1|Y||||
 |tensorflow|5.0|1.2.1|Y||||
 |tiptop|5.0|2.3|Y||||
+|weighttp|5.0|0.4|Y||||
+|wrk|5.0|4.0.2|Y||||
 |yaml-cpp|5.0|0.5.3|Y||||
 |ycsb|5.0|0.12.0|Y||||
 ||||||||
