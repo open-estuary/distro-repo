@@ -1,38 +1,54 @@
 #!/bin/bash
 
 CUR_DIR=$(cd `dirname $0`; pwd)
-echo "Begin to build RPM Packages for aarch64 platform"
 
-if [ -d ~/rpmbuild/RPMS ] ; then
-    echo "Previous RPM build still exists, so it might be necessary to clear them before building new one"
-fi 
+usage() 
+{
+        echo "Usage: rpm_build.sh srcdir spec "
+}
 
-if [ "$(uname -m)" != "aarch64" ] ; then
-    echo "Please build this package on arm64 platform"
-    exit 1
+if [ $# -lt 2 ]; then 
+        usage
+        exit 1
 fi
 
-if [ -z "$(which rpmsign 2>/dev/null)" ] ; then
-    sudo yum install rpm-sign
+docker_status=`service docker status | grep "inactive" | awk '{print $2}'`
+if [ ! -z ${docker_status} ]; then
+        echo "Docker service is inactive, begin to start docker service"
+        sudo service docker start
+        if [ $? -ne 0 ] ; then
+                echo "Starting docker service failed!"
+                exit 1
+        else
+                echo "Docker service start sucessfully!"
+        fi
 fi
 
-SRC_DIR=$1
-SPEC_FILE=$2
+echo "Start container to build." 
+#Image_ID=`docker images | grep "openestuary/centos"| grep "latest" | awk '{print $3}'`
 
-if [ ! -d ${SRC_DIR} ] ; then
-    echo "${SRC_DIR} directory does not exist !"
-    exit 1
+SRC_DIR_1=$1
+SRC_DIR_2=${SRC_DIR_1#*/}
+SRC_DIR_3=${SRC_DIR_2#*/}
+SRC_DIR_4=${SRC_DIR_3#*/}
+SPEC_NAME=$2
+
+CONTAINER_NAME=${SPEC_NAME%.*}
+CONTAINER_NAME=${CONTAINER_NAME/+/}
+
+if [ ! -f ~/KEY_PASSPHRASE ] ; then
+    cp /home/KEY_PASSPHRASE  ~/KEY_PASSPHRASE
 fi
 
-sudo yum-builddep -y ${SRC_DIR}/${SPEC_FILE}
-passphrase=`cat /home/KEY_PASSPHRASE`
-expect <<-END
-	set timeout -1
-	spawn rpmbuild --sign  --target aarch64 -ba ${SRC_DIR}/${SPEC_FILE} "--define=_sourcedir ${SRC_DIR}" "--define=_specdir ${SRC_DIR}" ${@:3}
-	expect {
-                "Enter pass phrase:" {send "${passphrase}\r"}
-		timeout {send_user "Enter pass phrase timeout\n"}
-        }
-	expect eof
-END
-echo "Please check rpm under ~/rpmbuild/RPMS/ or ~/rpmbuild/SRPMS/ directory !"
+	docker run -d -v ~/:/root/ --name ${CONTAINER_NAME} openestuary/centos:3.0-build-1 bash /root/distro-repo/utils/rpm_build_incontainer.sh /root/${SRC_DIR_4} ${SPEC_NAME}
+
+docker logs -f ${CONTAINER_NAME}
+
+echo "Begin to remove building container."
+docker rm ${CONTAINER_NAME}
+if [ $? -ne 0 ]; then
+        echo "Remove building container failed!"
+else
+        echo "Building container have been removed successfully!"
+fi
+
