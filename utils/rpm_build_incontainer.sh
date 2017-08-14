@@ -1,6 +1,7 @@
 #!/bin/bash
 
 cd ~
+useradd test -u 1001
 
 if [ -d ~/rpmbuild/RPMS ] ; then
     echo "Previous RPM build still exists, so it might be necessary to clear them before building new one"
@@ -20,6 +21,8 @@ fi
 
 SRC_DIR=$1
 SPEC_FILE=$2
+id=$3
+useradd test -u $id
 
 if [ ! -d ${SRC_DIR} ] ; then
     echo "${SRC_DIR} directory does not exist !"

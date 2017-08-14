@@ -27,6 +27,7 @@ fi
 echo "Start container to build." 
 #Image_ID=`docker images | grep "openestuary/centos"| grep "latest" | awk '{print $3}'`
 
+id=`id -u`
 SRC_DIR_1=$1
 SRC_DIR_2=${SRC_DIR_1#*/}
 SRC_DIR_3=${SRC_DIR_2#*/}
@@ -40,7 +41,7 @@ if [ ! -f ~/KEY_PASSPHRASE ] ; then
     cp /home/KEY_PASSPHRASE  ~/KEY_PASSPHRASE
 fi
 
-	docker run -d -v ~/:/root/ --name ${CONTAINER_NAME} openestuary/centos:3.0-build-1 bash /root/distro-repo/utils/rpm_build_incontainer.sh /root/${SRC_DIR_4} ${SPEC_NAME}
+	docker run -d -v ~/:/root/ --name ${CONTAINER_NAME} openestuary/centos:3.0-build-1 bash /root/distro-repo/utils/rpm_build_incontainer.sh /root/${SRC_DIR_4} ${SPEC_NAME} $id
 
 docker logs -f ${CONTAINER_NAME}
 
