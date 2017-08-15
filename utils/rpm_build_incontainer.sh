@@ -22,6 +22,16 @@ fi
 SRC_DIR=$1
 SPEC_FILE=$2
 id=$3
+scl=$4
+
+if [ $scl -eq 1]; then
+	yum install -y scl-utils scl-utils-build
+	yum install -y devtoolset-4-gcc
+	yum install -y devtoolset-4-gcc-c++
+	yum install -y devtoolset-4-libstdc++-devel
+	source /opt/rh/devtoolset-4/enable
+fi
+
 useradd test -u $id
 
 if [ ! -d ${SRC_DIR} ] ; then
