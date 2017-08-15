@@ -223,6 +223,9 @@ rm %{_bindir}/llvm-config
 %{_libdir}/cmake/llvm/LLVMStaticExports.cmake
 
 %changelog
+* Tue Aug 15  2017 Yu Lijie <sjtuhjh@hotmail.com> - 4.0.1-1
+- Fix some bugs for clang building
+
 * Tue Jul 4  2017 Huang Jinhua <sjtuhjh@hotmail.com> - 4.0.1-1
 - Add to devtoolset-4 tools
 

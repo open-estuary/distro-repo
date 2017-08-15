@@ -17,7 +17,7 @@
 
 Name:		%{?scl_prefix}compiler-rt
 Version:	4.0.1
-Release:	2%{?dist}
+Release:	4%{?dist}
 Summary:	LLVM "compiler-rt" runtime libraries
 
 License:	NCSA or MIT
@@ -83,6 +83,9 @@ cd _build
 %{_libdir}/clang/%{version}
 
 %changelog
+* Tue Jul 4  2017 Yu Lijie <sjtuhjh@hotmail.com> - 4.0.1-4
+- Add to devtoolset-4 tools
+
 * Fri Jun 23 2017 Tom Stellard <tstelar@redhat.com> - 4.0.1-2
 - Fix build with newer glibc
 

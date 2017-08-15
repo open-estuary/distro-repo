@@ -251,6 +251,9 @@ make %{?_smp_mflags} check || :
 %{_bindir}/modularize
 
 %changelog
+* Tue Jul 4  2017 Yu Lijie <sjtuhjh@hotmail.com> - 4.0.1-1
+- Add to devtoolset-4 tools
+
 * Fri Jun 23 2017 Tom Stellard <tstellar@redhat.com> - 4.0.1-1
 - 4.0.1 Release.
 

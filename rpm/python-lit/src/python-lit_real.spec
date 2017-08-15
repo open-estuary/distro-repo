@@ -90,5 +90,8 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
+* Tue Jul 4  2017 Yu Lijie <sjtuhjh@hotmail.com> - 0.5.0-1
+- Modified for estuary
+
 * Thu Mar 09 2017 Tom Stellard <tstellar@redhat.com> - 0.5.0-1
 - Initial version
