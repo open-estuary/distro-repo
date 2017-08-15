@@ -58,8 +58,8 @@ tools as well as libraries with equivalent functionality.
 %package devel
 Summary:	Libraries and header files for LLVM
 Requires:	%{name}%{?_isa} = %{version}-%{release}
-Requires(post): %{_sbindir}/alternatives
-Requires(postun): %{_sbindir}/alternatives
+Requires(post): /usr/sbin/alternatives
+Requires(postun): /usr/sbin/alternatives
 
 %description devel
 This package contains library and header files needed to develop new native
@@ -172,16 +172,23 @@ mv -v %{buildroot}%{_bindir}/llvm-config{,-%{__isa_bits}}
 cd _build
 make check-all || :
 
+%post
+mv %{_libdir}/devtoolset-4-llvm %{_libdir}/llvm
+%postun
+rm -rf %{_libdir}/llvm
+
 %post libs -p /sbin/ldconfig
 %postun libs -p /sbin/ldconfig
 
 %post devel
-%{_sbindir}/update-alternatives --install %{_bindir}/llvm-config llvm-config %{_bindir}/llvm-config-%{__isa_bits} %{__isa_bits}
+ln -s %{_bindir}/llvm-config-%{__isa_bits} %{_bindir}/llvm-config 
+#/usr/sbin/update-alternatives --install %{_bindir}/llvm-config llvm-config %{_bindir}/llvm-config-%{__isa_bits} %{__isa_bits}
 
 %postun devel
-if [ $1 -eq 0 ]; then
-  %{_sbindir}/update-alternatives --remove llvm-config %{_bindir}/llvm-config-%{__isa_bits}
-fi
+rm %{_bindir}/llvm-config
+#if [ $1 -eq 0 ]; then
+#  /usr/sbin/update-alternatives --remove llvm-config %{_bindir}/llvm-config-%{__isa_bits}
+#fi
 
 %files
 %{_bindir}/*
@@ -216,6 +223,9 @@ fi
 %{_libdir}/cmake/llvm/LLVMStaticExports.cmake
 
 %changelog
+* Tue Aug 15  2017 Yu Lijie <sjtuhjh@hotmail.com> - 4.0.1-1
+- Fix some bugs for clang building
+
 * Tue Jul 4  2017 Huang Jinhua <sjtuhjh@hotmail.com> - 4.0.1-1
 - Add to devtoolset-4 tools
 
