@@ -44,9 +44,9 @@ if [ ! -f ~/KEY_PASSPHRASE ] ; then
 fi
 
 if [ $DISTRI = "debian" ]; then
-	docker run -d -v ~/:/root/ --name ${CONTAINER_NAME} openestuary/debian:3.0-full bash /root/distro-repo/utils/deb_build_incontainer.sh /root/${SRC_DIR_4} ${TAR_FILENAME} ${DISTRI} "${BUILD_OPTIONS}" "${PPA_TEST_ENABLE}"
+	docker run -d -v ~/:/root/ --name ${CONTAINER_NAME} openestuary/debian:3.1-full bash /root/distro-repo/utils/deb_build_incontainer.sh /root/${SRC_DIR_4} ${TAR_FILENAME} ${DISTRI} "${BUILD_OPTIONS}" "${PPA_TEST_ENABLE}"
 elif [ $DISTRI = "ubuntu" ]; then
-	docker run -d -v ~/:/root/ --name ${CONTAINER_NAME} openestuary/ubuntu:3.0-full bash /root/distro-repo/utils/deb_build_incontainer.sh /root/${SRC_DIR_4} ${TAR_FILENAME} ${DISTRI} "${BUILD_OPTIONS}" "${PPA_TEST_ENABLE}"
+	docker run -d -v ~/:/root/ --name ${CONTAINER_NAME} openestuary/ubuntu:3.1-full bash /root/distro-repo/utils/deb_build_incontainer.sh /root/${SRC_DIR_4} ${TAR_FILENAME} ${DISTRI} "${BUILD_OPTIONS}" "${PPA_TEST_ENABLE}"
 fi
 
 docker logs -f ${CONTAINER_NAME}
