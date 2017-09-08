@@ -85,7 +85,6 @@ Currently the following packages are supported by Open-Estuary repo:
 |pipework|5.0|20150123|Y||||
 |python-beautifulsoup4|5.0|4.6.0|Y||||
 |python-cssselect|5.0|0.9.2|Y||||
-|python-lxml|5.0|3.7.2|Y||||
 |redis|5.0|3.2.8|Y||||
 |scl-utils|5.0|1.0||Y|||
 |snappy|5.0|1.1.4|Y||||

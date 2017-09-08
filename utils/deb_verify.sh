@@ -38,9 +38,9 @@ fi
 echo "Start container to build."
 CONTAINER_NAME=debverify-${targetos}
 if [ $targetos = "ubuntu" ];then
-	docker run -it -v ${logdir}:/tmp/debverifylog -v ${CUR_DIR}/:/root/ --name ${CONTAINER_NAME} openestuary/ubuntu:3.0-build-1 python /root/verify_incontainer.py $cmd /tmp/debverifylog $targetos 
+	docker run -it -v ${logdir}:/tmp/debverifylog -v ${CUR_DIR}/:/root/ --name ${CONTAINER_NAME} openestuary/ubuntu:3.0-full python /root/verify_incontainer.py $cmd /tmp/debverifylog $targetos 
 elif [ $targetos = "debian" ];then
-	docker run -d -v ${logdir}:/tmp/debverifylog -v ${CUR_DIR}/:/root/ --name ${CONTAINER_NAME} openestuary/debian:3.0-build python /root/verify_incontainer.py $cmd /tmp/debverifylog $targetos
+	docker run -d -v ${logdir}:/tmp/debverifylog -v ${CUR_DIR}/:/root/ --name ${CONTAINER_NAME} openestuary/debian:3.0-full python /root/verify_incontainer.py $cmd /tmp/debverifylog $targetos
 fi
 
 docker logs -f ${CONTAINER_NAME}
