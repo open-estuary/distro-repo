@@ -45,10 +45,10 @@ popd > /dev/null
 ################################################################################
 CONTAINER_NAME="cassandra_${TARGET}_build"
 if [ $TARGET = "debian" ]; then
-	docker run -d -v ~/:/root/ --name ${CONTAINER_NAME} openestuary/debian:3.0-full   bash /root/distro-repo/utils/deb_resign.sh /root/${BUILDDIR_BASE}
+	docker run -d -v ~/:/root/ --name ${CONTAINER_NAME} openestuary/debian:3.1-full   bash /root/distro-repo/utils/deb_resign.sh /root/${BUILDDIR_BASE}
 
 elif [ $TARGET = "ubuntu" ]; then
-	docker run -d -v ~/:/root/ --name ${CONTAINER_NAME} openestuary/ubuntu:3.0-full bash /root/distro-repo/utils/deb_resign.sh /root/${BUILDDIR_BASE}
+	docker run -d -v ~/:/root/ --name ${CONTAINER_NAME} openestuary/ubuntu:3.1-full bash /root/distro-repo/utils/deb_resign.sh /root/${BUILDDIR_BASE}
 fi
 
 while true
