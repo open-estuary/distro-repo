@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cd ~
-useradd test -u 1001
+#useradd test -u 1001
 
 if [ -d ~/rpmbuild/RPMS ] ; then
     echo "Previous RPM build still exists, so it might be necessary to clear them before building new one"
