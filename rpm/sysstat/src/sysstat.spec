@@ -13,7 +13,7 @@ Source11: colorsysstat.sh
 
 BuildRequires: gettext, lm_sensors-devel, systemd
 
-Requires: findutils, gz
+Requires: findutils
 Requires(post): systemd
 Requires(preun): systemd
 Requires(postun): systemd

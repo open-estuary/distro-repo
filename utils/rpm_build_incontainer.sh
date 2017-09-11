@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cd ~
-useradd test -u 1001
+#useradd test -u 1001
 
 if [ -d ~/rpmbuild/RPMS ] ; then
     echo "Previous RPM build still exists, so it might be necessary to clear them before building new one"
@@ -24,7 +24,7 @@ SPEC_FILE=$2
 id=$3
 scl=$4
 
-if [ $scl -eq 1]; then
+if [ $scl -eq 1 ]; then
 	yum install -y scl-utils scl-utils-build
 	yum install -y devtoolset-4-gcc
 	yum install -y devtoolset-4-gcc-c++
