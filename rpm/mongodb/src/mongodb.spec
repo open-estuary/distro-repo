@@ -22,7 +22,7 @@
 %global mozjsVersion 45
 
 Name:           mongodb
-Version:        3.4.3
+Version:        3.4.6
 Release:        1%{?dist}
 Summary:        High-performance, schema-free document-oriented database
 Group:          Applications/Databases
@@ -63,12 +63,17 @@ Patch2:         asio-master.patch
 # Fix using timer from updated asio (changed in new asio version)
 Patch3:         asio-new.patch
 # Add support for openssl >= 1.1.0
-# https://jira.mongodb.org/browse/SERVER-26781 - fixed in 3.5.3
-Patch4:         openssl-1.1.0.patch
+# https://jira.mongodb.org/browse/SERVER-26781 - fixed in 3.5.3 and 3.4.5
+#Patch4:         openssl-1.1.0.patch
 
 # Fix for boost 1.62+ (thanks to Gentoo)
 # https://jira.mongodb.org/browse/SERVER-26756
 Patch5:		mongodb-3.4.2-boost-1.63-fix.patch
+
+Patch6:         fix-boost-version-check.patch
+# Using string instead of std::string
+# https://jira.mongodb.org/browse/SERVER-30166
+Patch7:         using-std-string.patch
 
 # Fedora specific - adding support for rest of Fedora architectures
 # Upstream does not support it at this time
@@ -83,6 +88,7 @@ Patch21:         32bit-support.patch
 Patch22:         centos_gcc5_sconstruct.patch
 
 BuildRequires:  devtoolset-4-gcc >= 5.3
+BuildRequires:  devtoolset-4-gcc-c++ >= 5.3
 BuildRequires:  devtoolset-4-boost-devel >= 1.56
 BuildRequires:  gperftools-libs
 #BuildRequires:  tcmalloc
@@ -184,11 +190,14 @@ the MongoDB sources.
 #%patch1 -p1
 %patch2 -p1
 %patch3 -p1
-%patch4 -p1
+#%patch4 -p1
 # Boost 1.62+ is in F26
 %if 0%{?fedora} >= 26 || 0%{?rhel} >= 7
 %patch5 -p1
 %endif
+%patch6 -p1
+%patch7 -p1
+
 # Patch only Fedora specific architectures
 %ifnarch %{upstream_arches}
 %patch20 -p1

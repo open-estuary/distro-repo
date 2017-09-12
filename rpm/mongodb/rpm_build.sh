@@ -16,8 +16,8 @@ sudo yum install -y devtoolset-4-libstdc++-devel
 
 source /opt/rh/devtoolset-4/enable
 
-VERSION="3.4.3"
-RPM_SRC_FILE="mongodb-3.4.3-1.fc27.src.rpm"
+VERSION="3.4.6"
+RPM_SRC_FILE="mongodb-3.4.6-3.fc27.src.rpm"
 
 SRC_DIR=src
 

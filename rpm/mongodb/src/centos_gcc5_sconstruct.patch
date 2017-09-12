@@ -1,7 +1,7 @@
 diff -rup old/SConstruct new/SConstruct
 --- old/SConstruct	2017-03-18 05:57:20.000000000 +0800
 +++ new/SConstruct	2017-06-05 09:36:14.647302368 +0800
-@@ -937,6 +942,11 @@ def set_config_header_define(env, varnam
+@@ -937,6 +943,11 @@ def set_config_header_define(env, varnam
      env['CONFIG_HEADER_DEFINES'][varname] = varval
  env.AddMethod(set_config_header_define, 'SetConfigHeaderDefine')
  
@@ -10,6 +10,7 @@ diff -rup old/SConstruct new/SConstruct
 +env.Replace(CPP = '/opt/rh/devtoolset-4/root/usr/bin/cpp')
 +env.Prepend(LIBPATH = ['/opt/rh/devtoolset-4/root/usr/lib64'])
 +env.Prepend(CPPPATH = ['/opt/rh/devtoolset-4/root/usr/include'])
++env.Append(RPATH = ['/opt/rh/devtoolset-4/root/usr/lib64'])
  detectEnv = env.Clone()
  
  # Identify the toolchain in use. We currently support the following:
