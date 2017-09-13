@@ -50,8 +50,8 @@ ln -s ../../opt/jmeter/bin/jmeter jmeter
 #### FILES SECTION ####
 #######################
 %files 
-%defattr(-,jmeter,jmeter,755)
-%attr(0755,jmeter,jmeter) %{jmeter_installdir}
+#%defattr(-,jmeter,jmeter,755)
+%{jmeter_installdir}
 %{_bindir}/jmeter
 
 %changelog 
