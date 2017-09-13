@@ -72,8 +72,6 @@ Currently the following packages are supported by Open-Estuary repo:
 |packETHcli|3.0|1.8|Y||||
 |pcre|3.0|8.40|Y||||
 |pipework|3.0|20150123|Y||||
-|python-beautifulsoup4|3.0|4.6.0|Y||||
-|python-cssselect|3.0|0.9.2|Y||||
 |redis|3.0|3.2.8|Y||||
 |snappy|3.0|1.1.4|Y||||
 |source-highlight|3.0|3.1.8|Y||||
