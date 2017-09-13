@@ -46,14 +46,6 @@ cp -fr ./* $RPM_BUILD_ROOT/%{jmeter_installdir}/
 cd $RPM_BUILD_ROOT/%{_bindir}
 ln -s ../../opt/jmeter/bin/jmeter jmeter
 
-%pre
-
-%post
-
-%preun
-
-%postun
-
 #######################
 #### FILES SECTION ####
 #######################
