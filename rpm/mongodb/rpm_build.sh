@@ -12,7 +12,7 @@ sudo yum install -y devtoolset-4-gcc-c++
 sudo yum install -y devtoolset-4-libstdc++-devel
 
 #sudo yum erase -y boost-*
-#sudo yum erase -y boost*
+sudo yum erase -y boost*
 
 source /opt/rh/devtoolset-4/enable
 

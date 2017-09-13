@@ -1,0 +1,10 @@
+# Init Configuration for solr
+#
+# /etc/sysconfig/solr
+
+# Solr JVM memory allocation
+SOLR_MEMORY="1g"
+
+# Java options for Solr
+SOLR_JVM_OPTS="-Dsolr.autoSoftCommit.maxTime=3000"
+
