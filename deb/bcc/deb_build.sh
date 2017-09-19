@@ -14,7 +14,7 @@ fi
 #    exit 1
 #fi
 
-VERSION="0.3"
+VERSION="0.3.0"
 TAR_FILENAME="bcc-""${VERSION}"".tar.gz"
 
 if [ ! -f ${CUR_DIR}/src/${TAR_FILENAME} ] ; then
