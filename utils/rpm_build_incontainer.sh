@@ -24,7 +24,7 @@ SPEC_FILE=$2
 id=$3
 scl=$4
 
-if [ $scl -eq 1 ]; then
+if [ ! -z "${scl}" ] && [ $scl -eq 1 ]; then
 	yum install -y scl-utils scl-utils-build
 	yum install -y devtoolset-4-gcc
 	yum install -y devtoolset-4-gcc-c++

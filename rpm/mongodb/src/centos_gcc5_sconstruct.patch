@@ -1,7 +1,7 @@
 diff -rup old/SConstruct new/SConstruct
---- old/SConstruct	2017-03-18 05:57:20.000000000 +0800
-+++ new/SConstruct	2017-06-05 09:36:14.647302368 +0800
-@@ -937,6 +942,11 @@ def set_config_header_define(env, varnam
+--- old/SConstruct	2017-09-13 10:07:14.873451110 +0800
++++ new/SConstruct	2017-09-13 10:09:10.671507048 +0800
+@@ -937,6 +937,13 @@ def set_config_header_define(env, varnam
      env['CONFIG_HEADER_DEFINES'][varname] = varval
  env.AddMethod(set_config_header_define, 'SetConfigHeaderDefine')
  
@@ -10,15 +10,18 @@ diff -rup old/SConstruct new/SConstruct
 +env.Replace(CPP = '/opt/rh/devtoolset-4/root/usr/bin/cpp')
 +env.Prepend(LIBPATH = ['/opt/rh/devtoolset-4/root/usr/lib64'])
 +env.Prepend(CPPPATH = ['/opt/rh/devtoolset-4/root/usr/include'])
++env.Append(RPATH = ['/opt/rh/devtoolset-4/root/usr/lib64'])
++
  detectEnv = env.Clone()
  
  # Identify the toolchain in use. We currently support the following:
-@@ -2783,7 +2803,7 @@ def doConfigure(myenv):
-                 boostlib = "boost_" + b
-                 conf.FindSysLibDep(
-                     boostlib,
--                    [boostlib + suffix for suffix in boostSuffixList],
-+                    [boostlib],
-                     language='C++')
-     else:
-         # For the built in boost, we can set these without risking ODR violations, so do so.
+@@ -1649,7 +1656,8 @@ if not env.TargetOSIs('windows'):
+ 
+ # boostSuffixList is used when using system boost to select a search sequence
+ # for boost libraries.
+-boostSuffixList = ["-mt", ""]
++boostSuffixList = [""]
++#boostSuffixList = ["-mt", ""]
+ if get_option("system-boost-lib-search-suffixes") is not None:
+     if not use_system_version_of_library("boost"):
+         env.FatalError("The --system-boost-lib-search-suffixes option is only valid "
