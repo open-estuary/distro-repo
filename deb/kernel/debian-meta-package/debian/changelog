@@ -1,0 +1,7 @@
+linux-estuary-latest (1) unstable; urgency=medium
+
+  * Initial package:
+    - Meta package for the linux estuary package, available as part of the
+    Open Estuary Software Platform project
+
+ -- Xinliang Liu <xinliang.liu@linaro.org>  Mon, 18 Sep 2017 10:08:08 +0800

@@ -1,0 +1,3 @@
+#include <scsi-modules>
+hisi_sas_v1_hw
+hisi_sas_v2_hw
