@@ -1,0 +1,8 @@
+Source: linux-latest-estuary
+Section: kernel
+Priority: optional
+Maintainer: Xinliang Liu <xinliang.liu@linaro.org>
+Standards-Version: 3.9.6
+Build-Depends: debhelper (>> 7)
+Vcs-Git: https://github.com/open-estuary/debian-linux-latest-estuary.git
+Vcs-Browser: https://github.com/open-estuary/debian-linux-latest-estuary.git
