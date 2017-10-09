@@ -12,10 +12,6 @@ if [ $# -lt 2 ]; then
         exit 1
 fi
 
-if [ $# -ge 3 ]; then
-	scl=$3
-fi	
-
 docker_status=`service docker status | grep "inactive" | awk '{print $2}'`
 if [ ! -z ${docker_status} ]; then
         echo "Docker service is inactive, begin to start docker service"
@@ -45,7 +41,7 @@ if [ ! -f ~/KEY_PASSPHRASE ] ; then
     cp /home/KEY_PASSPHRASE  ~/KEY_PASSPHRASE
 fi
 
-docker run --network=host -d -v ~/:/root/ --name ${CONTAINER_NAME} openestuary/centos:3.1-full bash /root/distro-repo/utils/rpm_build_incontainer.sh /root/${SRC_DIR_4} ${SPEC_NAME} $id $scl
+docker run --network=host -d -v ~/:/root/ --name ${CONTAINER_NAME} openestuary/centos:3.1-full bash /root/distro-repo/utils/rpm_build_incontainer.sh /root/${SRC_DIR_4} ${SPEC_NAME} $id ${@:3}
 
 docker logs -f ${CONTAINER_NAME}
 

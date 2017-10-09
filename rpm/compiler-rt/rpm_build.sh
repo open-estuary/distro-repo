@@ -1,6 +1,5 @@
 #!/bin/bash
 
-BUILD_DEVTOOL=1
 CUR_DIR=$(cd `dirname $0`; pwd)
 
 #sudo yum install -y devtoolset-4-gcc
@@ -28,5 +27,5 @@ if [ ${BUILD_DEVTOOL} -eq 1 ] ; then
 fi
 SPECFILE="clang.spec"
 
-${CUR_DIR}/../../utils/rpm_build.sh  ${CUR_DIR}/${SRC_DIR} ${SPECFILE} ${BUILD_DEVTOOL} 
+${CUR_DIR}/../../utils/rpm_build.sh  ${CUR_DIR}/${SRC_DIR} ${SPECFILE} 
 
