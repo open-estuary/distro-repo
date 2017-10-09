@@ -22,9 +22,10 @@ fi
 SRC_DIR=$1
 SPEC_FILE=$2
 id=$3
-scl=$4
 
-if [ ! -z "${scl}" ] && [ $scl -eq 1 ]; then
+scl=`cat ${SRC_DIR}/${SPEC_FILE} | grep "scl_package"`
+
+if [ ! -z "${scl}" ] ; then
 	yum install -y scl-utils scl-utils-build
 	yum install -y devtoolset-4-gcc
 	yum install -y devtoolset-4-gcc-c++
@@ -43,7 +44,7 @@ yum-builddep -y ${SRC_DIR}/${SPEC_FILE}
 passphrase=`cat /root/KEY_PASSPHRASE`
 expect <<-END
         set timeout -1
-        spawn rpmbuild --sign  --target aarch64 -ba ${SRC_DIR}/${SPEC_FILE} "--define=_sourcedir ${SRC_DIR}" "--define=_specdir ${SRC_DIR}" 
+        spawn rpmbuild --sign  --target aarch64 -ba ${SRC_DIR}/${SPEC_FILE} "--define=_sourcedir ${SRC_DIR}" "--define=_specdir ${SRC_DIR}" ${@:4} 
         expect {
                 "Enter pass phrase:" {send "${passphrase}\r"}
                 timeout {send_user "Enter pass phrase timeout\n"}
