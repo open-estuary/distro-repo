@@ -43,7 +43,7 @@ yum-builddep -y ${SRC_DIR}/${SPEC_FILE}
 passphrase=`cat /root/KEY_PASSPHRASE`
 expect <<-END
         set timeout -1
-        spawn rpmbuild --sign  --target aarch64 -ba ${SRC_DIR}/${SPEC_FILE} "--define=_sourcedir ${SRC_DIR}" "--define=_specdir ${SRC_DIR}" ${@:3}
+        spawn rpmbuild --sign  --target aarch64 -ba ${SRC_DIR}/${SPEC_FILE} "--define=_sourcedir ${SRC_DIR}" "--define=_specdir ${SRC_DIR}" 
         expect {
                 "Enter pass phrase:" {send "${passphrase}\r"}
                 timeout {send_user "Enter pass phrase timeout\n"}
