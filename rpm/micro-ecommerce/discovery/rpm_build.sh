@@ -29,5 +29,5 @@ rm -rf eureka
 
 cd ..
 
-${CUR_DIR}/../../utils/rpm_build.sh  ${CUR_DIR}/src eureka.spec
+${CUR_DIR}/../../../utils/rpm_build.sh  ${CUR_DIR}/src eureka.spec
 

@@ -1,9 +1,9 @@
-Name:           api
+Name:           order
 Version:   1.0
 Release:        0
-Summary:        api jar
+Summary:        order jar
 License:        GPL-2.0
-Source:         https://github.com/zhouxingchen1993/discovery.git/api-1.0.tar.gz
+Source:         https://github.com/zhouxingchen1993/discovery.git/order-1.0.tar.gz
 #BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
 %description
@@ -28,6 +28,5 @@ scp -r  %{_sourcedir}/%{name}-%{version}.tar.gz %{_buildrootdir}/%{name}-%{versi
 %clean
 rm -rf %{_sourcedir}/%{name}-%{version}.tar.gz
 rm -rf %{_sourcedir}/%{name}-%{version}
-
 %changelog
                               

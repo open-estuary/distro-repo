@@ -1,9 +1,9 @@
-Name:           api
+Name:           cart
 Version:   1.0
 Release:        0
-Summary:        api jar
+Summary:        cart jar
 License:        GPL-2.0
-Source:         https://github.com/zhouxingchen1993/discovery.git/api-1.0.tar.gz
+Source:         https://github.com/zhouxingchen1993/discovery.git/cart-1.0.tar.gz
 #BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
 %description
