@@ -1,5 +1,5 @@
 Package: linux-image-hwe-generic-trusty
-Architecture: i386 amd64 armhf arm64 ppc64el
+Architecture: i386 amd64 armhf ppc64el
 Section: oldlibs
 Priority: optional
 Depends: linux-image-generic
@@ -7,7 +7,7 @@ Description: Depends on the generic hardware enablement kernel image (dummy tran
  Transitional package for upgrades from 14.04 to 16.04 (Trusty to Xenial)
 
 Package: linux-hwe-generic-trusty
-Architecture: i386 amd64 armhf arm64 ppc64el
+Architecture: i386 amd64 armhf ppc64el
 Section: oldlibs
 Priority: optional
 Depends: linux-generic

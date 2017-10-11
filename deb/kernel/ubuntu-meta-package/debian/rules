@@ -13,7 +13,7 @@
 # linux-meta-lts-vivid will add the series suffix.
 SERIES=$(shell dpkg-parsechangelog | sed -ne 's/^Distribution: *//p' | sed -e 's/-\(security\|updates\|proposed\)$$//')
 SOURCE=$(shell dpkg-parsechangelog | sed -ne 's/^Source: *//p')
-SUFFIX=$(shell dpkg-parsechangelog | sed -ne 's/^Source: *linux-meta-lts/-lts/p')
+SUFFIX=-estuary
 
 # 5 digit versions (2.6.38.<abi>.<upload>, 3 digit kernel base versions (2.6.38)
 KERNEL_VERSION=$(shell dpkg-parsechangelog | grep ^Version | sed -e \

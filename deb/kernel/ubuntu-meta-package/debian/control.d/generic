@@ -1,4 +1,4 @@
-Package: linux-headers-generic@SUFFIX@
+Package: linux-headers@SUFFIX@
 Architecture: i386 amd64 armhf arm64 ppc64el s390x
 Section: kernel
 Priority: optional
@@ -7,7 +7,7 @@ Description: Generic Linux kernel headers
  This package will always depend on the latest generic kernel headers
  available.
 
-Package: linux-image-generic@SUFFIX@
+Package: linux-image@SUFFIX@
 Architecture: i386 amd64 armhf arm64 ppc64el s390x
 Section: kernel
 Priority: optional
@@ -17,7 +17,7 @@ Description: Generic Linux kernel image
  This package will always depend on the latest generic kernel image
  available.
 
-Package: linux-tools-generic@SUFFIX@
+Package: linux-tools@SUFFIX@
 Architecture: i386 amd64 armhf arm64 ppc64el s390x
 Section: kernel
 Priority: optional
@@ -27,7 +27,7 @@ Description: Generic Linux kernel tools
  This package will always depend on the latest generic kernel tools
  available.
 
-Package: linux-cloud-tools-generic@SUFFIX@
+Package: linux-cloud-tools@SUFFIX@
 Architecture: i386 amd64
 Section: kernel
 Priority: optional
@@ -37,11 +37,11 @@ Description: Generic Linux kernel cloud tools
  This package will always depend on the latest generic kernel cloud tools
  available.
 
-Package: linux-generic@SUFFIX@
+Package: linux@SUFFIX@
 Architecture: i386 amd64 armhf arm64 ppc64el s390x
 Section: kernel
 Priority: optional
-Depends: ${misc:Depends}, linux-image-generic@SUFFIX@ (= ${binary:Version}), linux-headers-generic@SUFFIX@ (= ${binary:Version})
+Depends: ${misc:Depends}, linux-image@SUFFIX@ (= ${binary:Version}), linux-headers-generic@SUFFIX@ (= ${binary:Version})
 Description: Complete Generic Linux kernel and headers
  This package will always depend on the latest complete generic Linux kernel
  and headers.
