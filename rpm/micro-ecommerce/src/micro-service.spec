@@ -117,7 +117,7 @@ scp -r  %{name}-%{version}-search.tar.gz %{_buildrootdir}/%{name}-%{version}-%{r
 %{_bindir}/jarfile/search/*
 
 %clean
-rm -rf %{_sourcedir}/%{name}-%{version}.tar.gz
+#rm -rf %{_sourcedir}/%{name}-%{version}.tar.gz
 rm -rf %{_sourcedir}/%{name}-%{version}
 rm -rf %{_sourcedir}/%{name}-%{version}-api.tar.gz
 rm -rf %{_sourcedir}/%{name}-%{version}-discovery.tar.gz
