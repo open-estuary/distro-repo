@@ -1,0 +1,5 @@
+linux-meta (4.12.0.500.1) xenial; urgency=medium
+
+  * Bump ABI 4.12.0-500
+
+ -- root <root@927df4563c40>  Wed, 11 Oct 2017 06:44:50 +0000
