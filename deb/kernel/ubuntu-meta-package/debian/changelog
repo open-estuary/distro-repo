@@ -1,4 +1,4 @@
-linux-meta (4.12.0.500.1) xenial; urgency=medium
+linux-meta-estuary (4.12.0.500.1) xenial; urgency=medium
 
   * Bump ABI 4.12.0-500
 
