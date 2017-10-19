@@ -12,6 +12,9 @@ if [ $# -lt 2 ]; then
         exit 1
 fi
 
+#configure build enviroment
+sudo sh ${CUR_DIR}/config.sh
+
 docker_status=`service docker status | grep "inactive" | awk '{print $2}'`
 if [ ! -z ${docker_status} ]; then
         echo "Docker service is inactive, begin to start docker service"
