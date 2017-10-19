@@ -26,7 +26,9 @@ VERSION="4.0.2"
 sed -i "s/Version\:\ .*/Version\:\ \ \ \ \ \ \ \ \ \ \ ${VERSION}/g" ${CUR_DIR}/${SRC_DIR}/redis.spec
 
 #download redis 4.0.2 package
-wget -O ${CUR_DIR}/${SRC_DIR}/redis-${VERSION}.tar.gz  http://download.redis.io/releases/redis-${VERSION}.tar.gz
-
+REDIS_PACKAGE_FILE="redis-${VERSION}.tar.gz"
+if [ ! -f ${CUR_DIR}/${SRC_DIR}/${REDIS_PACKAGE_FILE} ] ; then
+    wget -O ${CUR_DIR}/${SRC_DIR}/${REDIS_PACKAGE_FILE}  http://download.redis.io/releases/${REDIS_PACKAGE_FILE}
+fi 
 
 ${CUR_DIR}/../../utils/rpm_build.sh  ${CUR_DIR}/${SRC_DIR} redis.spec
