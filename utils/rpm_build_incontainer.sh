@@ -21,7 +21,8 @@ fi
 
 SRC_DIR=$1
 SPEC_FILE=$2
-id=$3
+uid=$3
+gid=$4
 
 scl=`cat ${SRC_DIR}/${SPEC_FILE} | grep "scl_package"`
 
@@ -33,7 +34,8 @@ if [ ! -z "${scl}" ] ; then
 	source /opt/rh/devtoolset-4/enable
 fi
 
-useradd test -u $id
+groupadd test -g ${gid}
+useradd test -u ${uid} -g ${gid}
 
 if [ ! -d ${SRC_DIR} ] ; then
     echo "${SRC_DIR} directory does not exist !"
@@ -44,7 +46,7 @@ yum-builddep -y ${SRC_DIR}/${SPEC_FILE}
 passphrase=`cat /root/KEY_PASSPHRASE`
 expect <<-END
         set timeout -1
-        spawn rpmbuild --sign  --target aarch64 -ba ${SRC_DIR}/${SPEC_FILE} "--define=_sourcedir ${SRC_DIR}" "--define=_specdir ${SRC_DIR}" ${@:4} 
+        spawn rpmbuild --sign  --target aarch64 -ba ${SRC_DIR}/${SPEC_FILE} "--define=_sourcedir ${SRC_DIR}" "--define=_specdir ${SRC_DIR}" ${@:5} 
         expect {
                 "Enter pass phrase:" {send "${passphrase}\r"}
                 timeout {send_user "Enter pass phrase timeout\n"}
