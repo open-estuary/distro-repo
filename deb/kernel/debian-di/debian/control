@@ -1,20 +1,20 @@
-Source: linaro-di
+Source: estuary-di
 Section: debian-installer
 Priority: extra
-Maintainer: Linaro <packages@lists.linaro.org>
+Maintainer: Open Estuary <xinliang.liu@linaro.org>
 Build-Depends: debhelper (>= 9), dpkg-dev (>= 1.7.0), po-debconf (>= 0.5.0)
 
-Package: linaro-erp-udeb
+Package: estuary-netboot-udeb
 Package-Type: udeb
 Architecture: all
 Priority: standard
 Depends: ${misc:Depends}
-Description: Linaro ERP D-I customization
+Description: Estuary netboot D-I customization
 
-Package: linaro-erp-staging-udeb
+Package: estuary-cdrom-udeb
 Package-Type: udeb
 Architecture: all
 Priority: standard
-Depends: linaro-erp-udeb, ${misc:Depends}
-Description: Linaro ERP stating D-I customization
+Depends: ${misc:Depends}
+Description: Estuary cdrom D-I customization
 
