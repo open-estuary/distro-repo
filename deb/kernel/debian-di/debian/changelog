@@ -1,0 +1,43 @@
+linaro-di (7) jessie; urgency=medium
+
+  * Arch: all packages
+  * use deb.d.o
+  * embed linaro key
+
+ -- Riku Voipio <riku.voipio@linaro.org>  Mon, 24 Jul 2017 17:33:37 +0300
+
+linaro-di (6) jessie; urgency=medium
+
+  * install apt-key in target
+
+ -- linaro <linaro@debian>  Fri, 21 Jul 2017 12:51:44 +0000
+
+linaro-di (5) jessie; urgency=medium
+
+  * Move packages 
+
+ -- linaro <linaro@debian>  Fri, 21 Jul 2017 10:44:49 +0000
+
+linaro-di (4) jessie; urgency=medium
+
+  *  executable scripts
+
+ -- linaro <linaro@debian>  Fri, 21 Jul 2017 06:54:40 +0000
+
+linaro-di (3) jessie; urgency=medium
+
+  * Fix to work in jessie 
+
+ -- linaro <linaro@debian>  Thu, 20 Jul 2017 14:04:00 +0000
+
+linaro-di (2) jessie; urgency=medium
+
+  * Drop unneeded depends
+
+ -- linaro <linaro@debian>  Thu, 20 Jul 2017 12:52:10 +0000
+
+linaro-di (1) jessie; urgency=medium
+
+  * Initial release.
+
+ -- linaro <linaro@debian>  Wed, 19 Jul 2017 11:49:14 +0000
