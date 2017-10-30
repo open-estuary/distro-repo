@@ -1,0 +1,31 @@
+#! /bin/sh
+
+# Minimal version to run E-Commerce-Cart
+MINIMAL_VERSION=1.8.0
+
+# Check if Java is present and the minimal version requirement
+_java=`type java | awk '{ print $ NF }'`
+CURRENT_VERSION=`"$_java" -version 2>&1 | awk -F'"' '/version/ {print $2}'`
+minimal_version=`echo $MINIMAL_VERSION | awk -F'.' '{ print $2 }'`
+current_version=`echo $CURRENT_VERSION | awk -F'.' '{ print $2 }'`
+if [ $current_version ]; then
+        if [ $current_version -lt $minimal_version ]; then
+                 echo "Error: Java version is too low to run JMeter. Needs at least Java >= ${MINIMAL_VERSION}." 
+                 exit 1
+        fi
+    else
+         echo "Not able to find Java executable or version. Please check your Java installation."
+         exit 1
+fi
+
+HEAP="-Xms512m -Xmx512m"
+
+GC_ALGO="-XX:+UseG1GC -XX:MaxGCPauseMillis=250 -XX:G1ReservePercent=20"
+
+
+DUMP="-XX:+HeapDumpOnOutOfMemoryError"
+#SYSTEM_PROPS="-Djava.security.egd=file:/dev/urandom"
+
+ARGS="$DUMP $HEAP $GC_ALGO $SYSTEM_PROPS"
+
+java $ARGS -jar ${1} /etc/e-commerce/cart/e-commerce-cart.jar
