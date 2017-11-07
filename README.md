@@ -74,12 +74,12 @@ All packages for building rpm is in *distro-repo/rpm/*.
     ```
   - Upload
     ```
-    sh distro-repo/utils/pkg_upload rpmbuild centos
+    sh distro-repo/utils/pkg_upload.sh rpmbuild centos
     ```
     > "rpmbuild" refer to the directory which has rpms.
   - Create repo
     ```
-    sh createrepo.sh centos
+    sh distro-repo/utils/createrepo.sh centos
     ```
 
 - DEB:
