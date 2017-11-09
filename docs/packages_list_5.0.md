@@ -109,5 +109,5 @@ Currently the following packages are supported by Open-Estuary repo:
 |yaml-cpp|5.0|0.5.3|Y||||
 |ycsb|5.0|0.12.0|Y||||
 |mycat|5.0|1.6|Y||||
-|twemproxy|5.0|0.4.1||||
+|twemproxy|5.0|0.4.1|Y|||
 ||||||||
