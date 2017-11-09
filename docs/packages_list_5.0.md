@@ -92,7 +92,7 @@ Currently the following packages are supported by Open-Estuary repo:
 |packETHcli|5.0|1.8|Y||||
 |pcre|5.0|8.40|Y||||
 |pipework|5.0|20150123|Y||||
-|redis|5.0|3.2.8|Y||||
+|redis|5.0|4.0.2|Y||||
 |scl-utils|5.0|1.0||Y|||
 |snappy|5.0|1.1.4|Y||||
 |solr|5.0|6.6.1|Y||||
@@ -108,4 +108,6 @@ Currently the following packages are supported by Open-Estuary repo:
 |wrk|5.0|4.0.2|Y||||
 |yaml-cpp|5.0|0.5.3|Y||||
 |ycsb|5.0|0.12.0|Y||||
+|mycat|5.0|1.6|Y||||
+|twemproxy|5.0|0.4.1||||
 ||||||||
