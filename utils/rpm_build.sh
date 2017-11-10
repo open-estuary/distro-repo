@@ -45,7 +45,7 @@ if [ ! -f ~/KEY_PASSPHRASE ] ; then
     cp /home/KEY_PASSPHRASE  ~/KEY_PASSPHRASE
 fi
 
-docker run --network=host -d -v ~/:/root/ --name ${CONTAINER_NAME} openestuary/centos:3.1-full bash /root/distro-repo/utils/rpm_build_incontainer.sh /root/${SRC_DIR_4} ${SPEC_NAME} ${uid} ${gid} ${@:3}
+docker run --network=host -d -v ~/:/root/ --name ${CONTAINER_NAME} openestuary/centos:5.0-full bash /root/distro-repo/utils/rpm_build_incontainer.sh /root/${SRC_DIR_4} ${SPEC_NAME} ${uid} ${gid} ${@:3}
 
 docker logs -f ${CONTAINER_NAME}
 
