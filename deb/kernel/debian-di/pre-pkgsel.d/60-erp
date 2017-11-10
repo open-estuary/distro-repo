@@ -11,14 +11,10 @@ cat > /target/etc/apt/sources.list.d/erp-17.08.list <<EOF
 ## ERP 17.08 Stable Overlay
 deb http://repo.linaro.org/debian/erp-17.08-stable jessie main
 deb-src http://repo.linaro.org/debian/erp-17.08-stable jessie main
+deb http://repo.linaro.org/debian/erp-17.08-staging jessie main
+deb-src http://repo.linaro.org/debian/erp-17.08-staging jessie main
 
-# jessie-backports, previously on backports.debian.org
-deb http://deb.debian.org/debian/ jessie-backports main
-deb-src http://deb.debian.org/debian/ jessie-backports main
 EOF
 
 cp /usr/share/linaro/linarorepo.key /target/tmp/key.pub
 in-target apt-key add "/tmp/key.pub"
-in-target apt-get update -q
-apt-install linux-image-reference-arm64
-

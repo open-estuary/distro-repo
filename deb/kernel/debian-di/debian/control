@@ -9,12 +9,18 @@ Package-Type: udeb
 Architecture: all
 Priority: standard
 Depends: ${misc:Depends}
-Description: Estuary netboot D-I customization
+Description: Estuary repo adding for netboot
 
 Package: estuary-cdrom-udeb
 Package-Type: udeb
 Architecture: all
 Priority: standard
 Depends: ${misc:Depends}
-Description: Estuary cdrom D-I customization
+Description: Estuary repo adding for cdrom
 
+Package: linaro-erp-udeb
+Package-Type: udeb
+Architecture: all
+Priority: standard
+Depends: ${misc:Depends}
+Description: Linaro ERP repo adding
