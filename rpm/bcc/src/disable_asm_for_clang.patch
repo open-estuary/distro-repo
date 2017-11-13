@@ -27,7 +27,7 @@ diff -Naur a/src/python/bcc/__init__.py b/src/python/bcc/__init__.py
          return (sym.demangle_name.decode(), sym.offset,
                  ct.cast(sym.module, ct.c_char_p).value.decode())
  
-@@ -175,6 +179,131 @@
+@@ -175,6 +179,151 @@
                          headers += "#include <%s>\n" % header
          return headers
  
@@ -48,9 +48,13 @@ diff -Naur a/src/python/bcc/__init__.py b/src/python/bcc/__init__.py
 +            kernel_version = os.popen('uname -r').read().strip()
 +            kernel_source_dir = "/lib/modules/" + kernel_version + "/source"
 +            if not os.path.isdir(kernel_source_dir) :
-+                kernel_source_dir = "/usr/src/kernels" + kernel_version
++                 for filename in os.listdir("/usr/src/kernels/"):
++                    if re.match(kernel_version + r'.*', filename):
++                        kernel_source_dir = "/usr/src/kernels/" + filename
++                        break   
 +            kernel_filelist=[ kernel_source_dir + "/arch/arm64/include/asm/sysreg.h",
-+                              kernel_source_dir + "/arch/arm64/include/asm/virt.h"]  
++                              kernel_source_dir + "/arch/arm64/include/asm/virt.h"]
++            kernel_filelist2=[ kernel_source_dir + "/arch/arm64/include/asm/thread_info.h"]  
 +            for filename in kernel_filelist:
 +                if os.path.isfile(filename):
 +                    filehandle = open(filename)
@@ -75,10 +79,16 @@ diff -Naur a/src/python/bcc/__init__.py b/src/python/bcc/__init__.py
 +                                extra_header += "#endif \n"
 +                        else:
 +                            extra_header += line
++            for filename in kernel_filelist2:
++                filehandle = open(filename)
++                for line in filehandle:
++                    line=line.replace("sp_el0", "est_sp_el0")
++                    extra_header += line  
 +
 +            extra_header += """
 +                #define __ASM_SYSREG_H
 +                #define __ASM__VIRT_H
++                #define __ASM_THREAD_INFO_H
 +                #define __ASM_ARCH_TIMER_H
 +                #define __ASM_UACCESS_H
 +                #define cntp_tval_el0 0
@@ -108,9 +118,13 @@ diff -Naur a/src/python/bcc/__init__.py b/src/python/bcc/__init__.py
 +            kernel_version = os.popen('uname -r').read().strip()
 +            kernel_source_dir = "/lib/modules/" + kernel_version + "/source"
 +            if not os.path.isdir(kernel_source_dir) :
-+                kernel_source_dir = "/usr/src/kernels" + kernel_version
++                 for filename in os.listdir("/usr/src/kernels/"):
++                    if re.match(kernel_version + r'.*', filename):
++                        kernel_source_dir = "/usr/src/kernels/" + filename
++                        break   
 +            kernel_filelist=[ kernel_source_dir + "/arch/arm64/include/asm/sysreg.h",
 +                              kernel_source_dir + "/arch/arm64/include/asm/virt.h"]
++            kernel_filelist2=[ kernel_source_dir + "/arch/arm64/include/asm/thread_info.h"]
 +            for filename in kernel_filelist:
 +                if os.path.isfile(filename):
 +                    filehandle = open(filename)
@@ -135,10 +149,16 @@ diff -Naur a/src/python/bcc/__init__.py b/src/python/bcc/__init__.py
 +                                extra_header += "#endif \n"
 +                        else:
 +                            extra_header += line
++            for filename in kernel_filelist2:
++                filehandle = open(filename)
++                for line in filehandle:
++                    line=line.replace("sp_el0", "est_sp_el0")
++                    extra_header += line
 +
 +            extra_header += """
 +                #define __ASM_SYSREG_H
 +                #define __ASM__VIRT_H
++                #define __ASM_THREAD_INFO_H
 +                #define __ASM_ARCH_TIMER_H
 +                #define __ASM_UACCESS_H
 +                #define cntp_tval_el0 0
