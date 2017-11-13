@@ -3,6 +3,7 @@
 * [Packages List](#3)
 * [Packages Build](#4)
 * [FAQ](#5)
+* [Help](#6)
 
 # Open-Estuary Package Distrubtions Repository
 ## <a name="1">Introduction</a>
@@ -117,3 +118,15 @@ All packages for building deb is in *distro-repo/deb/*.
  
   By default, the estuaryftp.repo or estuaryhttp.repo contain the latest version. If you want to use specific version, just replace the version number in baseurl with specific version. For example, replace `5.0` with `3.0` in baseurl in order to use Estuary 3.0 packages. Then the baseurl looks like `baseurl=http://repo.estuarydev.org/releases/3.0/centos/`.
   
+## <a name="6">Help</a>
+If you come across any issues during using above packages, please feel free to contact the corresponding owners accordingly.
+
+|Package Domain | Owner | Notes|
+| ---- | ----| ---- |
+|Kernel | [xin3liang](https://github.com/xin3liang) | |
+|Big Data | [dingwei-2017](https://github.com/dingwei-2017) | |
+|RBD DataBases| [dingwei-2017](https://github.com/dingwei-2017), [zhouxinchen93](https://github.com/zhouxinchen93) | |
+|NoSQL Databases | [wangyu07](https://github.com/wangyu07) | |
+|Performance Tools | [yulijie]  | |
+|Spring Cloud/ JAVA Packages | [zhouxinchen93](https://github.com/zhouxinchen93) | |
+|Others | [wangyu](https://github.com/wangyu07) | |
