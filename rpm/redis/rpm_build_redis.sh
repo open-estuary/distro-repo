@@ -6,7 +6,7 @@ if [ ! -z "${1}" ] ; then
     TARGET_OS=${1}
 fi
 
-VERSION="3.2.11"
+VERSION="4.0.2"
 RPM_SRC_FILE="redis-${VERSION}-1.fc28.src.rpm"
 SUB_DIR="r"
 SRC_DIR=src-redis
