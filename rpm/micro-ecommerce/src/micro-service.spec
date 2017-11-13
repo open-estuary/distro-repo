@@ -3,22 +3,24 @@
 %define service_installdir        /etc/systemd/system
 %define api_installdir            /etc/micro-services/api-gateway
 %define discovery_installdir      /etc/micro-services/discovery
+%define zipkin_installdir         /etc/micro-services/zipkin
 %define order_installdir          /etc/e-commerce/order
 %define cart_installdir           /etc/e-commerce/cart
 %define search_installdir         /etc/e-commerce/search
 
 %define apigateway_name           api-gateway-1.0.0.jar
 %define discovery_name            eureka-server-0.0.1-SNAPSHOT.jar
+%define zipkin_name               zipkin-server-0.0.1-SNAPSHOT.jar
 %define order_name                order-0.0.1-SNAPSHOT.jar
 %define cart_name                 cart-0.0.1-SNAPSHOT.jar
 %define search_name               search-0.0.1-SNAPSHOT.jar
 
 Name:           micro-service
-Version:   1.0
+Version:   2.0
 Release:        0
 Summary:        micro-service jar
 License:        GPL-2.0
-Source:         https://github.com/open-estuary/packages.git/micro-service-1.0.tar.gz
+Source:         https://github.com/open-estuary/packages.git/micro-service-2.0.tar.gz
 BuildRequires: maven-local
 Group:          jar
 
@@ -52,6 +54,11 @@ Summary: search jar
 
 %description search
 
+%package zipkin
+Group: jar
+Summary: zipkin jar
+
+%description zipkin
 
 %description
 clone code , build package, excute jar
@@ -82,9 +89,15 @@ cd %{name}-%{version}/order-service
 mvn clean package
 cd ../..
 
-cd %{name}-%{version}/search-service > /dev/null
+cd %{name}-%{version}/search-service
 mvn clean package
 cd ../..
+
+cd %{name}-%{version}/zipkin-server
+mvn clean package
+cd ../..
+
+
 
 %install
 pushd %{_sourcedir} > /dev/null
@@ -96,6 +109,7 @@ install -d -m 755 %{buildroot}%{discovery_installdir}
 install -d -m 755 %{buildroot}%{order_installdir}
 install -d -m 755 %{buildroot}%{cart_installdir}
 install -d -m 755 %{buildroot}%{search_installdir}
+install -d -m 755 %{buildroot}%{zipkin_installdir}
 
 install -d -m 755 %{buildroot}/opt/micro-services
 install -d -m 755 %{buildroot}/opt/e-commerce
@@ -120,10 +134,17 @@ cp -rf  %{name}-%{version}/search-service/target/%{search_name} %{buildroot}%{se
 cp -f e-commerce-search %{buildroot}%{_bindir}
 cp -f e-commerce-search.service %{buildroot}%{service_installdir}
 
+cp -rf  %{name}-%{version}/zipkin-server/target/%{zipkin_name} %{buildroot}%{zipkin_installdir}
+cp -f microservice-zipkin %{buildroot}%{_bindir}
+cp -f microservice-zipkin.service %{buildroot}%{service_installdir}
+
 cd %{buildroot}%{api_installdir}
 ln -s %{apigateway_name} micro-service-zuul.jar
 cd ../discovery
 ln -s %{discovery_name} micro-service-eureka.jar
+cd ../zipkin
+ln -s %{zipkin_name} micro-service-zipkin.jar
+
 cd ../../e-commerce/order
 ln -s %{order_name} e-commerce-order.jar
 cd ../cart
@@ -149,6 +170,7 @@ ln -s %{search_name} e-commerce-search.jar
 cd %{buildroot}/opt/micro-services
 ln -s ../../usr/bin/microservice-zuul microservice-zuul
 ln -s ../../usr/bin/microservice-eureka microservice-eureka
+ln -s ../../usr/bin/microservice-zipkin microservice-zipkin
 
 cd ../e-commerce
 ln -s ../../usr/bin/e-commerce-order e-commerce-order
@@ -190,12 +212,22 @@ ln -s ../../usr/bin/e-commerce-search e-commerce-search
 %{_bindir}/e-commerce-search
 /opt/e-commerce/e-commerce-search
 
+%files zipkin
+%defattr(-,root,root,-)
+%{zipkin_installdir}/*
+%{service_installdir}/microservice-zipkin.service
+%{_bindir}/microservice-zipkin
+/opt/micro-services/microservice-zipkin
+
 %clean
-rm -rf %{_sourcedir}/%{name}-%{version}
-rm -rf %{_sourcedir}/%{name}-%{version}.tar.gz
-rm -rf %{_sourcedir}/package
+#rm -rf %{_sourcedir}/%{name}-%{version}
+#rm -rf %{_sourcedir}/%{name}-%{version}.tar.gz
+#rm -rf %{_sourcedir}/package
 
 %changelog
+* Sat Nov 4 2017 zhouxingchen  <zhouxingchen@huawei.com> - 2.0-1
+- change to json format
+
 * Fri Oct 27 2017 zhouxingchen  <zhouxingchen@huawei.com> - 1.0-2
 - update 5 service 1.0 rpm package
 
