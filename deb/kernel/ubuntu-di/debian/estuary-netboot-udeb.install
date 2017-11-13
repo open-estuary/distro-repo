@@ -1,0 +1,2 @@
+pre-pkgsel.d/61-estuary-netboot   usr/lib/pre-pkgsel.d
+estuaryrepo.key        usr/share/estuary
