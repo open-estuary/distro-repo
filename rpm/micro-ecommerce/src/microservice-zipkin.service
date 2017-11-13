@@ -1,0 +1,13 @@
+[Unit]  
+Description=micro-service-zipkin
+
+[Service]  
+ExecStart=/opt/micro-services/microservice-zipkin -Dspring.config.location=/etc/micro-services/zipkin/application.yml
+ExecStop=/bin/kill -TERM $MAINPID  
+ExecReload=/bin/kill -HUP $MAINPID  
+Type=simple
+Restart=on-failure
+KillMode=control-group
+
+[Install]  
+WantedBy=multi-user.target  

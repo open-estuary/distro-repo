@@ -18,14 +18,28 @@ if [ $current_version ]; then
          exit 1
 fi
 
-HEAP="-Xms512m -Xmx512m"
+DEFAULT_HEAP="-Xms512m -Xmx512m"
+DEFAULT_GC_ALGO="-XX:+UseG1GC -XX:MaxGCPauseMillis=250 -XX:G1ReservePercent=20"
+DEFAULT_DUMP="-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/opt/micro-services/dump/microservice-eureka.oomdump"
+DEFAULT_YML="-Dspring.config.location=/etc/micro-services/discovery/application.yml"
 
-GC_ALGO="-XX:+UseG1GC -XX:MaxGCPauseMillis=250 -XX:G1ReservePercent=20"
+HEAP=$DEFAULT_HEAP
+GC_ALGO=$DEFAULT_GC_ALGO
+DUMP=$DEFAULT_DUMP
 
+CONFIG_FILE_PATH="/etc/micro-services/discovery/microservice-eureka.in.sh"
 
-DUMP="-XX:+HeapDumpOnOutOfMemoryError"
-#SYSTEM_PROPS="-Djava.security.egd=file:/dev/urandom"
+if [ -e $CONFIG_FILE_PATH ];then
+        source $CONFIG_FILE_PATH
+        HEAP=$HEAP
+        GC_ALGO=$GC_ALGO
+        DUMP=$DUMP
+fi
 
-ARGS="$DUMP $HEAP $GC_ALGO $SYSTEM_PROPS"
+ARGS="$DUMP $HEAP $GC_ALGO"
 
-java $ARGS -jar ${1} /etc/micro-services/discovery/micro-service-eureka.jar
+if [ ! -n "${1}" ]; then
+  java $ARGS -jar $DEFAULT_YML  /etc/micro-services/discovery/micro-service-eureka.jar
+else
+  java $ARGS -jar ${1} /etc/micro-services/discovery/micro-service-eureka.jar
+fi

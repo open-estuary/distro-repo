@@ -1,6 +1,6 @@
 #! /bin/sh
 
-# Minimal version to run E-Commerce-Order
+# Minimal version to run Micro-Service-Eureka
 MINIMAL_VERSION=1.8.0
 
 # Check if Java is present and the minimal version requirement
@@ -20,14 +20,14 @@ fi
 
 DEFAULT_HEAP="-Xms512m -Xmx512m"
 DEFAULT_GC_ALGO="-XX:+UseG1GC -XX:MaxGCPauseMillis=250 -XX:G1ReservePercent=20"
-DEFAULT_DUMP="-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/opt/e-commerce/dump/e-commerce-order.oomdump"
-DEFAULT_YML="-Dspring.config.location=/etc/e-commerce/order/application.yml"
+DEFAULT_DUMP="-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/opt/micro-services/dump/microservice-zipkin.oomdump"
+DEFAULT_YML="-Dspring.config.location=/etc/micro-services/zipkin/application.yml"
 
 HEAP=$DEFAULT_HEAP
 GC_ALGO=$DEFAULT_GC_ALGO
 DUMP=$DEFAULT_DUMP
 
-CONFIG_FILE_PATH="/etc/e-commerce/order/e-commerce-order.in.sh"
+CONFIG_FILE_PATH="/etc/micro-services/zipkin/microservice-zipkin.in.sh"
 
 if [ -e $CONFIG_FILE_PATH ];then
         source $CONFIG_FILE_PATH
@@ -39,7 +39,7 @@ fi
 ARGS="$DUMP $HEAP $GC_ALGO"
 
 if [ ! -n "${1}" ]; then
-  java $ARGS -jar $DEFAULT_YML  /etc/e-commerce/order/e-commerce-order.jar
+  java $ARGS -jar $DEFAULT_YML  /etc/micro-services/zipkin/micro-service-zipkin.jar
 else
-  java $ARGS -jar ${1} /etc/e-commerce/order/e-commerce-order.jar 
+  java $ARGS -jar ${1} /etc/micro-services/zipkin/micro-service-zipkin.jar
 fi
