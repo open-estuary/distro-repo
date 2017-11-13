@@ -1,0 +1,2 @@
+pre-pkgsel.d/62-estuary-cdrom   usr/lib/pre-pkgsel.d
+estuaryrepo.key     usr/share/estuary

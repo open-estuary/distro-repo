@@ -21,6 +21,8 @@ create_deb_repo() {
     platform=$1    
    
     sshcmd " \[ -d /est-repo/releases/${VERSION}/${platform}/dists/estuary-${VERSION}/main/binary-arm64 \] || mkdir -p /est-repo/releases/${VERSION}/${platform}/dists/estuary-${VERSION}/main/binary-arm64 "
+
+    sshcmd " \[ -d /est-repo/releases/${VERSION}/${platform}/dists/estuary-${VERSION}/main/debian-installer/binary-arm64 \] || mkdir -p /est-repo/releases/${VERSION}/${platform}/dists/estuary-${VERSION}/main/debian-installer/binary-arm64 "
    
     sshcmd " \[ -d /est-repo/releases/${VERSION}/${platform}/dists/estuary-${VERSION}/main/source \] || mkdir -p /est-repo/releases/${VERSION}/${platform}/dists/estuary-${VERSION}/main/source "
 
@@ -28,6 +30,8 @@ create_deb_repo() {
     
     sshcmd "cd /est-repo/releases/${VERSION}/${platform} && dpkg-scanpackages pool/main /dev/null > /est-repo/releases/${VERSION}/${platform}/dists/estuary-${VERSION}/main/binary-arm64/Packages; cat /est-repo/releases/${VERSION}/${platform}/dists/estuary-${VERSION}/main/binary-arm64/Packages | gzip > /est-repo/releases/${VERSION}/${platform}/dists/estuary-${VERSION}/main/binary-arm64/Packages.gz; cat /est-repo/releases/${VERSION}/${platform}/dists/estuary-${VERSION}/main/binary-arm64/Packages | bzip2 >  /est-repo/releases/${VERSION}/${platform}/dists/estuary-${VERSION}/main/binary-arm64/Packages.bz2"
         
+    sshcmd "cd /est-repo/releases/${VERSION}/${platform} && dpkg-scanpackages -t udeb pool/main /dev/null > /est-repo/releases/${VERSION}/${platform}/dists/estuary-${VERSION}/main/debian-installer/binary-arm64/Packages; cat /est-repo/releases/${VERSION}/${platform}/dists/estuary-${VERSION}/main/debian-installer/binary-arm64/Packages | gzip > /est-repo/releases/${VERSION}/${platform}/dists/estuary-${VERSION}/main/debian-installer/binary-arm64/Packages.gz; cat /est-repo/releases/${VERSION}/${platform}/dists/estuary-${VERSION}/main/debian-installer/binary-arm64/Packages | bzip2 >  /est-repo/releases/${VERSION}/${platform}/dists/estuary-${VERSION}/main/debian-installer/binary-arm64/Packages.bz2"
+
     sshcmd "cd /est-repo/releases/${VERSION}/${platform} && dpkg-scansources pool/main > /est-repo/releases/${VERSION}/${platform}/dists/estuary-${VERSION}/main/source/Sources; cat /est-repo/releases/${VERSION}/${platform}/dists/estuary-${VERSION}/main/source/Sources | gzip > /est-repo/releases/${VERSION}/${platform}/dists/estuary-${VERSION}/main/source/Sources.gz; cat /est-repo/releases/${VERSION}/${platform}/dists/estuary-${VERSION}/main/source/Sources | bzip2 > /est-repo/releases/${VERSION}/${platform}/dists/estuary-${VERSION}/main/source/Sources.bz2; "
         
     sshcmd "apt-ftparchive release /est-repo/releases/${VERSION}/${platform}/dists/estuary-${VERSION} > /est-repo/releases/${VERSION}/${platform}/dists/estuary-${VERSION}/Release"

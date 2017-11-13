@@ -1,0 +1,11 @@
+#! /bin/sh
+set -e
+
+cat > /target/etc/apt/sources.list.d/estuary.list <<EOF
+## Estuary 5.0 Overlay
+deb ftp://repoftp:repopushez7411@117.78.41.188/releases/5.0/debian/ estuary-5.0 main
+deb-src ftp://repoftp:repopushez7411@117.78.41.188/releases/5.0/debian/ estuary-5.0 main
+EOF
+
+cp /usr/share/estuary/estuaryrepo.key /target/tmp/key.pub
+in-target apt-key add "/tmp/key.pub"
