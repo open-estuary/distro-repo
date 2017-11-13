@@ -12,15 +12,16 @@ Summary: The Linux kernel
 
 %define rpmversion 4.12.0
 %define gitrelease 2f8e55b
-%define pkgrelease 1.git%{gitrelease}.linaro
+%define pkgrelease estuary.2
 
 # The kernel tarball/base version
 ## Generated with (e.g.):
 ## git archive --format=tar --prefix=linux-4.9.0-HASH/ HASH | xz -c > linux-4.9.0-HASH.tar.xz
-%define rheltarball %{rpmversion}-%{gitrelease}
+%define rheltarball %{rpmversion}-%{pkgrelease}
 
 # allow pkg_release to have configurable %{?dist} tag
 %define specrelease %%SPECRELEASE%%
+%define _unpackaged_files_terminate_build 0
 
 # What parts do we want to build?  We must build at least one kernel.
 # These are the kernels that are built IF the architecture allows it.
@@ -47,11 +48,6 @@ Summary: The Linux kernel
 %define with_debuginfo %{?_without_debuginfo: 0} %{?!_without_debuginfo: 1}
 # kernel-abi-whitelists
 %define with_kernel_abi_whitelists %{?_with_kernel_abi_whitelists: 0} %{?!_with_kernel_abi_whitelists: 1}
-
-# Linaro: Initial defaults
-%define signmodules    0
-%define with_debug     0
-%define with_debuginfo 0
 %define with_kernel_abi_whitelists 0
 
 # Build the kernel-doc package, but don't fail the build if it botches.
@@ -89,6 +85,8 @@ Summary: The Linux kernel
 #  and 0 for rawhide (all kernels are debug kernels).
 # See also 'make debug' and 'make release'.
 %define debugbuildsenabled 1
+
+%define signmodules 0
 
 %define make_target bzImage
 
@@ -397,7 +395,6 @@ This package provides debug information for the perf package.
 # of matching the pattern against the symlinks file.
 %{expand:%%global debuginfo_args %{?debuginfo_args} -p '.*%%{_bindir}/perf(\.debug)?|.*%%{_libexecdir}/perf-core/.*|.*%%{_libdir}/traceevent/plugins/.*|XXX' -o perf-debuginfo.list}
 
-
 %package -n python-perf
 Summary: Python bindings for apps which will manipulate perf events
 Group: Development/Libraries
@@ -617,7 +614,7 @@ ApplyOptionalPatch()
 if [ ! -d kernel-%{rheltarball}/vanilla-%{rheltarball}/ ]; then
 	rm -f pax_global_header;
 %setup -q -n kernel-%{rheltarball} -c
-	mv linux-%{rheltarball} vanilla-%{rheltarball};
+	mv linux-* vanilla-%{rheltarball};
 else
 	cd kernel-%{rheltarball}/;
 fi
@@ -641,6 +638,20 @@ cp %{SOURCE15} .
 make -f %{SOURCE30} VERSION=%{version} configs
 
 ApplyOptionalPatch linux-kernel-test.patch
+
+if [ ! -d .git ]; then
+    git init
+    git config user.email "941116795@qq.com"
+    git config user.name "linwenkai"
+    git config gc.auto 0
+    git add .
+    git commit -a -q -m "baseline"
+fi
+
+# Apply patches
+#git am %{PATCH1001}
+#git am %{PATCH1002}
+#git am %{PATCH1003}
 
 # Any further pre-build tree manipulations happen here.
 
@@ -673,12 +684,12 @@ do
   mv $i .config
   Arch=`head -1 .config | cut -b 3-`
   %{make} ARCH=$Arch listnewconfig | grep -E '^CONFIG_' >.newoptions || true
-%if %{listnewconfig_fail}
-  if [ -s .newoptions ]; then
-    cat .newoptions
-    exit 1
-  fi
-%endif
+#%if %{listnewconfig_fail}
+#  if [ -s .newoptions ]; then
+#    cat .newoptions
+#    exit 1
+#  fi
+#%endif
   rm -f .newoptions
   %{make} ARCH=$Arch oldnoconfig
   echo "# $Arch" > configs/$i
@@ -769,13 +780,13 @@ BuildKernel() {
     Arch=`head -1 .config | cut -b 3-`
     echo USING ARCH=$Arch
 
-    %{make} -s ARCH=$Arch KERNELRELEASE=$KernelVer oldnoconfig >/dev/null
-    %{make} -s ARCH=$Arch KERNELRELEASE=$KernelVer V=1 %{?_smp_mflags} $MakeTarget %{?sparse_mflags}
-    %{make} -s ARCH=$Arch KERNELRELEASE=$KernelVer V=1 %{?_smp_mflags} modules %{?sparse_mflags} || exit 1
+    %{make} -s ARCH=$Arch oldnoconfig >/dev/null
+    %{make} -s ARCH=$Arch V=1 %{?_smp_mflags} $MakeTarget %{?sparse_mflags}
+    %{make} -s ARCH=$Arch V=1 %{?_smp_mflags} modules %{?sparse_mflags} || exit 1
 
     # from f20 kernel.spec for aarch64; build dtb for now...
 %ifarch aarch64
-    %{make} -s ARCH=$Arch KERNELRELEASE=$KernelVer V=1 dtbs
+    %{make} -s ARCH=$Arch V=1 dtbs
     mkdir -p $RPM_BUILD_ROOT/%{image_install_path}/dtb-$KernelVer
     install -m 644 arch/$Arch/boot/dts/*/*.dtb $RPM_BUILD_ROOT/%{image_install_path}/dtb-$KernelVer/
     rm -f arch/$Arch/boot/dts/*/*.dtb
@@ -906,8 +917,14 @@ BuildKernel() {
     if test -s vmlinux.id; then
       cp vmlinux.id $RPM_BUILD_ROOT/lib/modules/$KernelVer/build/vmlinux.id
     else
-      echo >&2 "*** ERROR *** no vmlinux build ID! ***"
-      exit 1
+	if test -s vmlinux; then
+		vmlinux_id=$(file vmlinux   | awk -F '=|,' '{print $(NF-1)}')
+		touch vmlinux.id
+		echo ${vmlinux_id} > vmlinux.id
+	else
+	      echo >&2 "*** ERROR *** no vmlinux build ID! ***"
+	      exit 1
+	fi
     fi
 
     #
@@ -1171,7 +1188,8 @@ cp %{SOURCE23} %{SOURCE24} %{SOURCE25} $INSTALL_KABI_PATH
 %if %{with_perf}
 # perf tool binary and supporting scripts/binaries
 %{perf_make} DESTDIR=$RPM_BUILD_ROOT lib=%{_lib} install-bin install-traceevent-plugins
-# remove the 'trace' symlink
+
+#remove the 'trace' symlink
 rm -f %{buildroot}%{_bindir}/trace
 # remove the perf-tips
 rm -rf %{buildroot}%{_docdir}/perf-tip
@@ -1304,13 +1322,14 @@ fi
 %files -n perf
 %defattr(-,root,root)
 %{_bindir}/perf
-%dir %{_libexecdir}/perf-core
-%{_libexecdir}/perf-core/*
 %dir %{_libdir}/traceevent/plugins
 %{_libdir}/traceevent/plugins/*
+%dir %{_libexecdir}/perf-core
+%{_libexecdir}/perf-core/*
 %{_datadir}/perf-core/*
 #%{_mandir}/man[1-8]/perf*
 %{_sysconfdir}/bash_completion.d/perf
+%doc linux-%{KVERREL}/tools/perf/Documentation/examples.txt
 
 %files -n python-perf
 %defattr(-,root,root)

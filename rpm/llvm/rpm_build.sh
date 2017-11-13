@@ -5,7 +5,6 @@ if [ ! -z "${1}" ] ; then
     TARGET_OS=${1}
 fi
 
-BUILD_DEVTOOL=1
 CUR_DIR=$(cd `dirname $0`; pwd)
 
 VERSION="4.0.1"
@@ -28,4 +27,4 @@ if [ ${BUILD_DEVTOOL} -eq 1 ] ; then
 fi
 
 
-${CUR_DIR}/../../utils/rpm_build.sh  ${CUR_DIR}/${SRC_DIR} llvm.spec ${BUILD_DEVTOOL}
+${CUR_DIR}/../../utils/rpm_build.sh  ${CUR_DIR}/${SRC_DIR} llvm.spec 

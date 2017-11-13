@@ -1,0 +1,9 @@
+#! /bin/sh
+set -e
+
+cat > /target/etc/apt/sources.list.d/erp-17.08-staging.list <<EOF
+## ERP 17.08 Staging Overlay
+deb http://repo.linaro.org/debian/erp-17.08-staging jessie main
+deb-src http://repo.linaro.org/debian/erp-17.08-staging jessie main
+EOF
+
