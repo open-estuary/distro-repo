@@ -8,7 +8,7 @@
 %define debug_package %{nil}
 
 Name:           bcc
-Version:        0.3
+Version:   0.3
 Release:        1
 Summary:        BPF Compiler Collection (BCC)
 
@@ -60,27 +60,27 @@ make install/strip DESTDIR=%{buildroot}
 
 %package -n libbcc
 Summary: Shared Library for BPF Compiler Collection (BCC)
-Requires: elfutils-libelf
+Requires: elfutils-libelf kernel = 4.9.20 kernel-headers = 4.9.20 kernel-devel = 4.9.20 
 %description -n libbcc
 Shared Library for BPF Compiler Collection (BCC)
 
 %package -n python-bcc
 Summary: Python bindings for BPF Compiler Collection (BCC)
-Requires: libbcc = %{version}-%{release}
+Requires: libbcc = %{version}-%{release} kernel = 4.9.20 kernel-headers = 4.9.20 kernel-devel = 4.9.20
 %description -n python-bcc
 Python bindings for BPF Compiler Collection (BCC)
 
 %if %{with_lua}
 %package -n bcc-lua
 Summary: Standalone tool to run BCC tracers written in Lua
-Requires: libbcc = %{version}-%{release}
+Requires: libbcc = %{version}-%{release} kernel = 4.9.20 kernel-headers = 4.9.20 kernel-devel = 4.9.20
 %description -n bcc-lua
 Standalone tool to run BCC tracers written in Lua
 %endif
 
 %package -n libbcc-examples
 Summary: Examples for BPF Compiler Collection (BCC)
-Requires: python-bcc = %{version}-%{release}
+Requires: python-bcc = %{version}-%{release} kernel = 4.9.20 kernel-headers = 4.9.20 kernel-devel = 4.9.20
 %if %{with_lua}
 Requires: bcc-lua = %{version}-%{release}
 %endif
@@ -89,7 +89,7 @@ Examples for BPF Compiler Collection (BCC)
 
 %package -n bcc-tools
 Summary: Command line tools for BPF Compiler Collection (BCC)
-Requires: python-bcc = %{version}-%{release}
+Requires: python-bcc = %{version}-%{release} kernel = 4.9.20 kernel-headers = 4.9.20 kernel-devel = 4.9.20 
 %description -n bcc-tools
 Command line tools for BPF Compiler Collection (BCC)
 
@@ -119,6 +119,9 @@ Command line tools for BPF Compiler Collection (BCC)
 /usr/share/bcc/man/*
 
 %post -n libbcc -p /sbin/ldconfig
+
+%post -n bcc-tools 
+mv /lib/modules/4.9.20-3.1.rc1.estuary.aarch64 /lib/modules/4.9.20
 
 %postun -n libbcc -p /sbin/ldconfig
 
