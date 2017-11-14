@@ -21,6 +21,8 @@ Source0:        http://dl.mycat.io/1.6-RELEASE/Mycat-server-%{version}-RELEASE-%
 Source1:        https://sourceforge.net/projects/wrapper/files/wrapper_src/Wrapper_3.5.34_20170927/wrapper_3.5.34_src.tar.gz
 
 BuildRequires: ant
+BuildRequires: CUnit-devel
+#BuildRequires: CUnit-devel.aarch64
 
 %description
 mycat is a fast and lightweight proxy for mysql or other databases.
