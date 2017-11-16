@@ -17,6 +17,7 @@ Currently the following packages are supported by Open-Estuary repo:
 |Percona-Server-57|5.0|5.7.17|Y||||
 |alisql|5.0|5.6.32||Y|||
 |bazel|5.0|0.4.5|Y||||
+|bcc|5.0|0.3|Y||||
 |bcc|5.0|0.3.0||Y|Y||
 |bigdata|5.0|1.0|Y|Y|Y||
 |blktrace|5.0|1.0.5|Y||||
@@ -51,7 +52,6 @@ Currently the following packages are supported by Open-Estuary repo:
 |findbugs|5.0|2.0.3|Y||||
 |fio|5.0|2.19|Y||||
 |go-bindata|5.0|3.0.7|Y||||
-|golang-googlecode-net|5.0|0|Y||||
 |grafana|5.0|4.4.1|Y||||
 |gtest|5.0|1.7.0|Y||||
 |isl|5.0|0.16.1|Y||||
@@ -65,7 +65,6 @@ Currently the following packages are supported by Open-Estuary repo:
 |leveldb|5.0|1.20|Y||||
 |libbson|5.0|1.6.2|Y||||
 |linux|5.0|4.12.0.estuary.500|||Y||
-|linux|5.0|4.9.20.estuary.3.1|||Y||
 |ltrace|5.0|0.7.3|||Y||
 |lttng-modules|5.0|2.5.1|||Y||
 |lttng-modules|5.0|2.9.2|Y||||
