@@ -78,7 +78,7 @@ All packages for building rpm is in *distro-repo/rpm/*.
     sh distro-repo/utils/pkg_upload.sh rpmbuild centos
     ```
     > "rpmbuild" refer to the directory which has rpms.
-  - Create repo
+  - Create repo(including rebuild index)
     ```
     sh distro-repo/utils/createrepo.sh centos
     ```
@@ -95,7 +95,7 @@ All packages for building deb is in *distro-repo/deb/*.
     sh distro-repo/utils/pkg_upload debbuild debian(or ubuntu)
     ```
     > "debbuild" refer to the directory which has debs.
-  - Create repo
+  - Create repo(including rebuild index)
     ```
     sh createrepo.sh debian(or ubuntu)
     ```
