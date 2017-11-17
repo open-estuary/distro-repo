@@ -18,8 +18,8 @@ autoinstall hadoop
 %install
 cd %{_sourcedir}
 install -d %{_buildrootdir}/%{name}-%{version}-%{release}.%{_arch}/bigdata 
-scp -r  %{_sourcedir}/* %{_buildrootdir}/%{name}-%{version}-%{release}.%{_arch}/bigdata 
-
+#scp -r  %{_sourcedir}/* %{_buildrootdir}/%{name}-%{version}-%{release}.%{_arch}/bigdata 
+cp -rf %{_sourcedir}/* %{_buildrootdir}/%{name}-%{version}-%{release}.%{_arch}/bigdata
 
 %files 
 %defattr(-, root, root, -)
