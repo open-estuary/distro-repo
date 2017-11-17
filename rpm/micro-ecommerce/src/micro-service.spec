@@ -26,39 +26,45 @@ Group:          jar
 
 %package api
 Group: jar
-Summary: api jar
+Summary: zuul jar
 
 %description api
+use "systemctl start microservice-zuul.service" to start this service
 
 %package discovery
 Group: jar
-Summary: discovery jar
+Summary: eureka jar
 
 %description discovery
+use "systemctl start microservice-eureka.service" to start this service
 
 %package cart
 Group: jar
 Summary: cart jar
 
 %description cart
+use "systemctl start e-commerce-cart.service" to start this service
 
 %package order
 Group: jar
 Summary: order jar
 
 %description order
+use "systemctl start e-commerce-order.service" to start this service
 
 %package search
 Group: jar
 Summary: search jar
 
 %description search
+use "systemctl start e-commerce-search.service" to start this service
 
 %package zipkin
 Group: jar
 Summary: zipkin jar
 
 %description zipkin
+use "systemctl start microservice-zipkin.service" to start this service
 
 %description
 clone code , build package, excute jar
@@ -220,11 +226,14 @@ ln -s ../../usr/bin/e-commerce-search e-commerce-search
 /opt/micro-services/microservice-zipkin
 
 %clean
-#rm -rf %{_sourcedir}/%{name}-%{version}
-#rm -rf %{_sourcedir}/%{name}-%{version}.tar.gz
-#rm -rf %{_sourcedir}/package
+rm -rf %{_sourcedir}/%{name}-%{version}
+rm -rf %{_sourcedir}/%{name}-%{version}.tar.gz
+rm -rf %{_sourcedir}/package
 
 %changelog
+* Wed Nov 15 2017 zhouxingchen  <zhouxingchen@huawei.com> - 2.0-2
+- modify restful api
+
 * Sat Nov 4 2017 zhouxingchen  <zhouxingchen@huawei.com> - 2.0-1
 - change to json format
 
