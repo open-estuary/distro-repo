@@ -1,42 +1,70 @@
+#%define __\_os\_install_post %{nil}
+%define __jar_repack 0
+%define service_installdir        /etc/systemd/system
+%define api_installdir            /etc/micro-services/api-gateway
+%define discovery_installdir      /etc/micro-services/discovery
+%define zipkin_installdir         /etc/micro-services/zipkin
+%define order_installdir          /etc/e-commerce/order
+%define cart_installdir           /etc/e-commerce/cart
+%define search_installdir         /etc/e-commerce/search
+
+%define apigateway_name           api-gateway-1.0.0.jar
+%define discovery_name            eureka-server-0.0.1-SNAPSHOT.jar
+%define zipkin_name               zipkin-server-0.0.1-SNAPSHOT.jar
+%define order_name                order-0.0.1-SNAPSHOT.jar
+%define cart_name                 cart-0.0.1-SNAPSHOT.jar
+%define search_name               search-0.0.1-SNAPSHOT.jar
+
 Name:           micro-service
-Version:   1.0
+Version:   2.0
 Release:        0
 Summary:        micro-service jar
 License:        GPL-2.0
-Source:         https://github.com/open-estuary/packages.git/micro-service-1.0.tar.gz
+Source:         https://github.com/open-estuary/packages.git/micro-service-2.0.tar.gz
 BuildRequires: maven-local
 Group:          jar
 
 %package api
 Group: jar
-Summary: api jar
+Summary: zuul jar
 
 %description api
+use "systemctl start microservice-zuul.service" to start this service
 
 %package discovery
 Group: jar
-Summary: discovery jar
+Summary: eureka jar
 
 %description discovery
+use "systemctl start microservice-eureka.service" to start this service
 
 %package cart
 Group: jar
 Summary: cart jar
 
 %description cart
+use "systemctl start e-commerce-cart.service" to start this service
 
 %package order
 Group: jar
 Summary: order jar
 
 %description order
+use "systemctl start e-commerce-order.service" to start this service
 
 %package search
 Group: jar
 Summary: search jar
 
 %description search
+use "systemctl start e-commerce-search.service" to start this service
 
+%package zipkin
+Group: jar
+Summary: zipkin jar
+
+%description zipkin
+use "systemctl start microservice-zipkin.service" to start this service
 
 %description
 clone code , build package, excute jar
@@ -51,81 +79,166 @@ clone code , build package, excute jar
 pushd %{_sourcedir} > /dev/null
 tar -zxvf %{name}-%{version}.tar.gz
 
-pushd %{name}-%{version}/apigateway-service > /dev/null
+cd %{name}-%{version}/apigateway-service
 mvn clean package
-tar -zcvf %{name}-%{version}-api.tar.gz target
-mv %{name}-%{version}-api.tar.gz ../../%{name}-%{version}-api.tar.gz
-popd > /dev/null
+cd ../..
 
-pushd %{name}-%{version}/discovery-service > /dev/null
+cd %{name}-%{version}/discovery-service
 mvn clean package
-tar -zcvf %{name}-%{version}-discovery.tar.gz target
-mv %{name}-%{version}-discovery.tar.gz ../../%{name}-%{version}-discovery.tar.gz
-popd > /dev/null
+cd ../..
 
-pushd %{name}-%{version}/cart-service > /dev/null
+cd %{name}-%{version}/cart-service
 mvn clean package
-tar -zcvf %{name}-%{version}-cart.tar.gz target
-mv %{name}-%{version}-cart.tar.gz ../../%{name}-%{version}-cart.tar.gz
-popd > /dev/null
+cd ../..
 
-pushd %{name}-%{version}/order-service > /dev/null
+cd %{name}-%{version}/order-service
 mvn clean package
-tar -zcvf %{name}-%{version}-order.tar.gz target
-mv %{name}-%{version}-order.tar.gz ../../%{name}-%{version}-order.tar.gz
-popd > /dev/null
+cd ../..
 
-pushd %{name}-%{version}/search-service > /dev/null
+cd %{name}-%{version}/search-service
 mvn clean package
-tar -zcvf %{name}-%{version}-search.tar.gz target
-mv %{name}-%{version}-search.tar.gz ../../%{name}-%{version}-search.tar.gz
-popd > /dev/null
+cd ../..
+
+cd %{name}-%{version}/zipkin-server
+mvn clean package
+cd ../..
+
 
 
 %install
 pushd %{_sourcedir} > /dev/null
-install -d %{_buildrootdir}/%{name}-%{version}-%{release}.%{_arch}/%{_bindir}/jarfile/api
-install -d %{_buildrootdir}/%{name}-%{version}-%{release}.%{_arch}/%{_bindir}/jarfile/discovery
-install -d %{_buildrootdir}/%{name}-%{version}-%{release}.%{_arch}/%{_bindir}/jarfile/cart
-install -d %{_buildrootdir}/%{name}-%{version}-%{release}.%{_arch}/%{_bindir}/jarfile/order
-install -d %{_buildrootdir}/%{name}-%{version}-%{release}.%{_arch}/%{_bindir}/jarfile/search
+install -d -m 755 %{buildroot}%{service_installdir}
+install -d -m 755 %{buildroot}%{_bindir} 
 
-scp -r  %{name}-%{version}-api.tar.gz %{_buildrootdir}/%{name}-%{version}-%{release}.%{_arch}/%{_bindir}/jarfile/api
-scp -r  %{name}-%{version}-discovery.tar.gz %{_buildrootdir}/%{name}-%{version}-%{release}.%{_arch}/%{_bindir}/jarfile/discovery
-scp -r  %{name}-%{version}-cart.tar.gz %{_buildrootdir}/%{name}-%{version}-%{release}.%{_arch}/%{_bindir}/jarfile/cart
-scp -r  %{name}-%{version}-order.tar.gz %{_buildrootdir}/%{name}-%{version}-%{release}.%{_arch}/%{_bindir}/jarfile/order
-scp -r  %{name}-%{version}-search.tar.gz %{_buildrootdir}/%{name}-%{version}-%{release}.%{_arch}/%{_bindir}/jarfile/search
+install -d -m 755 %{buildroot}%{api_installdir}
+install -d -m 755 %{buildroot}%{discovery_installdir}
+install -d -m 755 %{buildroot}%{order_installdir}
+install -d -m 755 %{buildroot}%{cart_installdir}
+install -d -m 755 %{buildroot}%{search_installdir}
+install -d -m 755 %{buildroot}%{zipkin_installdir}
+
+install -d -m 755 %{buildroot}/opt/micro-services
+install -d -m 755 %{buildroot}/opt/e-commerce
+
+cp -rf  %{name}-%{version}/apigateway-service/target/%{apigateway_name} %{buildroot}%{api_installdir}
+cp -f microservice-zuul %{buildroot}%{_bindir}
+cp -f microservice-zuul.service %{buildroot}%{service_installdir}
+
+cp -rf  %{name}-%{version}/discovery-service/target/%{discovery_name} %{buildroot}%{discovery_installdir}
+cp -f microservice-eureka %{buildroot}%{_bindir}
+cp -f microservice-eureka.service %{buildroot}%{service_installdir}
+
+cp -rf  %{name}-%{version}/order-service/target/%{order_name} %{buildroot}%{order_installdir}
+cp -f e-commerce-order %{buildroot}%{_bindir}
+cp -f e-commerce-order.service %{buildroot}%{service_installdir}
+
+cp -rf  %{name}-%{version}/cart-service/target/%{cart_name} %{buildroot}%{cart_installdir}
+cp -f e-commerce-cart %{buildroot}%{_bindir}
+cp -f e-commerce-cart.service %{buildroot}%{service_installdir}
+
+cp -rf  %{name}-%{version}/search-service/target/%{search_name} %{buildroot}%{search_installdir}
+cp -f e-commerce-search %{buildroot}%{_bindir}
+cp -f e-commerce-search.service %{buildroot}%{service_installdir}
+
+cp -rf  %{name}-%{version}/zipkin-server/target/%{zipkin_name} %{buildroot}%{zipkin_installdir}
+cp -f microservice-zipkin %{buildroot}%{_bindir}
+cp -f microservice-zipkin.service %{buildroot}%{service_installdir}
+
+cd %{buildroot}%{api_installdir}
+ln -s %{apigateway_name} micro-service-zuul.jar
+cd ../discovery
+ln -s %{discovery_name} micro-service-eureka.jar
+cd ../zipkin
+ln -s %{zipkin_name} micro-service-zipkin.jar
+
+cd ../../e-commerce/order
+ln -s %{order_name} e-commerce-order.jar
+cd ../cart
+ln -s %{cart_name} e-commerce-cart.jar
+cd ../search
+ln -s %{search_name} e-commerce-search.jar
+
+#ln -s %{buildroot}%{api_installdir}/%{apigateway_name} %{buildroot}%{api_installdir}/micro-service-zuul.jar
+#ln -s %{buildroot}%{discovery_installdir}/%{discovery_name} %{buildroot}%{discovery_installdir}/micro-service-eureka.jar
+#ln -s %{buildroot}%{order_installdir}/%{order_name} %{buildroot}%{order_installdir}/e-commerce-order.jar
+#ln -s %{buildroot}%{cart_installdir}/%{cart_name} %{buildroot}%{cart_installdir}/e-commerce-cart.jar
+#ln -s %{buildroot}%{search_installdir}/%{search_name} %{buildroot}%{search_installdir}/e-commerce-search.jar
+
+#mkdir -p %{buildroot}/opt/micro-services
+#mkdir -p %{buildroot}/opt/e-commerce
+
+#ln -s %{buildroot}%{_bindir}/microservice-zuul %{buildroot}/opt/micro-services/microservice-zuul
+#ln -s %{buildroot}%{_bindir}/microservice-eureka %{buildroot}/opt/micro-services/microservice-eureka
+#ln -s %{buildroot}%{_bindir}/e-commerce-order %{buildroot}/opt/e-commerce/e-commerce-order
+#ln -s %{buildroot}%{_bindir}/e-commerce-cart %{buildroot}/opt/e-commerce/e-commerce-cart
+#ln -s %{buildroot}%{_bindir}/e-commerce-search %{buildroot}/opt/e-commerce/e-commerce-search
+
+cd %{buildroot}/opt/micro-services
+ln -s ../../usr/bin/microservice-zuul microservice-zuul
+ln -s ../../usr/bin/microservice-eureka microservice-eureka
+ln -s ../../usr/bin/microservice-zipkin microservice-zipkin
+
+cd ../e-commerce
+ln -s ../../usr/bin/e-commerce-order e-commerce-order
+ln -s ../../usr/bin/e-commerce-cart e-commerce-cart
+ln -s ../../usr/bin/e-commerce-search e-commerce-search
 
 %files api
 %defattr(-,root,root,-)
-%{_bindir}/jarfile/api/*
+%{api_installdir}/*
+%{service_installdir}/microservice-zuul.service
+%{_bindir}/microservice-zuul
+/opt/micro-services/microservice-zuul
 
 %files discovery
 %defattr(-,root,root,-)
-%{_bindir}/jarfile/discovery/*
+%{discovery_installdir}/*
+%{service_installdir}/microservice-eureka.service
+%{_bindir}/microservice-eureka
+/opt/micro-services/microservice-eureka
 
 %files cart
 %defattr(-,root,root,-)
-%{_bindir}/jarfile/cart/*
+%{cart_installdir}/*
+%{service_installdir}/e-commerce-cart.service
+%{_bindir}/e-commerce-cart
+/opt/e-commerce/e-commerce-cart
 
 %files order
 %defattr(-,root,root,-)
-%{_bindir}/jarfile/order/*
+%{order_installdir}/*
+%{service_installdir}/e-commerce-order.service
+%{_bindir}/e-commerce-order
+/opt/e-commerce/e-commerce-order
 
 %files search
 %defattr(-,root,root,-)
-%{_bindir}/jarfile/search/*
+%{search_installdir}/*
+%{service_installdir}/e-commerce-search.service
+%{_bindir}/e-commerce-search
+/opt/e-commerce/e-commerce-search
+
+%files zipkin
+%defattr(-,root,root,-)
+%{zipkin_installdir}/*
+%{service_installdir}/microservice-zipkin.service
+%{_bindir}/microservice-zipkin
+/opt/micro-services/microservice-zipkin
 
 %clean
-#rm -rf %{_sourcedir}/%{name}-%{version}.tar.gz
 rm -rf %{_sourcedir}/%{name}-%{version}
-rm -rf %{_sourcedir}/%{name}-%{version}-api.tar.gz
-rm -rf %{_sourcedir}/%{name}-%{version}-discovery.tar.gz
-rm -rf %{_sourcedir}/%{name}-%{version}-cart.tar.gz
-rm -rf %{_sourcedir}/%{name}-%{version}-order.tar.gz
-rm -rf %{_sourcedir}/%{name}-%{version}-search.tar.gz
+rm -rf %{_sourcedir}/%{name}-%{version}.tar.gz
 rm -rf %{_sourcedir}/package
 
 %changelog
+* Wed Nov 15 2017 zhouxingchen  <zhouxingchen@huawei.com> - 2.0-2
+- modify restful api
+
+* Sat Nov 4 2017 zhouxingchen  <zhouxingchen@huawei.com> - 2.0-1
+- change to json format
+
+* Fri Oct 27 2017 zhouxingchen  <zhouxingchen@huawei.com> - 1.0-2
+- update 5 service 1.0 rpm package
+
 * Wed Oct 11 2017 zhouxingchen  <zhouxingchen@huawei.com> - 1.0-1
 - create 5 service 1.0 rpm package

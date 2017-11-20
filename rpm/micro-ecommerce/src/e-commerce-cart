@@ -1,0 +1,45 @@
+#! /bin/sh
+
+# Minimal version to run E-Commerce-Cart
+MINIMAL_VERSION=1.8.0
+
+# Check if Java is present and the minimal version requirement
+_java=`type java | awk '{ print $ NF }'`
+CURRENT_VERSION=`"$_java" -version 2>&1 | awk -F'"' '/version/ {print $2}'`
+minimal_version=`echo $MINIMAL_VERSION | awk -F'.' '{ print $2 }'`
+current_version=`echo $CURRENT_VERSION | awk -F'.' '{ print $2 }'`
+if [ $current_version ]; then
+        if [ $current_version -lt $minimal_version ]; then
+                 echo "Error: Java version is too low to run JMeter. Needs at least Java >= ${MINIMAL_VERSION}." 
+                 exit 1
+        fi
+    else
+         echo "Not able to find Java executable or version. Please check your Java installation."
+         exit 1
+fi
+
+DEFAULT_HEAP="-Xms512m -Xmx512m"
+DEFAULT_GC_ALGO="-XX:+UseG1GC -XX:MaxGCPauseMillis=250 -XX:G1ReservePercent=20"
+DEFAULT_DUMP="-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/opt/e-commerce/dump/e-commerce-cart.oomdump"
+DEFAULT_YML="-Dspring.config.location=/etc/e-commerce/cart/application.yml"
+
+HEAP=$DEFAULT_HEAP
+GC_ALGO=$DEFAULT_GC_ALGO
+DUMP=$DEFAULT_DUMP
+
+CONFIG_FILE_PATH="/etc/e-commerce/cart/e-commerce-cart.in.sh"
+
+if [ -e $CONFIG_FILE_PATH ];then
+        source $CONFIG_FILE_PATH
+        HEAP=$HEAP
+        GC_ALGO=$GC_ALGO
+        DUMP=$DUMP
+fi
+
+ARGS="$DUMP $HEAP $GC_ALGO "
+
+if [ ! -n "${1}" ]; then
+  java $ARGS -jar $DEFAULT_YML  /etc/e-commerce/cart/e-commerce-cart.jar 
+else
+  java $ARGS -jar ${1} /etc/e-commerce/cart/e-commerce-cart.jar 
+fi
