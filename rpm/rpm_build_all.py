@@ -74,21 +74,6 @@ def get_all_build_files(dirname):
         if re.search("utils", filename):
             print("Ignore utils")
             continue
-        #success apps
-        #dmidecode
-        #tiptop
-        if re.search("dmidecode", filename) or \
-           re.search("tiptop", filename) or \
-           re.search("redis", filename) or \
-           re.search("micro-ecommerce", filename) or \
-           re.search("cAdvisor", filename) or \
-           re.search("systemtap", filename) or \
-           re.search("grafana", filename) or \
-           re.search("twemproxy", filename) or \
-           re.search("phantomjs", filename) or \
-           re.search("mycat", filename):    
-            print("Ignore " + filename)
-            continue
 
         fullname = os.path.join(dirname, filename)
         if os.path.isfile(fullname) and filename == 'rpm_build.sh':
