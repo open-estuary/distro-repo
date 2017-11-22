@@ -68,12 +68,19 @@ def get_all_build_files(dirname):
         if re.search("obsolete", filename):
             print("Ignore not used scripts")
             continue
-       
+        if re.search("kernel", filename):
+            print("Ignore kernel")
+            continue
+        if re.search("utils", filename):
+            print("Ignore utils")
+            continue
+
         fullname = os.path.join(dirname, filename)
         if os.path.isfile(fullname) and filename == 'rpm_build.sh':
             file_list.append(fullname)
         elif os.path.isdir(fullname):
             file_list.extend(get_all_build_files(fullname))
+
     return file_list
 
 def build_packages_thread(packages_list, logdir, succ_dict):
@@ -103,6 +110,10 @@ def build_packages_thread(packages_list, logdir, succ_dict):
           
 def build_packages(package_dir, logdir):
     global_packages_list = get_all_build_files(package_dir)
+
+    for file1 in global_packages_list:
+        print("This files should be build:", file1)
+
     all_packages_file = open(os.path.join(logdir, "all_packages_list"), 'w')
     for package in global_packages_list:
         packagename = package.split('/')[-2]

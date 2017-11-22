@@ -1,0 +1,14 @@
+[Unit]  
+Description=e-commerce-search
+Wants=solr.service
+
+[Service]  
+ExecStart=/opt/e-commerce/e-commerce-search -Dspring.config.location=/etc/e-commerce/search/application.yml
+ExecStop=/bin/kill -TERM $MAINPID  
+ExecReload=/bin/kill -HUP $MAINPID  
+Type=simple
+Restart=on-failure
+KillMode=control-group
+
+[Install]  
+WantedBy=multi-user.target  

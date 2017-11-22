@@ -1,0 +1,14 @@
+[Unit]  
+Description=e-commerce-order
+Wants=mysql.service redis.service
+
+[Service]  
+ExecStart=/opt/e-commerce/e-commerce-order -Dspring.config.location=/etc/e-commerce/order/application.yml
+ExecStop=/bin/kill -TERM $MAINPID  
+ExecReload=/bin/kill -HUP $MAINPID  
+Type=simple
+Restart=on-failure
+KillMode=control-group
+
+[Install]  
+WantedBy=multi-user.target  

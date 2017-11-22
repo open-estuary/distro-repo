@@ -16,24 +16,22 @@
 #
 
 # needssslcertforbuild
-%define kernel_version 4.9.20
+%define kernel_version 4.9.20-3.1.rc1.estuary.aarch64
 
-Summary:        A New Scripting Dynamic Tracing Tool For Linux 
-License:        GPL-2.0 
+Summary:        Licensing information for package lttng-modules
+License:        GPL-2.0 and LGPL-2.1 and MIT
 Group:          System/Kernel
-Name:           ktap
-Version:   0.4
+Name:           lttng-modules
+Version:   2.9.2
 Release:        0
 Source:         %{name}-%{version}.tar.bz2
-
+BuildRequires:  kernel = 4.9.20 kernel-devel = 4.9.20
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
+#%suse_kernel_module_package -p %{name}-preamble ec2 xen xenpae vmi um 
+
 %description
-ktap is a new scripting dynamic tracing tool for Linux, it uses 
-a scripting language and lets users trace the Linux kernel dynamically. 
-ktap is designed to give operational insights with interoperability 
-that allows users to tune, troubleshoot and extend the kernel and applications. 
-It's similar to Linux Systemtap and Solaris Dtrace.
+This package provides licensing documentation for the lttng kmp packages.
 
 %prep
 %setup -q
@@ -42,19 +40,16 @@ It's similar to Linux Systemtap and Solaris Dtrace.
 make
 
 %install
-mkdir -p %{buildroot}/usr/bin/
 mkdir -p %{buildroot}/usr/lib/modules/%{kernel_version}/armor/
-mkdir -p %{buildroot}/test_scripts
-install -m 511 ktap %{buildroot}/usr/bin
-install -m 511 ktapvm.ko %{buildroot}/usr/lib/modules/%{kernel_version}/armor
-install -m 511 samples/helloworld.kp  %{buildroot}/test_scripts
+install -m 511 lib/*.ko %{buildroot}/usr/lib/modules/%{kernel_version}/armor/
+install -m 511 *.ko %{buildroot}/usr/lib/modules/%{kernel_version}/armor
+install -m 511 probes/*.ko %{buildroot}/usr/lib/modules/%{kernel_version}/armor/
 
 
 %files
 %defattr(-,root,root)
-/usr/bin/ktap
-/usr/lib/modules/%{kernel_version}/armor/ktapvm.ko
-/test_scripts/helloworld.kp
+
+/usr/lib/modules/%{kernel_version}/armor/*
 
 %post
 depmod -a
