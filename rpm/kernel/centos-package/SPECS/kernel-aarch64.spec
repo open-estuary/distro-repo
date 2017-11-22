@@ -9,6 +9,7 @@ Summary: The Linux kernel
 # and/or a kernel built from an rc or git snapshot, released_kernel should
 # be 0.
 %global released_kernel 1
+%global _smp_ncpus_max 64
 
 %define rpmversion 4.12.0
 %define gitrelease 2f8e55b
@@ -826,9 +827,9 @@ BuildKernel() {
     mkdir -p $RPM_BUILD_ROOT/lib/modules/$KernelVer/kernel
         # Override $(mod-fw) because we don't want it to install any firmware
         # we'll get it from the linux-firmware package and we don't want conflicts
-        %{make} -s ARCH=$Arch INSTALL_MOD_PATH=$RPM_BUILD_ROOT modules_install KERNELRELEASE=$KernelVer mod-fw=
+        %{make} -s ARCH=$Arch %{?_smp_mflags} INSTALL_MOD_PATH=$RPM_BUILD_ROOT modules_install KERNELRELEASE=$KernelVer mod-fw=
 %ifarch %{vdso_arches}
-    %{make} -s ARCH=$Arch INSTALL_MOD_PATH=$RPM_BUILD_ROOT vdso_install KERNELRELEASE=$KernelVer
+    %{make} -s ARCH=$Arch %{?_smp_mflags} INSTALL_MOD_PATH=$RPM_BUILD_ROOT vdso_install KERNELRELEASE=$KernelVer
     if [ ! -s ldconfig-kernel.conf ]; then
       echo > ldconfig-kernel.conf "\
 # Placeholder file, no vDSO hwcap entries used in this kernel."
@@ -1159,10 +1160,10 @@ ls $man9dir | grep -q '' || > $man9dir/BROKEN
 
 %if %{with_headers}
 # Install kernel headers
-%{make} ARCH=%{hdrarch} INSTALL_HDR_PATH=$RPM_BUILD_ROOT/usr headers_install
+%{make} ARCH=%{hdrarch} %{?_smp_mflags} INSTALL_HDR_PATH=$RPM_BUILD_ROOT/usr headers_install
 
 # Do headers_check but don't die if it fails.
-%{make} ARCH=%{hdrarch} INSTALL_HDR_PATH=$RPM_BUILD_ROOT/usr headers_check \
+%{make} ARCH=%{hdrarch} %{?_smp_mflags} INSTALL_HDR_PATH=$RPM_BUILD_ROOT/usr headers_check \
      > hdrwarnings.txt || :
 if grep -q exist hdrwarnings.txt; then
    sed s:^$RPM_BUILD_ROOT/usr/include/:: hdrwarnings.txt
@@ -1203,7 +1204,7 @@ rm -rf %{buildroot}%{_docdir}/perf-tip
 
 %if %{with_tools}
 %ifarch %{cpupowerarchs}
-make -C tools/power/cpupower DESTDIR=$RPM_BUILD_ROOT libdir=%{_libdir} mandir=%{_mandir} CPUFREQ_BENCH=false install
+make %{?_smp_mflags} -C tools/power/cpupower DESTDIR=$RPM_BUILD_ROOT libdir=%{_libdir} mandir=%{_mandir} CPUFREQ_BENCH=false install
 rm -f %{buildroot}%{_libdir}/*.{a,la}
 %find_lang cpupower
 mv cpupower.lang ../

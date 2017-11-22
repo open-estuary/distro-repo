@@ -16,16 +16,16 @@
 #
 
 # needssslcertforbuild
-%define kernel_version 4.9.20
+%define kernel_version 4.12.0-estuary.1.aarch64
 
 Summary:        Licensing information for package lttng-modules
 License:        GPL-2.0 and LGPL-2.1 and MIT
 Group:          System/Kernel
 Name:           lttng-modules
-Version:   2.9.2
+Version:        2.10.3
 Release:        0
 Source:         %{name}-%{version}.tar.bz2
-
+BuildRequires:  kernel = 4.12.0 kernel-devel = 4.12.0
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
 #%suse_kernel_module_package -p %{name}-preamble ec2 xen xenpae vmi um 
