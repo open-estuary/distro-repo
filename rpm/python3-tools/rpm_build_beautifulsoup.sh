@@ -7,8 +7,7 @@ fi
 
 CUR_DIR=$(cd `dirname $0`; pwd)
 
-VERSION="4.6.0"
-RPM_SRC_FILE="python-beautifulsoup4-${VERSION}-1.fc27.src.rpm"
+RPM_SRC_FILE="python-beautifulsoup4-4.6.0-4.fc28.src.rpm"
 
 SUB_DIR="p"
 SRC_DIR=src-soup

@@ -12,8 +12,8 @@ sudo yum install -y devtoolset-4-runtime
 
 source /opt/rh/devtoolset-4/enable
 
-VERSION="0.7.0"
-RPM_SRC_FILE="flannel-${VERSION}-3.fc26.src.rpm"
+VERSION="0.9.0"
+RPM_SRC_FILE="flannel-0.9.0-1.fc28.src.rpm"
 
 SRC_DIR=src
 

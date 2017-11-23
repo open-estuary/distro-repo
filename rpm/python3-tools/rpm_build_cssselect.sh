@@ -7,8 +7,7 @@ fi
 
 CUR_DIR=$(cd `dirname $0`; pwd)
 
-VERSION="0.9.2"
-RPM_SRC_FILE="python-cssselect-${VERSION}-4.fc26.src.rpm"
+RPM_SRC_FILE="python-cssselect-0.9.2-5.fc27.src.rpm"
 
 SUB_DIR="p"
 SRC_DIR=src-cssselect

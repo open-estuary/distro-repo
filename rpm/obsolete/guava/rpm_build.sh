@@ -8,7 +8,7 @@ fi
 CUR_DIR=$(cd `dirname $0`; pwd)
 
 VERSION="18.0"
-RPM_SRC_FILE="guava-${VERSION}-10.fc26.src.rpm"
+RPM_SRC_FILE="guava-18.0-11.fc27.src.rpm"
 
 SUB_DIR="g"
 SRC_DIR=src

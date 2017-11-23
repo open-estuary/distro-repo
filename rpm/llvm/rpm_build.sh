@@ -7,8 +7,7 @@ fi
 
 CUR_DIR=$(cd `dirname $0`; pwd)
 
-VERSION="4.0.1"
-RPM_SRC_FILE="llvm-${VERSION}-1.fc27.src.rpm"
+RPM_SRC_FILE="llvm-5.0.0-5.fc28.src.rpm"
 
 SRC_DIR=src
 

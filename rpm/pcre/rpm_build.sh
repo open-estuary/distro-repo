@@ -7,8 +7,8 @@ fi
 
 CUR_DIR=$(cd `dirname $0`; pwd)
 
-VERSION="8.40"
-RPM_SRC_FILE="pcre-${VERSION}-7.fc27.src.rpm"
+VERSION="8.41"
+RPM_SRC_FILE="pcre-8.41-3.fc28.src.rpm"
 
 SRC_DIR=src
 
