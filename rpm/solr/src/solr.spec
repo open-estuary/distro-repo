@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-%define solr_base_version 6.6.1
-%define solr_version 6.6.1
+%define solr_base_version 7.1.0
+%define solr_version 7.1.0
 %define solr_release 1
 %define solr_name solr
 %define solr_service /usr/lib/systemd/system/solr.service
