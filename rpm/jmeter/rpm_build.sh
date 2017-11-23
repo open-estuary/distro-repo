@@ -7,7 +7,7 @@ fi
 
 CUR_DIR=$(cd `dirname $0`; pwd)
 
-VERSION="3.2"
+VERSION="3.3"
 #RPM_SRC_FILE="jmeter3-${VERSION}-13.fc26.src.rpm"
 RPM_SRC_FILE="apache-jmeter-${VERSION}.tgz"
 SRC_DIR=src
