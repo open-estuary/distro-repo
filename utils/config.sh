@@ -8,7 +8,7 @@ if [ ! -f ~/.rpmmacros ]; then
     #sudo cp /home/huangjinhua/.rpmmacros ~/.rpmmacros
 fi
 
-if [ ~ -f ~/.gnupg/gpg.conf ]; then
+if [ ! -f ~/.gnupg/gpg.conf ]; then
     wget -O ~/.gnupg/ https://github.com/open-estuary/distro-repo/tree/master/utils/config/gpg.conf
     #sudo cp /home/gpg.conf ~/.gnupg/gpg.conf
 fi
