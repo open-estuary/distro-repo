@@ -1,4 +1,7 @@
 #!/bin/bash
+echo "Not necessary to implement it"
+exit 0
+
 
 CUR_DIR=$(cd `dirname $0`; pwd)
 
