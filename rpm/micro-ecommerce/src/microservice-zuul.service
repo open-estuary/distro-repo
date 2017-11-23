@@ -1,0 +1,13 @@
+[Unit]  
+Description=micro-service-zuul
+
+[Service]
+ExecStart=/opt/micro-services/microservice-zuul -Dspring.config.location=/etc/micro-services/api-gateway/application.yml
+ExecStop=/bin/kill -TERM $MAINPID
+ExecReload=/bin/kill -HUP $MAINPID  
+Type=simple
+Restart=on-failure
+KillMode=control-group
+
+[Install]  
+WantedBy=multi-user.target  

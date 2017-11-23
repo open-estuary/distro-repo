@@ -17,7 +17,7 @@ sudo yum erase -y boost*
 source /opt/rh/devtoolset-4/enable
 
 VERSION="3.4.6"
-RPM_SRC_FILE="mongodb-3.4.6-3.fc27.src.rpm"
+RPM_SRC_FILE="mongodb-3.6.0-0.rc2.fc28.src.rpm"
 
 SRC_DIR=src
 

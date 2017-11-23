@@ -9,8 +9,8 @@ fi
 CUR_DIR=$(cd `dirname $0`; pwd)
 
 VERSION="1.0.2"
-RPM_SRC_FILE="maven-injection-plugin-${VERSION}-16.fc26.src.rpm"
-RPM_FILE="maven-injection-plugin-${VERSION}-16.fc26.noarch.rpm"
+RPM_SRC_FILE="maven-injection-plugin-1.0.2-17.fc27.src.rpm"
+RPM_FILE="maven-injection-plugin-1.0.2-17.fc27.noarch.rpm"
 
 if [ "${NEED_BUILD}" == "0" ] ; then
     wget -O ~/rpmbuild/RPMS/noarch/${RPM_FILE}  ftp://195.220.108.108/linux/fedora-secondary/development/rawhide/Everything/aarch64/os/Packages/m/${RPM_FILE}

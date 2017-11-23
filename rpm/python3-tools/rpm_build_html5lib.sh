@@ -7,8 +7,7 @@ fi
 
 CUR_DIR=$(cd `dirname $0`; pwd)
 
-VERSION="0.999"
-RPM_SRC_FILE="python-html5lib-${VERSION}-13.fc26.src.rpm"
+RPM_SRC_FILE="python-html5lib-0.999999999-4.fc28.src.rpm"
 
 SUB_DIR="p"
 SRC_DIR=src-html5

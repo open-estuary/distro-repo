@@ -1,6 +1,15 @@
 #! /bin/sh
 set -e
 
+cat > /target/etc/apt/preferences.d/estuary.pref << EOF
+Package: *
+# estuary ftp repo
+Pin: origin "117.78.41.188"
+# estuary http repo
+Pin: origin "repo.estuarydev.org"
+Pin-Priority: 900
+EOF
+
 cat > /target/etc/apt/sources.list.d/estuary.list <<EOF
 ## Estuary 5.0 Overlay
 deb ftp://repoftp:repopushez7411@117.78.41.188/releases/5.0/ubuntu/ estuary-5.0 main

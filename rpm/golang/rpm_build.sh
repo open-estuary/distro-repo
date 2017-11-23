@@ -9,8 +9,8 @@ CUR_DIR=$(cd `dirname $0`; pwd)
 
 source /opt/rh/devtoolset-4/enable
 
-VERSION="1.8.1"
-RPM_SRC_FILE="golang-${VERSION}-2.fc27.src.rpm"
+VERSION="1.9.1"
+RPM_SRC_FILE="golang-1.9-1.fc28.src.rpm"
 
 SRC_DIR=src
 

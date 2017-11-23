@@ -10,7 +10,7 @@ fi
 CUR_DIR=$(cd `dirname $0`; pwd)
 
 VERSION="7.0"
-RPM_SRC_FILE="readline-${VERSION}-5.fc26.src.rpm"
+RPM_SRC_FILE="readline-7.0-7.fc27.src.rpm"
 
 SRC_DIR=src
 

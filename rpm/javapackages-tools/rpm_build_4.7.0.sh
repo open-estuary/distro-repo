@@ -7,8 +7,8 @@ fi
 
 CUR_DIR=$(cd `dirname $0`; pwd)
 
-VERSION="4.7.0"
-RPM_SRC_FILE="javapackages-tools-${VERSION}-16.fc27.src.rpm"
+VERSION="5.0.0"
+RPM_SRC_FILE="javapackages-tools-5.0.0-9.fc28.src.rpm "
 
 SUB_DIR="j"
 SRC_DIR=src

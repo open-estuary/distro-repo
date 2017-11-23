@@ -7,8 +7,7 @@ fi
 
 CUR_DIR=$(cd `dirname $0`; pwd)
 
-VERSION="3.7.2"
-RPM_SRC_FILE="python-lxml-${VERSION}-2.fc26.src.rpm"
+RPM_SRC_FILE="python-lxml-4.1.1-1.fc28.src.rpm"
 
 SUB_DIR="p"
 SRC_DIR=src

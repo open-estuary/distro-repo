@@ -9,7 +9,7 @@ sudo yum install -y devtoolset-4-libstdc++-devel
 
 source /opt/rh/devtoolset-4/enable
 
-RPM_SRC_FILE="glibc-2.25.90-2.fc27.src.rpm"
+RPM_SRC_FILE="glibc-2.26.9000-27.fc28.src.rpm"
 SRC_DIR=src
 
 if [ ! -f ${CUR_DIR}/${SRC_DIR}/${RPM_SRC_FILE} ] ; then
