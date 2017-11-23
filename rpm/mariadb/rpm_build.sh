@@ -2,8 +2,7 @@
 
 CUR_DIR=$(cd `dirname $0`; pwd)
 
-MAJOR_VERSION="10.1.21"
-RPM_SRC_FILE="mariadb-10.1.21-3.fc24.src.rpm"
+RPM_SRC_FILE="mariadb-10.2.10-1.fc28.src.rpm"
 
 SRC_DIR=src
 

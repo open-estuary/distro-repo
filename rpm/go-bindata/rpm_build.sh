@@ -9,8 +9,7 @@ CUR_DIR=$(cd `dirname $0`; pwd)
 
 #source /opt/rh/devtoolset-4/enable
 
-VERSION="3.0.7"
-RPM_SRC_FILE="go-bindata-${VERSION}-8.gita0ff256.fc26.src.rpm"
+RPM_SRC_FILE="go-bindata-3.0.7-11.gita0ff256.fc27.src.rpm"
 
 SRC_DIR=src
 

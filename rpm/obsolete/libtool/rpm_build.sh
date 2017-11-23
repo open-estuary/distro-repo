@@ -6,7 +6,7 @@ exit 0
 CUR_DIR=$(cd `dirname $0`; pwd)
 
 MAJOR_VERSION="2.4.6"
-RPM_SRC_FILE="libtool-2.4.6-13.fc24.src.rpm"
+RPM_SRC_FILE="libtool-2.4.6-20.fc27.src.rpm"
 
 SRC_DIR=src
 

@@ -7,8 +7,8 @@ fi
 
 CUR_DIR=$(cd `dirname $0`; pwd)
 
-VERSION="20170330"
-RPM_SRC_FILE="crypto-policies-${VERSION}-3.git55b66da.fc27.src.rpm"
+VERSION="20171115"
+RPM_SRC_FILE="crypto-policies-20171115-1.git921600e.fc28.src.rpm"
 
 SRC_DIR=src-policies
 

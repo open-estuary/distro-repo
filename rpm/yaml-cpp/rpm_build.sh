@@ -14,8 +14,7 @@ source /opt/rh/devtoolset-4/enable
 
 CUR_DIR=$(cd `dirname $0`; pwd)
 
-VERSION="0.5.3"
-RPM_SRC_FILE="yaml-cpp-${VERSION}-4.fc26.src.rpm"
+RPM_SRC_FILE="yaml-cpp-0.5.3-7.fc27.src.rpm"
 
 SRC_DIR=src
 

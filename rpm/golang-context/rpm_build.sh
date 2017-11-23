@@ -9,8 +9,7 @@ CUR_DIR=$(cd `dirname $0`; pwd)
 
 #source /opt/rh/devtoolset-4/enable
 
-VERSION="0.35"
-RPM_SRC_FILE="golang-googlecode-net-0-0.37.gitf249948.fc27.src.rpm"
+RPM_SRC_FILE="golang-googlecode-net-0-0.40.git1c05540.fc28.src.rpm"
 
 SRC_DIR=src
 

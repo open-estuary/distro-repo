@@ -8,8 +8,8 @@ CUR_DIR=$(cd `dirname $0`; pwd)
 
 #source /opt/rh/devtoolset-4/enable
 
-VERSION="4.0.1"
-RPM_SRC_FILE="compiler-rt-${VERSION}-4.fc27.src.rpm"
+VERSION="5.0.0"
+RPM_SRC_FILE="compiler-rt-5.0.0-1.fc28.src.rpm"
 SRC_DIR=src
 
 if [ ! -f ${CUR_DIR}/${SRC_DIR}/${RPM_SRC_FILE} ] ; then

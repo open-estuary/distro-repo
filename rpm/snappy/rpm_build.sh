@@ -7,8 +7,7 @@ fi
 
 CUR_DIR=$(cd `dirname $0`; pwd)
 
-VERSION="1.1.4"
-RPM_SRC_FILE="snappy-${VERSION}-3.fc26.src.rpm"
+RPM_SRC_FILE="snappy-1.1.7-1.fc28.src.rpm"
 
 SRC_DIR=src
 
