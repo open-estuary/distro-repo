@@ -18,12 +18,9 @@ if [ ! -f ${CUR_DIR}/${SRC_DIR}/${RPM_SRC_FILE} ] ; then
     fi 
     
     wget -O ${CUR_DIR}/${SRC_DIR}/${RPM_SRC_FILE} http://mirrors.tuna.tsinghua.edu.cn/apache//jmeter/binaries/${RPM_SRC_FILE}
-    #pushd ${CUR_DIR}/${SRC_DIR} > /dev/null
-    #rpm2cpio ${RPM_SRC_FILE} | cpio -div
-    #popd > /dev/null
 fi
 
 
-#sed -i 's/x86_64/aarch64/g' ${CUR_DIR}/${SRC_DIR}/jmeter.spec
+#sed -i 's/"3\.2"/"3\.3"/g' ${CUR_DIR}/${SRC_DIR}/jmeter.spec
 
 ${CUR_DIR}/../../utils/rpm_build.sh  ${CUR_DIR}/${SRC_DIR} jmeter.spec
