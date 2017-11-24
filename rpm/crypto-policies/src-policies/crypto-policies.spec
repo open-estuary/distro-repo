@@ -1,10 +1,10 @@
-%global git_date 20170330
-%global git_commit_hash 55b66da
+%global git_date 20171115
+%global git_commit_hash 921600e
 %global aname crypto-policies
 
 Name:           crypto-policies
 Version:        %{git_date}
-Release:        3.git%{git_commit_hash}%{?dist}
+Release:        1.git%{git_commit_hash}%{?dist}
 Summary:        Crypto policies package for Fedora
 
 License:        LGPLv2+
