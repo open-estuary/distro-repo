@@ -13,12 +13,12 @@ fi
 CUR_DIR=$(cd `dirname $0`; pwd)
 
 VERSION="1.4.11"
-RPM_FILE="jboss-marshalling-${VERSION}-2.fc26.noarch.rpm"
+RPM_FILE="jboss-marshalling-${VERSION}-3.fc27.noarch.rpm"
 
 if [ "${NEED_BUILD}" == "0" ] ; then
     echo "Download no-arch rpm packages directly !"
-    wget -O ~/rpmbuild/RPMS/noarch/${RPM_FILE}  ftp://195.220.108.108/linux/fedora-secondary/development/rawhide/Everything/aarch64/os/Packages/j/${RPM_FILE}
-    ${CUR_DIR}/../../utils/rpm_sign.sh ~/rpmbuild/RPMS/noarch/
+    sudo wget -O ~/rpmbuild/RPMS/noarch/${RPM_FILE}  ftp://195.220.108.108/linux/fedora-secondary/development/rawhide/Everything/aarch64/os/Packages/j/${RPM_FILE}
+    ${CUR_DIR}/../../utils/rpm_resign.sh ~/rpmbuild/RPMS/noarch/
     exit 0
 fi
 

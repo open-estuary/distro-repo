@@ -9,8 +9,8 @@ fi
 CUR_DIR=$(cd `dirname $0`; pwd)
 
 VERSION="1.1.2"
-RPM_SRC_FILE="cli-parser-${VERSION}-7.fc26.src.rpm"
-RPM_FILE="cli-parser-${VERSION}-7.fc26.noarch.rpm"
+RPM_SRC_FILE="cli-parser-${VERSION}-7.fc27.src.rpm"
+RPM_FILE="cli-parser-${VERSION}-7.fc27.noarch.rpm"
 
 SUB_DIR="c"
 
