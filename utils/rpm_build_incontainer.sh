@@ -42,6 +42,13 @@ if [ ! -d ${SRC_DIR} ] ; then
     exit 1
 fi
 
+# execute prepare script
+RPM_BUILD_PRE_SCRIPT="rpm_build_pre.sh"
+if [ ! -d ./${rpm_build_pre.sh} ]; then
+    echo "begin to execute prepare script"
+    sh ${rpm_build_pre.sh}
+fi
+
 yum-builddep -y ${SRC_DIR}/${SPEC_FILE}
 passphrase=`cat /root/KEY_PASSPHRASE`
 expect <<-END
