@@ -9,8 +9,8 @@ sudo yum install -y devtoolset-4-runtime
 
 source /opt/rh/devtoolset-4/enable
 
-VERSION="1.6.4"
-RPM_SRC_FILE="kubernetes-${VERSION}-1.fc27.src.rpm"
+VERSION="1.8.1"
+RPM_SRC_FILE="kubernetes-1.8.1-1.fc28.src.rpm"
 
 SRC_DIR=src
 

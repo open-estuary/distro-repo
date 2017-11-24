@@ -7,8 +7,8 @@ fi
 
 CUR_DIR=$(cd `dirname $0`; pwd)
 
-VERSION="1.7.0"
-RPM_SRC_FILE="gtest-${VERSION}-9.fc26.src.rpm"
+VERSION="1.8.0"
+RPM_SRC_FILE="gtest-1.8.0-1.fc28.src.rpm"
 
 SRC_DIR=src
 

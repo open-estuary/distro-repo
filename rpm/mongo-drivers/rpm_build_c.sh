@@ -7,8 +7,8 @@ fi
 
 CUR_DIR=$(cd `dirname $0`; pwd)
 
-VERSION="1.6.2"
-RPM_SRC_FILE="mongo-c-driver-${VERSION}-1.fc27.src.rpm"
+VERSION="1.8.2"
+RPM_SRC_FILE="mongo-c-driver-1.8.2-1.fc28.src.rpm"
 
 SRC_DIR=src-c
 

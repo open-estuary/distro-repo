@@ -7,8 +7,8 @@ fi
 
 CUR_DIR=$(cd `dirname $0`; pwd)
 
-VERSION="1.0.2j"
-RPM_SRC_FILE="compat-openssl10-${VERSION}-6.fc26.src.rpm"
+VERSION="1.0.2m"
+RPM_SRC_FILE="compat-openssl10-1.0.2m-1.fc28.src.rpm"
 
 SRC_DIR=src-openssl
 

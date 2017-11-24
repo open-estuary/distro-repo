@@ -9,8 +9,8 @@ sudo yum install -y devtoolset-4-runtime
 
 source /opt/rh/devtoolset-4/enable
 
-VERSION="3.1.9"
-RPM_SRC_FILE="etcd-${VERSION}-1.fc27.src.rpm"
+VERSION="3.2.7"
+RPM_SRC_FILE="etcd-3.2.7-1.fc28.src.rpm"
 
 SRC_DIR=src
 

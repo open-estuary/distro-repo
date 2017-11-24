@@ -15,5 +15,5 @@ if [ ! -f ${CUR_DIR}/src/${TAR_FILENAME} ] ; then
 fi
 sed -i "s/Version\:\ .*/Version\:\ \ \ ${VERSION}/g" ${CUR_DIR}/src/ktap.spec
 
-${CUR_DIR}/../../utils/rpm_build.sh  ${CUR_DIR}/src ktap.spec
+${CUR_DIR}/../../utils/rpm_build.sh  ${CUR_DIR}/src ktap_v500.spec
 

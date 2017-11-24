@@ -1,0 +1,4 @@
+%_topdir %(echo $HOME)/rpmbuild
+%_gpg_name 3108CDA4
+%_gpg_digest_algo sha512
+%_make /usr/bin/make -j 64

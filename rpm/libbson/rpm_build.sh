@@ -7,8 +7,7 @@ fi
 
 CUR_DIR=$(cd `dirname $0`; pwd)
 
-VERSION="1.6.2"
-RPM_SRC_FILE="libbson-${VERSION}-1.fc27.src.rpm"
+RPM_SRC_FILE="libbson-1.8.2-1.fc28.src.rpm"
 
 SRC_DIR=src
 

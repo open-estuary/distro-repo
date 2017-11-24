@@ -68,12 +68,73 @@ def get_all_build_files(dirname):
         if re.search("obsolete", filename):
             print("Ignore not used scripts")
             continue
-       
+        if re.search("kernel", filename):
+            print("Ignore kernel")
+            continue
+        if re.search("utils", filename):
+            print("Ignore utils")
+            continue
+        #success apps
+        #dmidecode
+        #tiptop
+        if re.search("dmidecode", filename) or \
+           re.search("tiptop", filename) or \
+           re.search("redis", filename) or \
+           re.search("micro-ecommerce", filename) or \
+           re.search("cAdvisor", filename) or \
+           re.search("systemtap", filename) or \
+           re.search("grafana", filename) or \
+           re.search("twemproxy", filename) or \
+           re.search("phantomjs", filename) or \
+           re.search("cassandra-drivers", filename) or \
+           re.search("dmidecode", filename) or \
+           re.search("systemtap", filename) or \
+           re.search("cAdvisor", filename) or \
+           re.search("isl", filename) or \
+           re.search("nginx", filename) or \
+           re.search("nginx-module-perl", filename) or \
+           re.search("fio", filename) or \
+           re.search("tiptop", filename) or \
+           re.search("sysstat", filename) or \
+           re.search("blktrace", filename) or \
+           re.search("pipework", filename) or \
+           re.search("ceph-deploy", filename) or \
+           re.search("nicstat", filename) or \
+           re.search("source-highlight", filename) or \
+           re.search("nginx-module-geoip", filename) or \
+           re.search("open-lldp", filename) or \
+           re.search("nginx-module-image-filter", filename) or \
+           re.search("javapackages-tools", filename) or \
+           re.search("objectweb-asm3", filename) or \
+           re.search("weighttp", filename) or \
+           re.search("packETHcli", filename) or \
+           re.search("devtoolset-6", filename) or \
+           re.search("devlibset-4", filename) or \
+           re.search("devtoolset-4", filename) or \
+           re.search("leveldb", filename) or \
+           re.search("mysql-community-56", filename) or \
+           re.search("nginx-module-xslt", filename) or \
+           re.search("mysql-tools", filename) or \
+           re.search("ycsb", filename) or \
+           re.search("nginx-module-njs", filename) or \
+           re.search("netperf", filename) or \
+           re.search("ethtool", filename) or \
+           re.search("elasticsearch", filename) or \
+           re.search("cockroach", filename) or \
+           re.search("devtoolset-6-gdb", filename) or \
+           re.search("devtoolset-4-gdb", filename) or \
+           re.search("wrk", filename) or \
+           re.search("grafana", filename) or \
+           re.search("mycat", filename):    
+            print("Ignore " + filename)
+            continue
+
         fullname = os.path.join(dirname, filename)
         if os.path.isfile(fullname) and filename == 'rpm_build.sh':
             file_list.append(fullname)
         elif os.path.isdir(fullname):
             file_list.extend(get_all_build_files(fullname))
+
     return file_list
 
 def build_packages_thread(packages_list, logdir, succ_dict):
@@ -103,6 +164,10 @@ def build_packages_thread(packages_list, logdir, succ_dict):
           
 def build_packages(package_dir, logdir):
     global_packages_list = get_all_build_files(package_dir)
+
+    for file1 in global_packages_list:
+        print("This files should be build:", file1)
+
     all_packages_file = open(os.path.join(logdir, "all_packages_list"), 'w')
     for package in global_packages_list:
         packagename = package.split('/')[-2]

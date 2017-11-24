@@ -24,7 +24,7 @@ if [ ! -f ${CUR_DIR}/${SRC_DIR}/${RPM_SRC_FILE} ] ; then
     popd > /dev/null 
 fi
 
-if [ ! -f /usr/include/stropts.h ] ; 
+if [ ! -f /usr/include/stropts.h ] ; then
     sudo touch /usr/include/stropts.h
 fi
 
