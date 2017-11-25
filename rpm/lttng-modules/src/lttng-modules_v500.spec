@@ -16,7 +16,7 @@
 #
 
 # needssslcertforbuild
-%define kernel_version 4.12.0-estuary.1.aarch64
+%define kernel_version 4.12.0-estuary.2.aarch64
 
 Summary:        Licensing information for package lttng-modules
 License:        GPL-2.0 and LGPL-2.1 and MIT

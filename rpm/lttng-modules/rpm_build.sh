@@ -2,7 +2,7 @@
 
 CUR_DIR=$(cd `dirname $0`; pwd)
 
-VERSION="2.9.2"
+VERSION="2.10.3"
 TAR_FILENAME="lttng-modules-""${VERSION}"".tar.bz2"
 
 if [ ! -f ${CUR_DIR}/src/${TAR_FILENAME} ] ; then
