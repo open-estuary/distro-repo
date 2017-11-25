@@ -13,6 +13,10 @@ RPM_SRC_FILE="Percona-Server-57-5.7.17-13.1.generic.src.rpm"
 SRC_DIR=src${MAJOR_VERSION}
 
 if [ ! -f ${CUR_DIR}/${SRC_DIR}/${RPM_SRC_FILE} ] ; then
+    if [ ! -d ${CUR_DIR}/${SRC_DIR} ] ; then
+        mkdir -p ${CUR_DIR}/${SRC_DIR}
+    fi
+
     sudo wget -O ${CUR_DIR}/${SRC_DIR}/${RPM_SRC_FILE} https://repo.percona.com/centos/6/SRPMS/${RPM_SRC_FILE}
     pushd ${CUR_DIR}/${SRC_DIR} > /dev/null
     rpm2cpio ${RPM_SRC_FILE} | cpio -div
