@@ -21,9 +21,7 @@
 # Run tests in check section
 %global with_check 0
 # Generate unit-test rpm
-%global with_unit_test 0
-
-%global gopath /usr/lib/golang
+%global with_unit_test 1
 
 %if 0%{?with_debug}
 %global _dwz_low_mem_die_limit 0
@@ -44,7 +42,7 @@
 # https://github.com/golang/net
 %global provider_prefix %{provider}.%{provider_tld}/%{project}/%{repo}
 %global import_path     code.google.com/p/go.net
-%global commit          f2499483f923065a842d38eb4c7f1927e6fc6e6d
+%global commit          1c05540f6879653db88113bc4a2b70aec4bd491f
 %global shortcommit     %(c=%{commit}; echo ${c:0:7})
 
 %global x_provider      golang
@@ -58,7 +56,7 @@
 
 Name:       golang-googlecode-net
 Version:    0
-Release:    0.37.git%{shortcommit}%{?dist}
+Release:    0.40.git%{shortcommit}%{?dist}
 Summary:    Supplementary Go networking libraries
 License:    BSD
 URL:        https://%{provider_prefix}
@@ -123,17 +121,22 @@ BuildArch:     noarch
 #BuildRequires:  golang(golang.org/x/text/encoding/charmap)
 #BuildRequires:  golang(golang.org/x/text/encoding/htmlindex)
 #BuildRequires:  golang(golang.org/x/text/transform)
+#BuildRequires:  golang(golang.org/x/text/secure/bidirule)
+#BuildRequires:  golang(golang.org/x/text/unicode/norm)
 %endif
 
 #Requires:  golang(golang.org/x/text/encoding)
 #Requires:  golang(golang.org/x/text/encoding/charmap)
 #Requires:  golang(golang.org/x/text/encoding/htmlindex)
 #Requires:  golang(golang.org/x/text/transform)
+#Requires:  golang(golang.org/x/text/secure/bidirule)
+#Requires:  golang(golang.org/x/text/unicode/norm)
 
 Provides:   golang(%{x_import_path}/bpf) = %{version}-%{release}
 Provides:   golang(%{x_import_path}/context) = %{version}-%{release}
 Provides:   golang(%{x_import_path}/context/ctxhttp) = %{version}-%{release}
 Provides:   golang(%{x_import_path}/dict) = %{version}-%{release}
+Provides:   golang(%{x_import_path}/dns/dnsmessage) = %{version}-%{release}
 Provides:   golang(%{x_import_path}/html) = %{version}-%{release}
 Provides:   golang(%{x_import_path}/html/atom) = %{version}-%{release}
 Provides:   golang(%{x_import_path}/html/charset) = %{version}-%{release}
@@ -264,9 +267,9 @@ export GOPATH=%{buildroot}/%{gopath}:%{gopath}
 export GOPATH=%{buildroot}/%{gopath}:%{gopath}
 %endif
 
-#%if ! 0%{?gotest:1}
+%if ! 0%{?gotest:1}
 %global gotest go test
-#%endif
+%endif
 
 #%%gotest %%{x_import_path}/context
 #%%gotest %%{x_import_path}/context/ctxhttp
@@ -308,6 +311,16 @@ export GOPATH=%{buildroot}/%{gopath}:%{gopath}
 %endif
 
 %changelog
+* Thu Aug 24 2017 Jan Chaloupka <jchaloup@redhat.com> - 0-0.40.git1c05540
+- Bump to upstream 1c05540f6879653db88113bc4a2b70aec4bd491f
+  related: #1326890
+
+* Wed Aug 02 2017 Fedora Release Engineering <releng@fedoraproject.org> - 0-0.39.gitf249948
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Binutils_Mass_Rebuild
+
+* Wed Jul 26 2017 Fedora Release Engineering <releng@fedoraproject.org> - 0-0.38.gitf249948
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Mass_Rebuild
+
 * Wed Mar 15 2017 Jan Chaloupka <jchaloup@redhat.com> - 0-0.37.gitf249948
 - Bump to upstream f2499483f923065a842d38eb4c7f1927e6fc6e6d
   related: #1326890
