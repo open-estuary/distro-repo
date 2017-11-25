@@ -18,7 +18,7 @@ if [ ! -f ${CUR_DIR}/${SRC_DIR}/${RPM_SRC_FILE} ] ; then
         mkdir -p ${CUR_DIR}/${SRC_DIR}
     fi 
     wget -O ${CUR_DIR}/${SRC_DIR}/${RPM_SRC_FILE} http://dl.fedoraproject.org/pub/fedora/linux/development/rawhide/Everything/source/tree/Packages/m/${RPM_SRC_FILE}
-    wget -O ${CUR_DIR}/${SRC_DIR}/mongo-tools-3.5.7.tar.gz https://github.com/mongodb/mongo-tools/archive/r3.5.7.tar.gz
+    #wget -O ${CUR_DIR}/${SRC_DIR}/mongo-tools-3.5.7.tar.gz https://github.com/mongodb/mongo-tools/archive/r3.5.7.tar.gz
 
     pushd ${CUR_DIR}/${SRC_DIR} > /dev/null
     rpm2cpio ${RPM_SRC_FILE} | cpio -div
