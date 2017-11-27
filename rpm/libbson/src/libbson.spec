@@ -1,5 +1,5 @@
 Name:       libbson
-Version:    1.6.2
+Version:    1.8.2
 Release:    1%{?dist}
 Summary:    Building, parsing, and iterating BSON documents
 ## Installed:
@@ -17,6 +17,7 @@ Summary:    Building, parsing, and iterating BSON documents
 # build/autotools/config.guess:         GPLv3+ with exceptions
 # build/autotools/config.sub:           GPLv3+ with exceptions
 # build/autotools/depcomp:              GPLv2+ with exceptions
+# build/autotools/install-sh:           MIT
 # build/autotools/ltmain.sh:            GPLv2+ with exceptions
 # build/autotools/m4/ax_pthread.m4:     GPLv3+ with exceptions
 # build/autotools/m4/ax_check_compile_flag.m4:  GPLv3+ with exceptions
@@ -45,9 +46,6 @@ URL:        https://github.com/mongodb/%{name}
 Source0:    %{url}/releases/download/%{version}/%{name}-%{version}.tar.gz
 # Do not install COPYING, install ChangeLog, distribution specific
 Patch0:     %{name}-1.5.0-rc3-Install-documentation-according-to-guidelines.patch
-# Fix undefined behavior exhibiting with GCC 7, bug #1420440,
-# <https://jira.mongodb.org/browse/CDRIVER-2010>
-Patch1:     %{name}-1.6.0-Fix-signed-integer-wrap-in-time2sub.patch
 BuildRequires:  autoconf
 BuildRequires:  automake
 BuildRequires:  coreutils
@@ -83,10 +81,8 @@ applications that use %{name}.
 %prep
 %setup -q -n %{name}-%{version}
 %patch0 -p1
-%patch1 -p1
 # Remove pregenerated documentation
 rm -r doc/html/_static doc/html/*.{html,inv,js} doc/man/*.3
-
 # Generate build scripts from sources
 autoreconf --force --install
 
@@ -108,11 +104,9 @@ autoreconf --force --install
     --disable-silent-rules \
     --disable-static \
     --enable-tests
-
-#Temporarily fix doc/man build failure due to 'warning as error'
-sed -i 's/\-qEW/\-qE/g' Makefile
-
-# Explicit man target is needed for generating manual pages
+# Explicit man target is needed for generating manual pages.
+# If you produced HTML pages be ware doc/conf.py injects tracking JavaScript
+# code (search for add_ga_javascript function).
 make %{?_smp_mflags} all doc/man
 
 %install
@@ -140,10 +134,41 @@ make %{?_smp_mflags} check
 %{_docdir}/%{name}-devel
 %{_includedir}/*
 %{_libdir}/*.so
-%{_libdir}/pkgconfig/*
+%{_libdir}/cmake
+%{_libdir}/pkgconfig
 %{_mandir}/man3/*
 
 %changelog
+* Mon Nov 20 2017 Petr Pisar <ppisar@redhat.com> - 1.8.2-1
+- 1.8.2 bump
+
+* Thu Nov 02 2017 Petr Pisar <ppisar@redhat.com> - 1.8.1-1
+- 1.8.1 bump
+
+* Fri Sep 15 2017 Petr Pisar <ppisar@redhat.com> - 1.8.0-1
+- 1.8.0 bump
+
+* Thu Aug 10 2017 Petr Pisar <ppisar@redhat.com> - 1.7.0-1
+- 1.7.0 bump
+
+* Mon Jul 31 2017 Petr Pisar <ppisar@redhat.com> - 1.7.0-0.5.rc2
+- 1.7.0-rc2 bump
+
+* Sun Jul 30 2017 Florian Weimer <fweimer@redhat.com> - 1.7.0-0.4.rc1
+- Rebuild with binutils fix for ppc64le (#1475636)
+
+* Wed Jul 26 2017 Fedora Release Engineering <releng@fedoraproject.org> - 1.7.0-0.3.rc1
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Mass_Rebuild
+
+* Tue Jul 25 2017 Petr Pisar <ppisar@redhat.com> - 1.7.0-0.2.rc1
+- 1.7.0-rc1 bump
+
+* Fri Jul 07 2017 Petr Pisar <ppisar@redhat.com> - 1.7.0-0.1.rc0
+- 1.7.0-rc0 bump
+
+* Wed May 24 2017 Petr Pisar <ppisar@redhat.com> - 1.6.3-1
+- 1.6.3 bump
+
 * Tue Mar 28 2017 Petr Pisar <ppisar@redhat.com> - 1.6.2-1
 - 1.6.2 bump
 

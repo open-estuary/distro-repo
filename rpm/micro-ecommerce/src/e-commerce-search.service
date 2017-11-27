@@ -1,6 +1,5 @@
 [Unit]  
 Description=e-commerce-search
-Wants=solr.service
 
 [Service]  
 ExecStart=/opt/e-commerce/e-commerce-search -Dspring.config.location=/etc/e-commerce/search/application.yml

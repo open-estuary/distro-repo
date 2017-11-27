@@ -119,8 +119,8 @@
 
 # Make long macros shorter
 %global sameevr   %{epoch}:%{version}-%{release}
-%global compatver 10.1
-%global bugfixver 21
+%global compatver 10.2
+%global bugfixver 10
 
 Name:             mariadb
 Version:          %{compatver}.%{bugfixver}
@@ -159,36 +159,48 @@ Source72:         mariadb-server-galera.te
 
 # Comments for these patches are in the patch files
 # Patches common for more mysql-like packages
-Patch1:           %{pkgnamepatch}-strmov.patch
-Patch2:           %{pkgnamepatch}-install-test.patch
-Patch4:           %{pkgnamepatch}-logrotate.patch
-Patch5:           %{pkgnamepatch}-file-contents.patch
+Patch1:           %{pkgnamepatch}-logrotate.patch
+#Patch4:           %{pkgnamepatch}-logrotate.patch
 Patch7:           %{pkgnamepatch}-scripts.patch
-Patch8:           %{pkgnamepatch}-install-db-sharedir.patch
 Patch9:           %{pkgnamepatch}-ownsetup.patch
-Patch13:          %{pkgnamepatch}-ssl-cypher.patch
-Patch14:          %{pkgnamepatch}-example-config-files.patch
-Patch15:          mariadb_tokudb_cmake_aarch64.patch
 
 # Patches specific for this mysql package
-Patch31:          %{pkgnamepatch}-string-overflow.patch
-Patch32:          %{pkgnamepatch}-basedir.patch
-Patch34:          %{pkgnamepatch}-covscan-stroverflow.patch
 Patch37:          %{pkgnamepatch}-notestdb.patch
 
 # Patches for galera
 Patch40:          %{pkgnamepatch}-galera.cnf.patch
-Patch41:          %{pkgnamepatch}-galera-new-cluster-help.patch
+Patch43:          %{pkgnamepatch}-recovery.patch
 
-BuildRequires:    cmake
-BuildRequires:    libaio-devel
-BuildRequires:    libedit-devel
-BuildRequires:    ncurses-devel
-BuildRequires:    systemtap-sdt-devel
+BuildRequires:    cmake gcc-c++
 BuildRequires:    zlib-devel
 BuildRequires:    multilib-rpm-config
-BuildRequires:    krb5-devel
 BuildRequires:    selinux-policy-devel
+
+################
+# TokuDB and some core stuff
+BuildRequires:    jemalloc-devel
+
+# asynchornous operations stuff
+BuildRequires:    libaio-devel
+# commands history features
+BuildRequires:    libedit-devel
+# CLI graphic
+BuildRequires:    ncurses-devel
+# debugging stuff
+BuildRequires:    systemtap-sdt-devel
+%{?with_init_systemd:BuildRequires: systemd systemd-devel}
+# Bison SQL parser
+BuildRequires:    bison bison-devel
+
+# auth_pam.so plugin will be build if pam-devel is installed
+BuildRequires:    pam-devel
+######################
+
+
+
+
+
+
 #CRACKLIB
 #BuildRequires:    cracklib-devel
 %{?with_init_systemd:BuildRequires: systemd systemd-devel}
@@ -586,21 +598,11 @@ MariaDB is a community developed branch of MySQL.
 %setup -q -n mariadb-%{version}
 
 %patch1 -p1
-%patch2 -p1
-%patch4 -p1
-%patch5 -p1
 %patch7 -p1
-%patch8 -p1
 %patch9 -p1
-%patch13 -p1
-%patch14 -p1
-%patch15 -p1
-%patch31 -p1
-%patch32 -p1
-%patch34 -p1
 %patch37 -p1
 %patch40 -p1
-%patch41 -p1
+%patch43 -p1
 
 sed -i -e 's/2.8.7/2.6.4/g' cmake/cpack_rpm.cmake
 
@@ -620,7 +622,7 @@ cat %{SOURCE52} | tee -a mysql-test/rh-skipped-tests.list
 %endif
 
 cp %{SOURCE2} %{SOURCE3} %{SOURCE10} %{SOURCE11} %{SOURCE12} %{SOURCE13} \
-   %{SOURCE14} %{SOURCE15} %{SOURCE16} %{SOURCE17} %{SOURCE18} %{SOURCE19} \
+   %{SOURCE14} %{SOURCE15} %{SOURCE16} %{SOURCE18} %{SOURCE19} \
    %{SOURCE70} scripts
 
 %if %{with galera}
@@ -1388,6 +1390,9 @@ fi
 %endif
 
 %changelog
+* Sat Nov 25 2017 Wangyu <wy200885@163.com> 10.2.10
+- Estuary update version
+
 * Mon May 8 2017 HuangJinhua <sjtuhjh@hotmail.com> 10.1.21
 - Estuary initial package for ARM64 platform
 

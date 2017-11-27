@@ -36,7 +36,9 @@ if [ -e $CONFIG_FILE_PATH ];then
         DUMP=$DUMP
 fi
 
-ARGS="$DUMP $HEAP $GC_ALGO"
+SERVER="-server"
+
+ARGS="$SERVER $HEAP $DUMP $GC_ALGO "
 
 if [ ! -n "${1}" ]; then
   java $ARGS -jar $DEFAULT_YML  /etc/micro-services/discovery/micro-service-eureka.jar

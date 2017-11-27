@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-%define jmeter_base_version 3.2
-%define jmeter_version 3.2
+%define jmeter_base_version 3.3
+%define jmeter_version 3.3
 %define jmeter_release 1
 %define jmeter_name jmeter
 %define jmeter_installdir /opt/jmeter
