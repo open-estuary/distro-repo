@@ -5,12 +5,12 @@ if [ ! -z "${1}" ] ; then
     TARGET_OS=${1}
 fi
 
-sudo yum erase -y python34
-sudo yum install -y devtoolset-4-gcc
-sudo yum install -y devtoolset-4-gcc-c++
-sudo yum install -y devtoolset-4-libstdc++-devel
+#sudo yum erase -y python34
+#sudo yum install -y devtoolset-4-gcc
+#sudo yum install -y devtoolset-4-gcc-c++
+#sudo yum install -y devtoolset-4-libstdc++-devel
 
-source /opt/rh/devtoolset-4/enable
+#source /opt/rh/devtoolset-4/enable
 
 CUR_DIR=$(cd `dirname $0`; pwd)
 
