@@ -1,8 +1,7 @@
 %undefine _missing_build_ids_terminate_build
-
 Name:      percona-toolkit
 Summary:   Advanced MySQL and system command-line tools
-Version:   3.0.2
+Version:   3.0.2 
 Release:   1
 Group:     Applications/Databases
 License:   GPLv2
@@ -12,6 +11,7 @@ Source:    percona-toolkit-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 #BuildArch: aarch64
 Requires:  perl(DBI) >= 1.13, perl(DBD::mysql) >= 1.0, perl(Time::HiRes), perl(IO::Socket::SSL), perl(Digest::MD5), perl(Term::ReadKey)
+BuildRequires: perl-ExtUtils-CBuilder, perl-ExtUtils-MakeMaker
 AutoReq:   no
 
 %description

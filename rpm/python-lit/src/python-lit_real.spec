@@ -9,7 +9,7 @@
 %{!?py2_install: %global py2_install %{expand: CFLAGS="%{optflags}" %{__python2} setup.py %{?py_setup_args} install -O1 --skip-build --root %{buildroot}}}
 
 Name: python-%{srcname}
-Version: 0.5.0
+Version: 0.5.1
 Release: 1%{?dist}
 BuildArch: noarch
 
@@ -17,7 +17,7 @@ License: NCSA
 Group: Development/Languages
 Summary: Tool for executing llvm test suites
 URL: https://pypi.python.org/pypi/lit
-Source0: https://pypi.python.org/packages/5b/a0/dbed2c8dfb220eb9a5a893257223cd0ff791c0fbc34ce2f1a957fa4b6c6f/lit-0.5.0.tar.gz
+Source0: https://pypi.python.org/packages/5b/a0/dbed2c8dfb220eb9a5a893257223cd0ff791c0fbc34ce2f1a957fa4b6c6f/lit-0.5.1.tar.gz
 
 BuildRequires: python2-devel
 BuildRequires: python-setuptools

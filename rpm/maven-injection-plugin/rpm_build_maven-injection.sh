@@ -13,8 +13,8 @@ RPM_SRC_FILE="maven-injection-plugin-1.0.2-17.fc27.src.rpm"
 RPM_FILE="maven-injection-plugin-1.0.2-17.fc27.noarch.rpm"
 
 if [ "${NEED_BUILD}" == "0" ] ; then
-    wget -O ~/rpmbuild/RPMS/noarch/${RPM_FILE}  ftp://195.220.108.108/linux/fedora-secondary/development/rawhide/Everything/aarch64/os/Packages/m/${RPM_FILE}
-    ${CUR_DIR}/../../utils/rpm_sign.sh ~/rpmbuild/RPMS/noarch/
+    sudo wget -O ~/rpmbuild/RPMS/noarch/${RPM_FILE}  ftp://195.220.108.108/linux/fedora-secondary/development/rawhide/Everything/aarch64/os/Packages/m/${RPM_FILE}
+    ${CUR_DIR}/../../utils/rpm_resign.sh ~/rpmbuild/RPMS/noarch/
     exit 0
 fi
 

@@ -24,4 +24,4 @@ if [ ! -f ${CUR_DIR}/${SRC_DIR}/${RPM_SRC_FILE} ] ; then
     popd > /dev/null 
 fi
 
-sudo ${CUR_DIR}/../../utils/rpm_build.sh  ${CUR_DIR}/${SRC_DIR} bazel.spec
+${CUR_DIR}/../../utils/rpm_build.sh  ${CUR_DIR}/${SRC_DIR} bazel.spec

@@ -16,7 +16,7 @@
 #
 
 # needssslcertforbuild
-%define kernel_version 4.12.0-estuary.1.aarch64
+%define kernel_version 4.12.0-estuary.2.aarch64
 
 Summary:        A New Scripting Dynamic Tracing Tool For Linux 
 License:        GPL-2.0 
