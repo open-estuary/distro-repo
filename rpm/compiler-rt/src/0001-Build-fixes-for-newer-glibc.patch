@@ -1,0 +1,63 @@
+From 8fbed3e5332537dea784f3b59b4bc6e678bfdae9 Mon Sep 17 00:00:00 2001
+From: Tom Stellard <tstellar@redhat.com>
+Date: Fri, 23 Jun 2017 13:52:53 +0000
+Subject: [PATCH] Build fixes for newer glibc
+
+---
+ lib/esan/esan_sideline_linux.cpp                             | 4 ++--
+ lib/sanitizer_common/sanitizer_stoptheworld_linux_libcdep.cc | 4 ++--
+ lib/tsan/rtl/tsan_platform_linux.cc                          | 2 +-
+ 3 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/lib/esan/esan_sideline_linux.cpp b/lib/esan/esan_sideline_linux.cpp
+index d04f5909d..095f2c29b 100644
+--- a/lib/esan/esan_sideline_linux.cpp
++++ b/lib/esan/esan_sideline_linux.cpp
+@@ -70,11 +70,11 @@ int SidelineThread::runSideline(void *Arg) {
+ 
+   // Set up a signal handler on an alternate stack for safety.
+   InternalScopedBuffer<char> StackMap(SigAltStackSize);
+-  struct sigaltstack SigAltStack;
++  stack_t SigAltStack;
+   SigAltStack.ss_sp = StackMap.data();
+   SigAltStack.ss_size = SigAltStackSize;
+   SigAltStack.ss_flags = 0;
+-  internal_sigaltstack(&SigAltStack, nullptr);
++  internal_sigaltstack((struct sigaltstack *)&SigAltStack, nullptr);
+ 
+   // We inherit the signal mask from the app thread.  In case
+   // we weren't created at init time, we ensure the mask is empty.
+diff --git a/lib/sanitizer_common/sanitizer_stoptheworld_linux_libcdep.cc b/lib/sanitizer_common/sanitizer_stoptheworld_linux_libcdep.cc
+index 03f73ae88..8ac0fe5a1 100644
+--- a/lib/sanitizer_common/sanitizer_stoptheworld_linux_libcdep.cc
++++ b/lib/sanitizer_common/sanitizer_stoptheworld_linux_libcdep.cc
+@@ -287,11 +287,11 @@ static int TracerThread(void* argument) {
+ 
+   // Alternate stack for signal handling.
+   InternalScopedBuffer<char> handler_stack_memory(kHandlerStackSize);
+-  struct sigaltstack handler_stack;
++  stack_t handler_stack;
+   internal_memset(&handler_stack, 0, sizeof(handler_stack));
+   handler_stack.ss_sp = handler_stack_memory.data();
+   handler_stack.ss_size = kHandlerStackSize;
+-  internal_sigaltstack(&handler_stack, nullptr);
++  internal_sigaltstack((struct sigaltstack *)&handler_stack, nullptr);
+ 
+   // Install our handler for synchronous signals. Other signals should be
+   // blocked by the mask we inherited from the parent thread.
+diff --git a/lib/tsan/rtl/tsan_platform_linux.cc b/lib/tsan/rtl/tsan_platform_linux.cc
+index d05c0e701..b01648b39 100644
+--- a/lib/tsan/rtl/tsan_platform_linux.cc
++++ b/lib/tsan/rtl/tsan_platform_linux.cc
+@@ -289,7 +289,7 @@ void InitializePlatform() {
+ int ExtractResolvFDs(void *state, int *fds, int nfd) {
+ #if SANITIZER_LINUX && !SANITIZER_ANDROID
+   int cnt = 0;
+-  __res_state *statp = (__res_state*)state;
++  struct __res_state *statp = (struct __res_state*)state;
+   for (int i = 0; i < MAXNS && cnt < nfd; i++) {
+     if (statp->_u._ext.nsaddrs[i] && statp->_u._ext.nssocks[i] != -1)
+       fds[cnt++] = statp->_u._ext.nssocks[i];
+-- 
+2.13.1
+
