@@ -2,10 +2,13 @@
 set -e
 
 cat > /target/etc/apt/preferences.d/estuary.pref << EOF
-Package: *
 # estuary ftp repo
+Package: *
 Pin: origin "117.78.41.188"
+Pin-Priority: 900
+
 # estuary http repo
+Package: *
 Pin: origin "repo.estuarydev.org"
 Pin-Priority: 900
 EOF
@@ -18,3 +21,4 @@ EOF
 
 cp /usr/share/estuary/estuaryrepo.key /target/tmp/key.pub
 in-target apt-key add "/tmp/key.pub"
+in-target apt-get update -q || true

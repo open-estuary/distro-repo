@@ -18,3 +18,4 @@ EOF
 
 cp /usr/share/linaro/linarorepo.key /target/tmp/key.pub
 in-target apt-key add "/tmp/key.pub"
+in-target apt-get update -q || true
