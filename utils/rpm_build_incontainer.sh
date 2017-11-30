@@ -48,7 +48,7 @@ RPM_BUILD_PRE_SCRIPT="rpm_build_pre.sh"
 RPM_DIR=${SRC_DIR%/*}
 if [ -f ${RPM_DIR}/${RPM_BUILD_PRE_SCRIPT} ] ; then
     echo "==================================begin to execute prepare script"
-    sh ${RPM_DIR}/${RPM_BUILD_PRE_SCRIPT}
+    . ${RPM_DIR}/${RPM_BUILD_PRE_SCRIPT}
 fi
 
 yum-builddep -y ${SRC_DIR}/${SPEC_FILE}
