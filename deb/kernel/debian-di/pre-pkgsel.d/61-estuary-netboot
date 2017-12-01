@@ -2,10 +2,6 @@
 set -e
 
 cat > /target/etc/apt/preferences.d/estuary.pref << EOF
-Package: *
-Pin: release n=jessie-backports
-Pin-Priority: 500
-
 # estuary ftp repo
 Package: *
 Pin: origin "117.78.41.188"
@@ -21,10 +17,6 @@ cat > /target/etc/apt/sources.list.d/estuary.list <<EOF
 ## Estuary 5.0 Overlay
 deb ftp://repoftp:repopushez7411@117.78.41.188/releases/5.0/debian/ estuary-5.0 main
 deb-src ftp://repoftp:repopushez7411@117.78.41.188/releases/5.0/debian/ estuary-5.0 main
-
-# jessie-backports, previously on backports.debian.org
-deb http://deb.debian.org/debian/ jessie-backports main
-deb-src http://deb.debian.org/debian/ jessie-backports main
 EOF
 
 cp /usr/share/estuary/estuaryrepo.key /target/tmp/key.pub
