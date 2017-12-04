@@ -1,4 +1,4 @@
-nAMe:       libbson
+Name:       libbson
 Version:    1.8.2
 Release:    1%{?dist}
 Summary:    Building, parsing, and iterating BSON documents
