@@ -8,7 +8,7 @@ fi
 CUR_DIR=$(cd `dirname $0`; pwd)
 
 VERSION="1.1.2"
-RPM_SRC_FILE="mongo-cxx-driver-${VERSION}-5.fc26.src.rpm"
+RPM_SRC_FILE="mongo-cxx-driver-${VERSION}-10.fc27.src.rpm"
 
 SRC_DIR=src-legacy
 
@@ -17,10 +17,12 @@ if [ ! -f ${CUR_DIR}/${SRC_DIR}/${RPM_SRC_FILE} ] ; then
         mkdir -p ${CUR_DIR}/${SRC_DIR}
     fi 
     wget -O ${CUR_DIR}/${SRC_DIR}/${RPM_SRC_FILE} http://dl.fedoraproject.org/pub/fedora/linux/development/rawhide/Everything/source/tree/Packages/m/${RPM_SRC_FILE}
-    pushd ${CUR_DIR}/${SRC_DIR} > /dev/null
-    rpm2cpio ${RPM_SRC_FILE} | cpio -div
-    popd > /dev/null
 fi
+
+pushd ${CUR_DIR}/${SRC_DIR} > /dev/null
+rpm2cpio ${RPM_SRC_FILE} | cpio -div
+popd > /dev/null
+
 
 #Openssh-devel conflicts with compat-openssl10-devel
 sudo yum erase -y openssl-devel

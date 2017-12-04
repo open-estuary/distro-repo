@@ -17,13 +17,15 @@ if [ ! -f ${CUR_DIR}/${SRC_DIR}/${RPM_SRC_FILE} ] ; then
         mkdir -p ${CUR_DIR}/${SRC_DIR}
     fi 
     wget -O ${CUR_DIR}/${SRC_DIR}/${RPM_SRC_FILE} http://dl.fedoraproject.org/pub/fedora/linux/development/rawhide/Everything/source/tree/Packages/m/${RPM_SRC_FILE}
-    pushd ${CUR_DIR}/${SRC_DIR} > /dev/null
-    rpm2cpio ${RPM_SRC_FILE} | cpio -div
-    popd > /dev/null
 fi
 
-rm ${CUR_DIR}/${SRC_DIR}/mongo-c-driver-${VERSION}.tar.gz
-wget -O ${CUR_DIR}/${SRC_DIR}/mongo-c-driver-${VERSION}.tar.gz https://github.com/mongodb/mongo-c-driver/releases/download/${VERSION}/mongo-c-driver-${VERSION}.tar.gz
+pushd ${CUR_DIR}/${SRC_DIR} > /dev/null
+rpm2cpio ${RPM_SRC_FILE} | cpio -div
+popd > /dev/null
+
+
+#rm ${CUR_DIR}/${SRC_DIR}/mongo-c-driver-${VERSION}.tar.gz
+#wget -O ${CUR_DIR}/${SRC_DIR}/mongo-c-driver-${VERSION}.tar.gz https://github.com/mongodb/mongo-c-driver/releases/download/${VERSION}/mongo-c-driver-${VERSION}.tar.gz
 
 
 #sed -i 's/x86_64/aarch64/g' ${CUR_DIR}/${SRC_DIR}/mongo-c-driver.spec
