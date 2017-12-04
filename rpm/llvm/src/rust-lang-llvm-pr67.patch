@@ -1,0 +1,70 @@
+From a6fa10c14649c18d299cddf3e823b032460cb6f5 Mon Sep 17 00:00:00 2001
+From: Pirama Arumuga Nainar <pirama@google.com>
+Date: Thu, 23 Mar 2017 16:47:47 +0000
+Subject: [PATCH] Fix computeKnownBits for ARMISD::CMOV
+
+Summary:
+The true and false operands for the CMOV are operands 0 and 1.
+ARMISelLowering.cpp::computeKnownBits was looking at operands 1 and 2
+instead.  This can cause CMOV instructions to be incorrectly folded into
+BFI if value set by the CMOV is another CMOV, whose known bits are
+computed incorrectly.
+
+This patch fixes the issue and adds a test case.
+
+Reviewers: kristof.beyls, jmolloy
+
+Subscribers: llvm-commits, aemerson, srhines, rengolin
+
+Differential Revision: https://reviews.llvm.org/D31265
+
+git-svn-id: https://llvm.org/svn/llvm-project/llvm/trunk@298624 91177308-0d34-0410-b5e6-96231b3b80d8
+---
+ lib/Target/ARM/ARMISelLowering.cpp |  4 ++--
+ test/CodeGen/ARM/no-cmov2bfi.ll    | 19 +++++++++++++++++++
+ 2 files changed, 21 insertions(+), 2 deletions(-)
+ create mode 100644 test/CodeGen/ARM/no-cmov2bfi.ll
+
+diff --git a/lib/Target/ARM/ARMISelLowering.cpp b/lib/Target/ARM/ARMISelLowering.cpp
+index 4a227a3cd7b1..cf98e60c0657 100644
+--- a/lib/Target/ARM/ARMISelLowering.cpp
++++ b/lib/Target/ARM/ARMISelLowering.cpp
+@@ -10806,8 +10806,8 @@ static void computeKnownBits(SelectionDAG &DAG, SDValue Op, APInt &KnownZero,
+   if (Op.getOpcode() == ARMISD::CMOV) {
+     APInt KZ2(KnownZero.getBitWidth(), 0);
+     APInt KO2(KnownOne.getBitWidth(), 0);
+-    computeKnownBits(DAG, Op.getOperand(1), KnownZero, KnownOne);
+-    computeKnownBits(DAG, Op.getOperand(2), KZ2, KO2);
++    computeKnownBits(DAG, Op.getOperand(0), KnownZero, KnownOne);
++    computeKnownBits(DAG, Op.getOperand(1), KZ2, KO2);
+ 
+     KnownZero &= KZ2;
+     KnownOne &= KO2;
+diff --git a/test/CodeGen/ARM/no-cmov2bfi.ll b/test/CodeGen/ARM/no-cmov2bfi.ll
+new file mode 100644
+index 000000000000..c8b512048905
+--- /dev/null
++++ b/test/CodeGen/ARM/no-cmov2bfi.ll
+@@ -0,0 +1,19 @@
++; RUN: llc < %s -mtriple=thumbv7 | FileCheck --check-prefix=CHECK-NOBFI %s
++
++declare zeroext i1 @dummy()
++
++define i8 @test(i8 %a1, i1 %c) {
++; CHECK-NOBFI-NOT: bfi
++; CHECK-NOBFI: bl      dummy
++; CHECK-NOBFI: cmp     r0, #0
++; CHECK-NOBFI: it      ne
++; CHECK-NOBFI: orrne   [[REG:r[0-9]+]], [[REG]], #8
++; CHECK-NOBFI: mov     r0, [[REG]]
++
++  %1 = and i8 %a1, -9
++  %2 = select i1 %c, i8 %1, i8 %a1
++  %3 = tail call zeroext i1 @dummy()
++  %4 = or i8 %2, 8
++  %ret = select i1 %3, i8 %4, i8 %2
++  ret i8 %ret
++}
+-- 
+2.9.3
+

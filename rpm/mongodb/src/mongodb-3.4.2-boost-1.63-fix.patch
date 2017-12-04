@@ -1,0 +1,12 @@
+diff -up mongodb-src-r3.4.2/src/mongo/db/fts/unicode/string.cpp.boostfix mongodb-src-r3.4.2/src/mongo/db/fts/unicode/string.cpp
+--- mongodb-src-r3.4.2/src/mongo/db/fts/unicode/string.cpp.boostfix	2017-02-08 13:25:17.231495472 -0500
++++ mongodb-src-r3.4.2/src/mongo/db/fts/unicode/string.cpp	2017-02-08 13:25:33.199132946 -0500
+@@ -274,7 +274,7 @@ bool String::substrMatch(const std::stri
+ 
+     // Case sensitive and diacritic sensitive.
+     return boost::algorithm::boyer_moore_search(
+-               haystack.begin(), haystack.end(), needle.begin(), needle.end()) != haystack.end();
++               haystack.begin(), haystack.end(), needle.begin(), needle.end()) != std::make_pair(haystack.end(), haystack.end());
+ }
+ 
+ }  // namespace unicode

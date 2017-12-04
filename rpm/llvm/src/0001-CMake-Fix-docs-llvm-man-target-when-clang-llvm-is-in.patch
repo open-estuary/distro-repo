@@ -1,0 +1,42 @@
+From af79e4116c4476153869e1fd4aa30c87d4c7c21e Mon Sep 17 00:00:00 2001
+From: Tom Stellard <tstellar@redhat.com>
+Date: Mon, 15 May 2017 09:34:23 +0000
+Subject: [PATCH] CMake: Fix docs-llvm-man target when clang+llvm is in the
+ same source tree
+
+Summary:
+This was broken by r302499.  Configuring with -DLLVM_BUILD_DOCS=ON would
+cause the docs-llvm-man target not to be created.
+
+Reviewers: anemet, beanz
+
+Reviewed By: anemet
+
+Subscribers: llvm-commits, mgorny
+
+Differential Revision: https://reviews.llvm.org/D33146
+
+git-svn-id: https://llvm.org/svn/llvm-project/llvm/trunk@303042 91177308-0d34-0410-b5e6-96231b3b80d8
+---
+ cmake/modules/AddSphinxTarget.cmake | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/cmake/modules/AddSphinxTarget.cmake b/cmake/modules/AddSphinxTarget.cmake
+index c3a676d..4540c5c 100644
+--- a/cmake/modules/AddSphinxTarget.cmake
++++ b/cmake/modules/AddSphinxTarget.cmake
+@@ -1,9 +1,9 @@
+ 
+ # Create sphinx target
+-if (LLVM_ENABLE_SPHINX AND NOT TARGET sphinx)
++if (LLVM_ENABLE_SPHINX)
+   message(STATUS "Sphinx enabled.")
+   find_package(Sphinx REQUIRED)
+-  if (LLVM_BUILD_DOCS)
++  if (LLVM_BUILD_DOCS AND NOT TARGET sphinx)
+     add_custom_target(sphinx ALL)
+   endif()
+ else()
+-- 
+1.8.3.1
+

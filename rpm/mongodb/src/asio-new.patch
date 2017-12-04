@@ -1,0 +1,19 @@
+diff --git a/src/mongo/executor/connection_pool_asio.cpp b/src/mongo/executor/connection_pool_asio.cpp
+index b5f4f80..54bbec5 100644
+--- a/src/mongo/executor/connection_pool_asio.cpp
++++ b/src/mongo/executor/connection_pool_asio.cpp
+@@ -63,10 +63,10 @@ void ASIOTimer::setTimeout(Milliseconds timeout, TimeoutCallback cb) {
+ 
+         cancelTimeout();
+ 
+-        std::error_code ec;
+-        _impl.expires_after(std::min(kMaxTimerDuration, timeout).toSystemDuration(), ec);
+-        if (ec) {
+-            severe() << "Failed to set connection pool timer: " << ec.message();
++        try {
++            _impl.expires_after(std::min(kMaxTimerDuration, timeout).toSystemDuration());
++        } catch (asio::system_error e) {
++            severe() << "Failed to set connection pool timer: " << e.what();
+             fassertFailed(40333);
+         }
+ 

@@ -45,7 +45,8 @@ userspace.
 %patch0 -p1
 
 %build
-
+source /opt/rh/devtoolset-4/enable
+ln -sv /opt/rh/devtoolset-4/root/usr/bin/llvm-config-64 /opt/rh/devtoolset-4/root/usr/bin/llvm-config
 mkdir build
 pushd build
 cmake .. -DREVISION_LAST=%{version} -DREVISION=%{version} \

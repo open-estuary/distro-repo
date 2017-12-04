@@ -1,0 +1,44 @@
+From 974c288631ef8d05bf3a3f91b32bf38eae16e5c8 Mon Sep 17 00:00:00 2001
+From: Tom Stellard <tstellar@redhat.com>
+Date: Mon, 6 Mar 2017 13:55:55 +0000
+Subject: [PATCH] CMake: Add LLVM_UTILS_INSTALL_DIR option
+
+This is like the LLVM_TOOLS_INSTALL_DIR option, but for the utils
+that are installed when the LLVM_INSTALL_UTILS.  This option
+defaults to 'bin' to remain consistent with the current behavior, but
+distros may want to install these to libexec/llvm.
+---
+ CMakeLists.txt              | 3 +++
+ cmake/modules/AddLLVM.cmake | 2 +-
+ 2 files changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 58ee3cf..f93405c 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -281,6 +281,9 @@ set(LLVM_LIBDIR_SUFFIX "" CACHE STRING "Define suffix of library directory name
+ set(LLVM_TOOLS_INSTALL_DIR "bin" CACHE STRING "Path for binary subdirectory (defaults to 'bin')")
+ mark_as_advanced(LLVM_TOOLS_INSTALL_DIR)
+ 
++set(LLVM_UTILS_INSTALL_DIR "bin" CACHE STRING "Path to install LLVM utilities (enabled by LLVM_INSTALL_UTILS=ON) (defaults to 'bin')")
++mark_as_advanced(LLVM_TOOLS_INSTALL_DIR)
++
+ # They are used as destination of target generators.
+ set(LLVM_RUNTIME_OUTPUT_INTDIR ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/bin)
+ set(LLVM_LIBRARY_OUTPUT_INTDIR ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/lib${LLVM_LIBDIR_SUFFIX})
+diff --git a/cmake/modules/AddLLVM.cmake b/cmake/modules/AddLLVM.cmake
+index 7f7608c..0da8162 100644
+--- a/cmake/modules/AddLLVM.cmake
++++ b/cmake/modules/AddLLVM.cmake
+@@ -864,7 +864,7 @@ macro(add_llvm_utility name)
+   set_target_properties(${name} PROPERTIES FOLDER "Utils")
+   if( LLVM_INSTALL_UTILS AND LLVM_BUILD_UTILS )
+     install (TARGETS ${name}
+-      RUNTIME DESTINATION bin
++      RUNTIME DESTINATION ${LLVM_UTILS_INSTALL_DIR}
+       COMPONENT ${name})
+     if (NOT CMAKE_CONFIGURATION_TYPES)
+       add_custom_target(install-${name}
+-- 
+2.9.3
+

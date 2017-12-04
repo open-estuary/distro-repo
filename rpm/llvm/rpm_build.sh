@@ -7,7 +7,7 @@ fi
 
 CUR_DIR=$(cd `dirname $0`; pwd)
 
-RPM_SRC_FILE="llvm-5.0.0-5.fc28.src.rpm"
+RPM_SRC_FILE="llvm-4.0.1-1.fc27.src.rpm"
 
 SRC_DIR=src
 
@@ -19,10 +19,6 @@ if [ ! -f ${CUR_DIR}/${SRC_DIR}/${RPM_SRC_FILE} ] ; then
     pushd ${CUR_DIR}/${SRC_DIR} > /dev/null
     rpm2cpio ${RPM_SRC_FILE} | cpio -div
     popd > /dev/null
-fi
-
-if [ ${BUILD_DEVTOOL} -eq 1 ] ; then
-    mv llvm_scl.spec llvm.spec
 fi
 
 
