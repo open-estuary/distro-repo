@@ -2,10 +2,6 @@
 set -e
 
 cat > /target/etc/apt/preferences.d/estuary.pref << EOF
-Package: *
-Pin: release n=jessie-backports
-Pin-Priority: 500
-
 # estuary ftp repo
 Package: *
 Pin: origin "117.78.41.188"
