@@ -3,11 +3,11 @@
 CUR_DIR=$(cd `dirname $0`; pwd)
 
 #Proxysql needs gcc-5, so it will use gcc-5 from devtoolset-4 
-sudo yum install -y devtoolset-4-gcc
-sudo yum install -y devtoolset-4-gcc-c++
-sudo yum install -y devtoolset-4-libstdc++-devel
+#sudo yum install -y devtoolset-4-gcc
+#sudo yum install -y devtoolset-4-gcc-c++
+#sudo yum install -y devtoolset-4-libstdc++-devel
 
-source /opt/rh/devtoolset-4/enable
+#source /opt/rh/devtoolset-4/enable
 
 RPM_SRC_FILE="proxysql-1.3.5-1.1.src.rpm"
 SRC_DIR=src

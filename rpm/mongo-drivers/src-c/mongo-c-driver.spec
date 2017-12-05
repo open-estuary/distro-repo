@@ -10,11 +10,12 @@
 %global gh_project   mongo-c-driver
 %global libname      libmongoc
 %global libver       1.0
-#global prever       rc6
-%global bsonver      1.6
+#global prever       rc2
+%global bsonver      1.8
 
 %ifarch x86_64
-%global with_tests   0%{!?_without_tests:1}
+# Temporarily disabled
+%global with_tests   0%{?_with_tests:1}
 %else
 # See https://jira.mongodb.org/browse/CDRIVER-1186
 # 32-bit MongoDB support was officially deprecated
@@ -24,7 +25,7 @@
 
 Name:      mongo-c-driver
 Summary:   Client library written in C for MongoDB
-Version:   1.6.2
+Version:   1.8.2
 Release:   1%{?dist}
 License:   ASL 2.0
 Group:     System Environment/Libraries
@@ -45,11 +46,18 @@ BuildRequires: libtool
 BuildRequires: pkgconfig(openssl)
 BuildRequires: pkgconfig(libbson-1.0) > %{bsonver}
 BuildRequires: pkgconfig(libsasl2)
+BuildRequires: pkgconfig(zlib)
+%if 0%{?fedora} >= 26
+# pkgconfig file introduce in 1.1.4
+BuildRequires: pkgconfig(snappy)
+%else
+BuildRequires: snappy-devel
+%endif
 %if %{with_tests}
 BuildRequires: mongodb-server
 BuildRequires: openssl
 %endif
-BuildRequires: perl
+BuildRequires: perl-interpreter
 # From man pages
 BuildRequires: python
 BuildRequires: /usr/bin/sphinx-build
@@ -87,7 +95,7 @@ Documentation: http://api.mongodb.org/c/%{version}/
 
 
 %prep
-%setup -q -n %{gh_project}-%{version}%{?prever:-%{prever}}
+%setup -q -n %{gh_project}-%{version}%{?prever:-dev}
 %patch0 -p1 -b .rpm
 
 : Generate build scripts from sources
@@ -95,6 +103,7 @@ autoreconf --force --install --verbose -I build/autotools
 
 : delete bundled libbson sources
 rm -r src/libbson
+
 
 %build
 export LIBS=-lpthread
@@ -112,12 +121,13 @@ export LIBS=-lpthread
   --enable-sasl \
   --enable-ssl \
   --with-libbson=system \
+  --with-snappy=system \
+  --with-zlib=system \
   --disable-html-docs \
   --enable-examples \
   --enable-man-pages
 
-#Temporarily fix doc/man build failure due to 'warning as error'
-sed -i 's/\-qEW/\-qE/g' Makefile
+rm -r src/zlib-*
 
 make %{?_smp_mflags} all V=1
 
@@ -185,10 +195,37 @@ exit $ret
 %{_includedir}/%{libname}-%{libver}
 %{_libdir}/%{libname}-%{libver}.so
 %{_libdir}/pkgconfig/%{libname}-*.pc
+%{_libdir}/cmake/%{libname}-%{libver}
 %{_mandir}/man3/mongoc*
 
 
 %changelog
+* Fri Nov 17 2017 Remi Collet <remi@fedoraproject.org> - 1.8.2-1
+- update to 1.8.2
+
+* Thu Oct 12 2017 Remi Collet <remi@fedoraproject.org> - 1.8.1-1
+- update to 1.8.1
+
+* Fri Sep 15 2017 Remi Collet <remi@fedoraproject.org> - 1.8.0-1
+- update to 1.8.0
+
+* Thu Aug 10 2017 Remi Collet <remi@fedoraproject.org> - 1.7.0-1
+- update to 1.7.0
+- disable test suite in rawhide (mongodb-server is broken)
+
+* Tue Aug  8 2017 Remi Collet <remi@fedoraproject.org> - 1.7.0-0.1.rc2
+- update to 1.7.0-rc2
+- add --with-snappy and --with-zlib build options
+
+* Thu Aug 03 2017 Fedora Release Engineering <releng@fedoraproject.org> - 1.6.3-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Binutils_Mass_Rebuild
+
+* Wed Jul 26 2017 Fedora Release Engineering <releng@fedoraproject.org> - 1.6.3-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Mass_Rebuild
+
+* Wed May 24 2017 Remi Collet <remi@fedoraproject.org> - 1.6.3-1
+- update to 1.6.2
+
 * Tue Mar 28 2017 Remi Collet <remi@fedoraproject.org> - 1.6.2-1
 - update to 1.6.2
 

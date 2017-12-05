@@ -16,11 +16,11 @@ if [ ! -f ${CUR_DIR}/${SRC_DIR}/${RPM_SRC_FILE} ] ; then
         mkdir -p ${CUR_DIR}/${SRC_DIR}
     fi 
     wget -O ${CUR_DIR}/${SRC_DIR}/${RPM_SRC_FILE} http://dl.fedoraproject.org/pub/fedora/linux/development/rawhide/Everything/source/tree/Packages/l/${RPM_SRC_FILE}
-    pushd ${CUR_DIR}/${SRC_DIR} > /dev/null
-    rpm2cpio ${RPM_SRC_FILE} | cpio -div
-    popd > /dev/null
 fi
 
+pushd ${CUR_DIR}/${SRC_DIR} > /dev/null
+rpm2cpio ${RPM_SRC_FILE} | cpio -div
+popd > /dev/null
 
 #sed -i 's/x86_64/aarch64/g' ${CUR_DIR}/${SRC_DIR}/libbson.spec
 

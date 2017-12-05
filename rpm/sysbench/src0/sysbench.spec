@@ -12,6 +12,7 @@ BuildRequires: mysql-devel
 BuildRequires: libaio-devel
 BuildRequires: automake
 BuildRequires: libtool
+BuildRequires: mysql-shared
 
 
 %description

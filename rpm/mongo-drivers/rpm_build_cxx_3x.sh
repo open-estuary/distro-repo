@@ -20,8 +20,8 @@ if [ ! -f ${CUR_DIR}/${SRC_DIR}/r${VERSION}.tar.gz ] ; then
 fi
 
 #CXX driver relies on C-driver
-sudo yum install -y mongo-c-driver
-sudo yum install -y mongo-c-driver-devel
+#sudo yum install -y mongo-c-driver
+#sudo yum install -y mongo-c-driver-devel
 #sed -i 's/x86_64/aarch64/g' ${CUR_DIR}/${SRC_DIR}/mongo-cxx-driver.spec
 
-sudo ${CUR_DIR}/../../utils/rpm_build.sh  ${CUR_DIR}/${SRC_DIR} mongo-cxx-driver.spec
+${CUR_DIR}/../../utils/rpm_build.sh  ${CUR_DIR}/${SRC_DIR} mongo-cxx-driver.spec

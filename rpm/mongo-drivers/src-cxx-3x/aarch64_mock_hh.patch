@@ -1,0 +1,12 @@
+diff -rup old/src/mongocxx/test_util/mock.hh new/src/mongocxx/test_util/mock.hh
+--- old/src/mongocxx/test_util/mock.hh	2017-12-04 18:50:09.453560805 +0800
++++ new/src/mongocxx/test_util/mock.hh	2017-12-04 18:50:35.527681823 +0800
+@@ -14,6 +14,8 @@
+ 
+ #pragma once
+ 
++#include <cassert>
++
+ #include <array>
+ #include <functional>
+ #include <iostream>
