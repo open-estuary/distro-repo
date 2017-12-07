@@ -2,15 +2,15 @@
 
 CUR_DIR=$(cd `dirname $0`; pwd)
 
-sudo yum erase -y python34
-sudo yum install -y devtoolset-4-gcc
-sudo yum install -y devtoolset-4-gcc-c++
-sudo yum install -y devtoolset-4-libstdc++-devel
+#sudo yum erase -y python34
+#sudo yum install -y devtoolset-4-gcc
+#sudo yum install -y devtoolset-4-gcc-c++
+#sudo yum install -y devtoolset-4-libstdc++-devel
 
-source /opt/rh/devtoolset-4/enable
+#source /opt/rh/devtoolset-4/enable
 
-VERSION="1.64"
-RPM_SRC_FILE="boost-1.64.0-4.fc28.src.rpm"
+VERSION="1.63.0"
+RPM_SRC_FILE="boost-1.63.0-7.fc27.src.rpm"
 
 SRC_DIR=src
 
