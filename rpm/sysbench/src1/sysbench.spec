@@ -13,6 +13,7 @@ BuildRequires: mysql-devel
 BuildRequires: libaio-devel
 BuildRequires: automake
 BuildRequires: libtool
+BuildRequires: mysql-shared
 
 %description
 SysBench is a modular, cross-platform and multi-threaded benchmark

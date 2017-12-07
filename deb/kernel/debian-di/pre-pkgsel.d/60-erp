@@ -1,20 +1,14 @@
 #! /bin/sh
 set -e
 
-cat > /target/etc/apt/preferences.d/linaro.pref << EOF
-Package: *
-Pin: release n=jessie-backports
-Pin-Priority: 500
-EOF
-
 cat > /target/etc/apt/sources.list.d/erp-17.08.list <<EOF
 ## ERP 17.08 Stable Overlay
 deb http://repo.linaro.org/debian/erp-17.08-stable jessie main
 deb-src http://repo.linaro.org/debian/erp-17.08-stable jessie main
 deb http://repo.linaro.org/debian/erp-17.08-staging jessie main
 deb-src http://repo.linaro.org/debian/erp-17.08-staging jessie main
-
 EOF
 
 cp /usr/share/linaro/linarorepo.key /target/tmp/key.pub
 in-target apt-key add "/tmp/key.pub"
+in-target apt-get update -q || true

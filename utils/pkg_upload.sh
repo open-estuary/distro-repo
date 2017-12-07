@@ -111,6 +111,10 @@ elif [ ${TARGETOS} = "debian" ];then
 	filelist="$(find ${SRC_DIR} -name "*.dsc")"
         DST_DIR="/est-repo/releases/${VERSION}/${TARGETOS}/pool/main"
         upload_files_repo "${filelist}" "${DST_DIR}"
+
+	filelist="$(find ${SRC_DIR} -name "*.tar.xz")"
+        DST_DIR="/est-repo/releases/${VERSION}/${TARGETOS}/pool/main"
+        upload_files_repo "${filelist}" "${DST_DIR}"
 else
         filelist="$(find ${SRC_DIR} -name "*.u${file_type}")"
         DST_DIR="/est-repo/releases/${VERSION}/${TARGETOS}/pool/main"
@@ -133,6 +137,10 @@ else
         upload_files_repo "${filelist}" "${DST_DIR}"
 
         filelist="$(find ${SRC_DIR} -name "*.dsc")"
+        DST_DIR="/est-repo/releases/${VERSION}/${TARGETOS}/pool/main"
+        upload_files_repo "${filelist}" "${DST_DIR}"
+
+        filelist="$(find ${SRC_DIR} -name "*.tar.gz")"
         DST_DIR="/est-repo/releases/${VERSION}/${TARGETOS}/pool/main"
         upload_files_repo "${filelist}" "${DST_DIR}"
 fi

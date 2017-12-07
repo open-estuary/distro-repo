@@ -107,7 +107,7 @@ autoreconf --force --install
 # Explicit man target is needed for generating manual pages.
 # If you produced HTML pages be ware doc/conf.py injects tracking JavaScript
 # code (search for add_ga_javascript function).
-make %{?_smp_mflags} all doc/man
+#make %{?_smp_mflags} all doc/man
 
 %install
 make install DESTDIR=%{buildroot}
@@ -136,9 +136,12 @@ make %{?_smp_mflags} check
 %{_libdir}/*.so
 %{_libdir}/cmake
 %{_libdir}/pkgconfig
-%{_mandir}/man3/*
+#%{_mandir}/man3/*
 
 %changelog
+* Wed Nov 29 2017 Wang Yu <wy200885@163.com> -1.8.2
+- Estuary ARM64 package with 1.8.2
+
 * Mon Nov 20 2017 Petr Pisar <ppisar@redhat.com> - 1.8.2-1
 - 1.8.2 bump
 

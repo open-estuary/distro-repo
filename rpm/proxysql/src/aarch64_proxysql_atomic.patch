@@ -1,0 +1,25 @@
+diff -rup old/include/proxysql_atomic.h new/include/proxysql_atomic.h
+--- old/include/proxysql_atomic.h	2017-12-04 15:43:10.681599302 +0800
++++ new/include/proxysql_atomic.h	2017-12-04 15:37:43.459048927 +0800
+@@ -15,17 +15,20 @@ struct _rwlock_t {
+ #define barrier() asm volatile("": : :"memory")
+ 
+ /* Pause instruction to prevent excess processor bus usage */
+-#define cpu_relax_pa() asm volatile("pause\n": : :"memory")
++//#define cpu_relax_pa() asm volatile("pause\n": : :"memory")
++#define cpu_relax_pa() asm volatile("yield": : :"memory")
+ #define cpu_relax_us() usleep(1)
+ 
+ #define RELAX_TRIES	100
+ 
+ static inline unsigned xchg_32(void *ptr, unsigned x) {
++#if 0
+     __asm__ __volatile__("xchgl %0,%1"
+                 :"=r" (x)
+                 :"m" (*(volatile unsigned *)ptr), "0" (x)
+                 :"memory");
+     return x;
++#endif
+ }
+ 
+ static inline void spinlock_rwlock_init(rwlock_t *l) {

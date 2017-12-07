@@ -18,8 +18,13 @@ Source3 : proxysql_galera_checker
 Source4 : proxysql_node_monitor
 Source5 : LICENSE
 Patch0 : aarch64_deps_makefile.patch
+Patch1 : aarch64_makefile.patch
+Patch2 : aarch64_proxysql_atomic.patch
 URL: http://www.proxysql.com/
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
+
+BuildRequires: lynx
+BuildRequires: openssl
 
 %description
 %{summary}
@@ -28,6 +33,8 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 %setup -q
 install %SOURCE5 %{name}-%{version}
 %patch0 -p1
+%patch1 -p1
+%patch2 -p1
 
 %build
 sed -i -e 's/c++11/c++0x/' lib/Makefile

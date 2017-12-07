@@ -1,0 +1,139 @@
+diff -rup old/Makefile new/Makefile 
+--- old/Makefile	2017-12-04 15:39:47.324635800 +0800
++++ new/Makefile	2017-12-04 15:35:54.598533147 +0800
+@@ -58,22 +58,22 @@ packages: centos6.7 centos7 centos6.7-db
+ .PHONY: packages
+ 
+ 
+-centos6.7: binaries/proxysql-${CURVER}-1-centos67.x86_64.rpm
++centos6.7: binaries/proxysql-${CURVER}-1-centos67.aarch64.rpm
+ .PHONY: centos6.7
+ 
+-centos7: binaries/proxysql-${CURVER}-1-centos7.x86_64.rpm
++centos7: binaries/proxysql-${CURVER}-1-centos7.aarch64.rpm
+ .PHONY: centos7
+ 
+-centos6.7-dbg: binaries/proxysql-${CURVER}-1-dbg-centos67.x86_64.rpm
++centos6.7-dbg: binaries/proxysql-${CURVER}-1-dbg-centos67.aarch64.rpm
+ .PHONY: centos6.7-dbg
+ 
+-centos7-dbg: binaries/proxysql-${CURVER}-1-dbg-centos7.x86_64.rpm
++centos7-dbg: binaries/proxysql-${CURVER}-1-dbg-centos7.aarch64.rpm
+ .PHONY: centos7-dbg
+ 
+-fedora24: binaries/proxysql-${CURVER}-1-fedora24.x86_64.rpm
++fedora24: binaries/proxysql-${CURVER}-1-fedora24.aarch64.rpm
+ .PHONY: fedora24
+ 
+-fedora24-dbg: binaries/proxysql-${CURVER}-1-dbg-fedora24.x86_64.rpm
++fedora24-dbg: binaries/proxysql-${CURVER}-1-dbg-fedora24.aarch64.rpm
+ .PHONY: fedora24-dbg
+ 
+ ubuntu12: binaries/proxysql_${CURVER}-ubuntu12_amd64.deb
+@@ -107,7 +107,7 @@ debian8-dbg: binaries/proxysql_${CURVER}
+ .PHONY: debian8-dbg
+ 
+ 
+-binaries/proxysql-${CURVER}-1-centos67.x86_64.rpm:
++binaries/proxysql-${CURVER}-1-centos67.aarch64.rpm:
+ 	docker stop centos67_build || true
+ 	docker rm centos67_build || true
+ 	docker create --name centos67_build renecannao/proxysql:build-centos6.7 bash -c "while : ; do sleep 10 ; done"
+@@ -122,13 +122,13 @@ binaries/proxysql-${CURVER}-1-centos67.x
+ 	docker exec -it centos67_build bash -c "cp /opt/proxysql/proxysql-${CURVER}.tar.gz /root/rpmbuild/SOURCES"
+ 	docker exec -it centos67_build bash -c "cd /root/rpmbuild; rpmbuild -ba SPECS/proxysql.spec"
+ 	sleep 2
+-	docker exec -it centos67_build bash -c "cp /root/rpmbuild/RPMS/x86_64/proxysql-${CURVER}-1.x86_64.rpm /root/rpm"
++	docker exec -it centos67_build bash -c "cp /root/rpmbuild/RPMS/aarch64/proxysql-${CURVER}-1.aarch64.rpm /root/rpm"
+ 	sleep 2
+-	docker cp centos67_build:/root/rpmbuild/RPMS/x86_64/proxysql-${CURVER}-1.x86_64.rpm ./binaries/proxysql-${CURVER}-1-centos67.x86_64.rpm
++	docker cp centos67_build:/root/rpmbuild/RPMS/aarch64/proxysql-${CURVER}-1.aarch64.rpm ./binaries/proxysql-${CURVER}-1-centos67.aarch64.rpm
+ 	docker stop centos67_build
+ 	docker rm centos67_build
+ 
+-binaries/proxysql-${CURVER}-1-dbg-centos67.x86_64.rpm:
++binaries/proxysql-${CURVER}-1-dbg-centos67.aarch64.rpm:
+ 	docker stop centos67_build || true
+ 	docker rm centos67_build || true
+ 	docker create --name centos67_build renecannao/proxysql:build-centos6.7 bash -c "while : ; do sleep 10 ; done"
+@@ -143,13 +143,13 @@ binaries/proxysql-${CURVER}-1-dbg-centos
+ 	docker exec -it centos67_build bash -c "cp /opt/proxysql/proxysql-${CURVER}.tar.gz /root/rpmbuild/SOURCES"
+ 	docker exec -it centos67_build bash -c "cd /root/rpmbuild; rpmbuild -ba SPECS/proxysql.spec"
+ 	sleep 2
+-	docker exec -it centos67_build bash -c "cp /root/rpmbuild/RPMS/x86_64/proxysql-${CURVER}-1.x86_64.rpm /root/rpm"
++	docker exec -it centos67_build bash -c "cp /root/rpmbuild/RPMS/aarch64/proxysql-${CURVER}-1.aarch64.rpm /root/rpm"
+ 	sleep 2
+-	docker cp centos67_build:/root/rpmbuild/RPMS/x86_64/proxysql-${CURVER}-1.x86_64.rpm ./binaries/proxysql-${CURVER}-1-dbg-centos67.x86_64.rpm
++	docker cp centos67_build:/root/rpmbuild/RPMS/aarch64/proxysql-${CURVER}-1.aarch64.rpm ./binaries/proxysql-${CURVER}-1-dbg-centos67.aarch64.rpm
+ 	docker stop centos67_build
+ 	docker rm centos67_build
+ 
+-binaries/proxysql-${CURVER}-1-centos7.x86_64.rpm:
++binaries/proxysql-${CURVER}-1-centos7.aarch64.rpm:
+ 	docker stop centos7_build || true
+ 	docker rm centos7_build || true
+ 	docker create --name centos7_build renecannao/proxysql:build-centos7 bash -c "while : ; do sleep 10 ; done"
+@@ -164,13 +164,13 @@ binaries/proxysql-${CURVER}-1-centos7.x8
+ 	docker exec -it centos7_build bash -c "cp /opt/proxysql/proxysql-${CURVER}.tar.gz /root/rpmbuild/SOURCES"
+ 	docker exec -it centos7_build bash -c "cd /root/rpmbuild; rpmbuild -ba SPECS/proxysql.spec"
+ 	sleep 2
+-	docker exec -it centos7_build bash -c "cp /root/rpmbuild/RPMS/x86_64/proxysql-${CURVER}-1.x86_64.rpm /root/rpm"
++	docker exec -it centos7_build bash -c "cp /root/rpmbuild/RPMS/aarch64/proxysql-${CURVER}-1.aarch64.rpm /root/rpm"
+ 	sleep 2
+-	docker cp centos7_build:/root/rpmbuild/RPMS/x86_64/proxysql-${CURVER}-1.x86_64.rpm ./binaries/proxysql-${CURVER}-1-centos7.x86_64.rpm
++	docker cp centos7_build:/root/rpmbuild/RPMS/aarch64/proxysql-${CURVER}-1.aarch64.rpm ./binaries/proxysql-${CURVER}-1-centos7.aarch64.rpm
+ 	docker stop centos7_build
+ 	docker rm centos7_build
+ 
+-binaries/proxysql-${CURVER}-1-dbg-centos7.x86_64.rpm:
++binaries/proxysql-${CURVER}-1-dbg-centos7.aarch64.rpm:
+ 	docker stop centos7_build || true
+ 	docker rm centos7_build || true
+ 	docker create --name centos7_build renecannao/proxysql:build-centos7 bash -c "while : ; do sleep 10 ; done"
+@@ -185,14 +185,14 @@ binaries/proxysql-${CURVER}-1-dbg-centos
+ 	docker exec -it centos7_build bash -c "cp /opt/proxysql/proxysql-${CURVER}.tar.gz /root/rpmbuild/SOURCES"
+ 	docker exec -it centos7_build bash -c "cd /root/rpmbuild; rpmbuild -ba SPECS/proxysql.spec"
+ 	sleep 2
+-	docker exec -it centos7_build bash -c "cp /root/rpmbuild/RPMS/x86_64/proxysql-${CURVER}-1.x86_64.rpm /root/rpm"
++	docker exec -it centos7_build bash -c "cp /root/rpmbuild/RPMS/aarch64/proxysql-${CURVER}-1.aarch64.rpm /root/rpm"
+ 	sleep 2
+-	docker cp centos7_build:/root/rpmbuild/RPMS/x86_64/proxysql-${CURVER}-1.x86_64.rpm ./binaries/proxysql-${CURVER}-1-dbg-centos7.x86_64.rpm
++	docker cp centos7_build:/root/rpmbuild/RPMS/aarch64/proxysql-${CURVER}-1.aarch64.rpm ./binaries/proxysql-${CURVER}-1-dbg-centos7.aarch64.rpm
+ 	docker stop centos7_build
+ 	docker rm centos7_build
+ 
+ 
+-binaries/proxysql-${CURVER}-1-fedora24.x86_64.rpm:
++binaries/proxysql-${CURVER}-1-fedora24.aarch64.rpm:
+ 	docker stop fedora24_build || true
+ 	docker rm fedora24_build || true
+ 	docker create --name fedora24_build renecannao/proxysql:build-fedora24 bash -c "while : ; do sleep 10 ; done"
+@@ -207,13 +207,13 @@ binaries/proxysql-${CURVER}-1-fedora24.x
+ 	docker exec -it fedora24_build bash -c "cp /opt/proxysql/proxysql-${CURVER}.tar.gz /root/rpmbuild/SOURCES"
+ 	docker exec -it fedora24_build bash -c "cd /root/rpmbuild; rpmbuild -ba SPECS/proxysql.spec"
+ 	sleep 2
+-	docker exec -it fedora24_build bash -c "cp /root/rpmbuild/RPMS/x86_64/proxysql-${CURVER}-1.x86_64.rpm /root/rpm"
++	docker exec -it fedora24_build bash -c "cp /root/rpmbuild/RPMS/aarch64/proxysql-${CURVER}-1.aarch64.rpm /root/rpm"
+ 	sleep 2
+-	docker cp fedora24_build:/root/rpmbuild/RPMS/x86_64/proxysql-${CURVER}-1.x86_64.rpm ./binaries/proxysql-${CURVER}-1-fedora24.x86_64.rpm
++	docker cp fedora24_build:/root/rpmbuild/RPMS/aarch64/proxysql-${CURVER}-1.aarch64.rpm ./binaries/proxysql-${CURVER}-1-fedora24.aarch64.rpm
+ 	docker stop fedora24_build
+ 	docker rm fedora24_build
+ 
+-binaries/proxysql-${CURVER}-1-dbg-fedora24.x86_64.rpm:
++binaries/proxysql-${CURVER}-1-dbg-fedora24.aarch64.rpm:
+ 	docker stop fedora24_build || true
+ 	docker rm fedora24_build || true
+ 	docker create --name fedora24_build renecannao/proxysql:build-fedora24 bash -c "while : ; do sleep 10 ; done"
+@@ -228,9 +228,9 @@ binaries/proxysql-${CURVER}-1-dbg-fedora
+ 	docker exec -it fedora24_build bash -c "cp /opt/proxysql/proxysql-${CURVER}.tar.gz /root/rpmbuild/SOURCES"
+ 	docker exec -it fedora24_build bash -c "cd /root/rpmbuild; rpmbuild -ba SPECS/proxysql.spec"
+ 	sleep 2
+-	docker exec -it fedora24_build bash -c "cp /root/rpmbuild/RPMS/x86_64/proxysql-${CURVER}-1.x86_64.rpm /root/rpm"
++	docker exec -it fedora24_build bash -c "cp /root/rpmbuild/RPMS/aarch64/proxysql-${CURVER}-1.aarch64.rpm /root/rpm"
+ 	sleep 2
+-	docker cp fedora24_build:/root/rpmbuild/RPMS/x86_64/proxysql-${CURVER}-1.x86_64.rpm ./binaries/proxysql-${CURVER}-1-dbg-fedora24.x86_64.rpm
++	docker cp fedora24_build:/root/rpmbuild/RPMS/aarch64/proxysql-${CURVER}-1.aarch64.rpm ./binaries/proxysql-${CURVER}-1-dbg-fedora24.aarch64.rpm
+ 	docker stop fedora24_build
+ 	docker rm fedora24_build
+ 

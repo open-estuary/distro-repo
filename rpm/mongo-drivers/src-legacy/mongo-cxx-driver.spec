@@ -3,7 +3,7 @@
 
 Name:           mongo-cxx-driver
 Version:        1.1.2
-Release:        5%{?dist}
+Release:        10%{?dist}
 Summary:        A legacy C++ Driver for MongoDB
 Group:          Development/Libraries
 License:        ASL 2.0
@@ -140,6 +140,21 @@ scons unit \
 %{_libdir}/libmongoclient.so
 
 %changelog
+* Thu Aug 03 2017 Fedora Release Engineering <releng@fedoraproject.org> - 1.1.2-10
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Binutils_Mass_Rebuild
+
+* Wed Jul 26 2017 Fedora Release Engineering <releng@fedoraproject.org> - 1.1.2-9
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Mass_Rebuild
+
+* Wed Jul 19 2017 Jonathan Wakely <jwakely@redhat.com> - 1.1.2-8
+- Rebuilt for s390x binutils bug
+
+* Mon Jul 03 2017 Jonathan Wakely <jwakely@redhat.com> - 1.1.2-7
+- Rebuilt for Boost 1.64
+
+* Mon May 15 2017 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.1.2-6
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_26_27_Mass_Rebuild
+
 * Tue Feb 28 2017 Marek Skalický <mskalick@redhat.com> - 1.1.2-5
 - Temporary disable optimizations (some tests are failing with it)
 

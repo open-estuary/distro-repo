@@ -9,6 +9,7 @@ Group:          Development/Libraries
 License:        ASL 2.0
 URL:            https://github.com/mongodb/mongo-cxx-driver/wiki
 Source0:        https://github.com/mongodb/%{pkg_name}/archive/r%{version}.tar.gz
+Patch0: aarch64_mock_hh.patch
 
 BuildRequires:  boost-devel >= 1.49
 #BuildRequires:  compat-openssl10-devel
@@ -47,6 +48,7 @@ This package provides the header files for MongoDB  C++ driver.
 %prep
 # -n the name of the directory to cd after unpacking
 %setup -q -n %{name}-r%{version}
+%patch0 -p1
 
 # CRLF -> LF
 sed -i 's/\r//' README.md
