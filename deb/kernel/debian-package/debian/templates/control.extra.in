@@ -1,6 +1,6 @@
-Package: linux-compiler-gcc-4.9-arm
+Package: linux-compiler-gcc-6-arm
 Build-Profiles: <!stage1>
-Depends: gcc-4.9, ${misc:Depends}
+Depends: gcc-6, ${misc:Depends}
 Architecture: armel armhf
 Multi-Arch: foreign
 Description: Compiler for Linux on ARM (meta-package)
