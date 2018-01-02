@@ -1,6 +1,6 @@
 #!/bin/bash
 CUR_DIR=$(cd `dirname $0`; pwd)
-source $CUR_DIR/usrconf.properties
+source $CUR_DIR/conf.properties
 
 . $CUR_DIR/process.sh
 basedir=$CUR_DIR
