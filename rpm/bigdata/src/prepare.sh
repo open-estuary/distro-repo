@@ -7,7 +7,7 @@ echo $1 $2
 source $1
 CUR_DIR=$(cd `dirname $0`; pwd)
 export BIGDATA_HOME=${BIGDATA_HOME}
-cp $1 ${CUR_DIR}/usrconf.properties
+cp $1 ${CUR_DIR}/conf.properties
 cp $2 ${CUR_DIR}/conf.xml
 pro=`basename $1`
 xml=`basename $2`
