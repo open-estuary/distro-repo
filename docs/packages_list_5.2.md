@@ -1,11 +1,15 @@
-#Open-Estuary Packages List#
-***
-## Introduction ##
+* [Introduction](#1)
+* [Packages List](#2)
+
+#Open-Estuary Packages List
+## <a name="1">Introduction</a>  
 It lists the packages which are maintained by Open-Estuary team so far.
-## Packages List ##
+
+## <a name="2">Packages List</a> 
 Currently the following packages are supported by Open-Estuary repo:
+
 |	Package Name	|	Estuary Releases	|	Packages Releases	|	CentOS	|	Debian	|
-| :------------- |:-------------| :-----|:-----|:-----|
+|--|--|--|--|--|
 |OpenSSL|5.2|1.0.2k|Y||
 |OpenSSL|5.2|1.1.0j||Y|
 |stream|5.2|5.10|Y|Y|
@@ -85,5 +89,3 @@ Currently the following packages are supported by Open-Estuary repo:
 |weighttp|5.2|0.4|Y|Y|
 |yaml-cpp|5.2|0.5.1|Y||
 |yaml-cpp|5.2|0.5.2||Y|
-
-
