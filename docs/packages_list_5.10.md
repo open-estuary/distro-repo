@@ -13,7 +13,6 @@ Currently the following packages are supported by Open-Estuary repo:
 |OpenSSL|5.2|1.0.2k|Y||[src](https://github.com/openssl/openssl)|[script](https://github.com/open-estuary/estuary-app/blob/master/app_install_scripts/openssl.sh)|[N/A]( )|
 |OpenSSL|5.2|1.1.0j||Y|[src](https://github.com/openssl/openssl)|[script](https://github.com/open-estuary/estuary-app/blob/master/app_install_scripts/openssl.sh)|[N/A]( )|
 |stream|5.2|5.10|Y|Y|[src](http://www.cs.virginia.edu/stream/FTP/Code/)|[script](https://github.com/open-estuary/estuary-app/blob/master/app_install_scripts/stream.sh)|[N/A]( )|
-|speccpu|5.2|2006|Y|Y|[N/A]( )|[N/A]( )|[N/A]( )|
 |Openblas|5.2|0.33|Y||[src](https://github.com/xianyi/OpenBLAS)|[script](https://github.com/open-estuary/estuary-app/blob/master/app_install_scripts/openblas.sh)|[N/A]( )|
 |Openblas|5.2|0.2.19||Y|[src](https://github.com/xianyi/OpenBLAS)|[script](https://github.com/open-estuary/estuary-app/blob/master/app_install_scripts/openblas.sh)|[N/A]( )|
 |Hibench|5.2|7.0|Y|Y|[src](https://github.com/Intel-bigdata/HiBench)|[script](https://github.com/open-estuary/estuary-app/blob/master/app_install_scripts/hibench.sh)|[N/A]( )|
