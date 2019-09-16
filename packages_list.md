@@ -17,4 +17,4 @@ Currently the following packages are supported by Open-Estuary repo:
 |Estuary5.2|[Estuary 5.2 Packages List](https://github.com/open-estuary/distro-repo/blob/master/docs/packages_list_5.2.md)|
 |Estuary5.10|[Estuary 5.10 Packages List](https://github.com/open-estuary/distro-repo/blob/master/docs/packages_list_5.10.md)|
 |Estuary5.20|[Estuary 5.20 Packages List](https://github.com/open-estuary/distro-repo/blob/master/docs/packages_list_5.20.md)|
-|||
+|Estuary5.30|[Estuary 5.30 Packages List](https://github.com/open-estuary/distro-repo/blob/master/docs/packages_list_5.30.md)|
