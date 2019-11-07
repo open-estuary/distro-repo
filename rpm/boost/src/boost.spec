@@ -104,6 +104,7 @@ BuildRequires: libstdc++-devel
 BuildRequires: bzip2-devel
 BuildRequires: zlib-devel
 BuildRequires: python-devel
+BuildRequires: numpy
 %if %{with python3}
 BuildRequires: python34-devel
 %endif
