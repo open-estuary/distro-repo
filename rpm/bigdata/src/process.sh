@@ -2,7 +2,7 @@
 CUR_DIR=$(cd `dirname $0`; pwd)
 #source ${BIGDATA_HOME}/usrconf.properties
 #CUR_DIR=$(cd `dirname $0`; pwd)
-source $CUR_DIR/usrconf.properties
+source $CUR_DIR/conf.properties
 export TEMP_DIR=${BIGDATA_HOME}/install/temp
 export HADOOP_ROOT=${BIGDATA_HOME}/install/hadoop
 export SPARK_ROOT=${BIGDATA_HOME}/install/spark
